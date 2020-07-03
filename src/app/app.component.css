@@ -1,0 +1,6 @@
+.titleLabel {
+    margin-left: 16px;
+}
+.example-fill-remaining-space {
+    flex: 1 1 auto;
+}

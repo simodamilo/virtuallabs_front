@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Please, sign in</h2>
+<mat-dialog-content>
+    <p>{{errorMsg}}</p> 
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Email" type="email" [formControl]="email" required>
+      <mat-error *ngIf="email.invalid">{{getErrorEmailMessage()}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="pswInput">
+      <mat-label>Password</mat-label>
+      <input matInput placeholder="Password" type="password" [formControl]="password" required>
+      <mat-error *ngIf="password.invalid">{{getErrorPasswordMessage()}}</mat-error>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button (click)="login()">Login</button>
+</mat-dialog-actions>

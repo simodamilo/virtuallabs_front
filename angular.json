@@ -63,7 +63,11 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "virtuallabs-front:build"
+            "browserTarget": "virtuallabs-front:build",
+            "proxyConfig": "src/proxy.conf.json",
+            "sslKey": "localhost.key",
+            "sslCert": "localhost.crt",
+            "ssl": true
           },
           "configurations": {
             "production": {
