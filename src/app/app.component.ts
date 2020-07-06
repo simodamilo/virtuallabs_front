@@ -4,7 +4,8 @@ import { RegistrationDialogComponent } from './auth/registration-dialog.componen
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
+import { Course, CourseService } from './core';
 
 
 @Component({
@@ -15,16 +16,18 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatSidenav) sideNav: MatSidenav;
-  title = 'ai20-lab05';
-
+  title = 'VirtualLabs';
   logged: boolean = false;
   sub: Subscription;
-
-  constructor(public dialog: MatDialog, private authService: AuthService, private route: ActivatedRoute, private router: Router) {}
+  courses$: Observable<Course[]>;
+  constructor(private courseService: CourseService, public dialog: MatDialog, private authService: AuthService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(){
     if(localStorage.getItem("jwt"))
       this.logged = true;
+    
+    this.courses$ = this.courseService.getCourses();
+
 
     this.routeManagement();
   }

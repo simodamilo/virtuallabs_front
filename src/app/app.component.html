@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-  <mat-icon (click)="toggleForMenuClick()">menu</mat-icon>
+  <mat-icon (click)="sideNav.toggle()">menu</mat-icon>
   <p class="titleLabel" routerLink="/home">VirtualLabs</p>
   <span class="example-fill-remaining-space"></span>
   <button mat-raised-button color="primary" [routerLink]="['home']" [queryParams]="{doRegistration: true}">Registration</button>
@@ -10,16 +10,10 @@
   <mat-sidenav mode="side" position="start" opened>
     <div class="container">
       <mat-nav-list>
-        <mat-list-item routerLink="courses/teacher/course/applicazioni-internet/students">
-          Applicazioni Internet
-        </mat-list-item>
-        <mat-list-item>
-          Programmazione di Sistema
-        </mat-list-item>
+        <a mat-list-item [routerLink]="['courses', course.name]" *ngFor="let course of courses$ | async">{{course.name}}</a>
       </mat-nav-list>
     </div>
   </mat-sidenav>
-
   <mat-sidenav-content>
     <nav mat-tab-nav-bar>
       <!-- <a mat-tab-link routerLink="teacher/course/applicazioni-internet/students">
@@ -30,7 +24,6 @@
       </a>
     </nav>
 
-    <router-outlet></router-outlet> 
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
-
