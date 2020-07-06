@@ -44,7 +44,7 @@ export class LoginDialogComponent {
   login() {
     if (this.email.valid && this.password.valid) {
       console.log("login-dialog.login()")
-      var user: User = {email: this.email.value, password: this.password.value};
+      var user: User = {username: this.email.value, password: this.password.value};
       
       this.authService.login(user).subscribe(
         jwt => {

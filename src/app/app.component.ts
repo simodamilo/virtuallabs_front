@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { LoginDialogComponent } from './auth/login-dialog.component';
+import { RegistrationDialogComponent } from './auth/registration-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -31,6 +31,22 @@ export class AppComponent implements OnInit, OnDestroy {
 
   routeManagement() {
     this.sub = this.route.queryParams.subscribe( params => {
+      if(params['doRegistration'] === 'true') {
+        const dialogRef = this.dialog.open(RegistrationDialogComponent, {
+          width: '300px'
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+          console.log(result);
+          /* if(result)
+          else */
+        })
+      }
+    });
+  }
+
+  /* routeManagement() {
+    this.sub = this.route.queryParams.subscribe( params => {
       
       if(params['doLogin'] === 'true') {
         const dialogRef = this.dialog.open(LoginDialogComponent, {
@@ -57,7 +73,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }
 
     });
-  }
+  } */
 
   ngOnDestroy(){
     this.sub.unsubscribe();

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from './user.model';
+import { Registration } from './registration.model';
 import { tap, shareReplay } from 'rxjs/operators';
 
 import * as moment from 'moment';
@@ -13,11 +14,12 @@ export class AuthService {
 
 
   login(user: User) {
-    console.log("authService.login()")
-    return this.http.post<any>(`/api/login`, user).pipe(
+    console.log("authService.login() " + user.username)
+    return this.http.post<any>(`/api/authenticate`, user).pipe(
       tap(res => {
-        const tkn = JSON.parse(atob(res.accessToken.split('.')[1]));
-        localStorage.setItem("jwt", res.accessToken);
+        console.log("Gianmarco sei bellissimo " + res.jwtToken);
+        const tkn = JSON.parse(atob(res.jwtToken.split('.')[1]));
+        localStorage.setItem("jwt", res.jwtToken);
         localStorage.setItem("expires_at", tkn.exp);
       }),
       shareReplay()
@@ -32,6 +34,11 @@ export class AuthService {
   public isLoggedIn() {
     console.log("isLoggedIn", localStorage.getItem("expires_at"))
     return moment().isBefore(moment.unix(+localStorage.getItem("expires_at")));
+  }
+
+  registration(user: Registration) {
+    console.log("registrationService.registration()")
+    return this.http.post<Registration>(`/api/register`, user);
   }
 
 }

@@ -4,3 +4,11 @@
 .example-fill-remaining-space {
     flex: 1 1 auto;
 }
+
+p {
+    margin: 0px;
+}
+
+mat-sidenav-container {
+    height: 100%;
+}

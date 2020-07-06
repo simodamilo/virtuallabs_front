@@ -21,12 +21,22 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 import { LoginDialogComponent } from './auth/login-dialog.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from './auth/auth.interceptor';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { VmsContComponent } from './vm/vms-cont.component';
+import { VmsComponent } from './vm/vms.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatSliderModule } from '@angular/material/slider';
+import { RegistrationDialogComponent } from './auth/registration-dialog.component';
+import { LoginComponent } from './auth/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginDialogComponent
+    LoginDialogComponent,
+    VmsContComponent,
+    VmsComponent,
+    RegistrationDialogComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -48,10 +58,12 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     MatFormFieldModule,
     AppRoutingModule,
     HttpClientModule,
-    MatDialogModule
+    MatDialogModule,
+    MatStepperModule,
+    MatSliderModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
-  entryComponents: [LoginDialogComponent]
+  entryComponents: [RegistrationDialogComponent]
 })
 export class AppModule { }
