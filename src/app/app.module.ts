@@ -19,7 +19,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
-import { LoginDialogComponent } from './auth/login-dialog.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { VmsContComponent } from './vm/vms-cont.component';
@@ -28,15 +27,21 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatSliderModule } from '@angular/material/slider';
 import { RegistrationDialogComponent } from './auth/registration-dialog.component';
 import { LoginComponent } from './auth/login.component';
+import { TestComponent } from './test.component';
+import { StudentModule } from './student/student.module';
+import { TeacherModule } from './teacher/teacher.module';
+import { AuthGuard } from './auth/auth.guard';
+import { ProfileDialogComponent } from './shared/profile-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginDialogComponent,
     VmsContComponent,
     VmsComponent,
     RegistrationDialogComponent,
-    LoginComponent
+    LoginComponent,
+    TestComponent,
+    ProfileDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -60,9 +65,11 @@ import { LoginComponent } from './auth/login.component';
     HttpClientModule,
     MatDialogModule,
     MatStepperModule,
-    MatSliderModule
+    MatSliderModule,
+    StudentModule,
+    TeacherModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthGuard],
   bootstrap: [AppComponent],
   entryComponents: [RegistrationDialogComponent]
 })

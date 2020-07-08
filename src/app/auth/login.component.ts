@@ -1,31 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { User } from './user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   loginForm: FormGroup;
   regEx = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9].{7,}');
   errorMsg = '';
   hide: boolean = true;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) { 
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { 
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.pattern(this.regEx)]]
     });
   }
-
-  ngOnInit(): void {
-  }
-
-
    
   getErrorEmailMessage() {
     if (this.loginForm.get('email').hasError('required'))
@@ -50,6 +46,8 @@ export class LoginComponent implements OnInit {
       this.authService.login(user).subscribe(
         jwt => {
           console.log(jwt);
+          // navigare 
+          //this.router.navigate(['student']);
         },
         err => {
           console.log(err);

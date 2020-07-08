@@ -3,24 +3,32 @@ import { HttpClient } from '@angular/common/http';
 import { User } from './user.model';
 import { Registration } from './registration.model';
 import { tap, shareReplay } from 'rxjs/operators';
-
 import * as moment from 'moment';
+import { Observable, observable, of, ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient) { }
 
+  private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
+  public isAuthenticated = this.isAuthenticatedSubject.asObservable();
+
+  constructor(private http: HttpClient) { }
 
   login(user: User) {
     console.log("authService.login() " + user.username)
     return this.http.post<any>(`/api/authenticate`, user).pipe(
       tap(res => {
-        console.log("Gianmarco sei bellissimo " + res.jwtToken);
         const tkn = JSON.parse(atob(res.jwtToken.split('.')[1]));
         localStorage.setItem("jwt", res.jwtToken);
         localStorage.setItem("expires_at", tkn.exp);
+        localStorage.setItem("email", tkn.sub);
+        if(tkn.sub.split("@")[1] === "studenti.polito.it")
+          localStorage.setItem("role", "student");
+        else
+          localStorage.setItem("role", "teacher");
+        this.isAuthenticatedSubject.next(true);
       }),
       shareReplay()
     );
@@ -29,6 +37,8 @@ export class AuthService {
   logout(){
     localStorage.removeItem("jwt");
     localStorage.removeItem("expires_at");
+    localStorage.removeItem("role");
+    this.isAuthenticatedSubject.next(false);
   }
 
   public isLoggedIn() {

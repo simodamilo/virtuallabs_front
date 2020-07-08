@@ -3,9 +3,10 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { RegistrationDialogComponent } from './auth/registration-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './auth/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { Course, CourseService } from './core';
+import { ProfileDialogComponent } from './shared/profile-dialog.component';
 
 
 @Component({
@@ -19,17 +20,42 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'VirtualLabs';
   logged: boolean = false;
   sub: Subscription;
-  courses$: Observable<Course[]>;
+  courses: Course[];
+  selectedCourse: string;
+  tabs: string[];
+  role: string;
   constructor(private courseService: CourseService, public dialog: MatDialog, private authService: AuthService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(){
-    if(localStorage.getItem("jwt"))
-      this.logged = true;
-    
-    this.courses$ = this.courseService.getCourses();
-
+    this.authService.isAuthenticated.subscribe( authenticated => {
+      this.logged = authenticated;
+      if(authenticated === true){
+        this.getCourses();
+        this.setTabs();
+      }
+    });
 
     this.routeManagement();
+  }
+
+  getCourses() {
+    this.courseService.getCourses().subscribe(courses => {
+      this.courses = courses;
+      this.selectedCourse = this.courses[0].name
+      this.role = localStorage.getItem("role");
+      if(this.role === "student")
+        this.router.navigate(['student/courses',this.selectedCourse,'teams']);
+      else
+        this.router.navigate(['teacher/courses',this.selectedCourse,'students']);
+      this.sideNav.toggle();
+    });
+  }
+
+  setTabs() {
+    if(localStorage.getItem("role") === "student")
+      this.tabs = ['teams', 'vms', 'assignments'];
+    else
+      this.tabs = ['students', 'vms', 'assignments'];
   }
 
   routeManagement() {
@@ -41,8 +67,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         dialogRef.afterClosed().subscribe((result) => {
           console.log(result);
-          /* if(result)
-          else */
+          this.router.navigate(['home']);
         })
       }
     });
@@ -82,10 +107,15 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  
-  // SideNav functions
-  toggleForMenuClick() {
-    this.sideNav.toggle();
+  setCourse(courseName: string) {
+    this.selectedCourse = courseName;
   }
 
+  openProfileDialog() {
+    const dialogRef = this.dialog.open(ProfileDialogComponent, {
+      width: '300px',
+      position: {top: '64px', right: '10px'},
+      backdropClass: 'backdropBackground'
+    });
+  }
 }

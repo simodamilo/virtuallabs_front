@@ -11,8 +11,9 @@ export class CourseService {
   constructor(private http: HttpClient) { }
 
   getCourses(): Observable<Course[]> {
-    console.log("qui");
+    if(localStorage.getItem("role") === "student")
+      return this.http.get<Course[]>(`/api/API/courses/students`);
 
-    return this.http.get<Course[]>(`/api/API/courses/students`);
+    return this.http.get<Course[]>(`/api/API/courses/teachers`);
   }
 }

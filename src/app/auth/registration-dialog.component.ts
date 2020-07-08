@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Registration } from './registration.model';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
@@ -21,27 +21,27 @@ export class RegistrationDialogComponent {
     this.registrationForm = this.fb.group({
       name: ['', Validators.required],
       surname: ['', Validators.required],
-      serial: ['', [Validators.required, this.serialValidator()]],
-      email: ['', [Validators.required, Validators.email, this.emailValidator()]],
+      serial: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email, this.domainValidator()]],
       password: ['', [Validators.required, Validators.pattern(this.regEx)]],
       confirmPassword: ['', this.passwordValidator()]
     });
   }
 
-  serialValidator(): ValidatorFn {
+  domainValidator(): ValidatorFn {
     return (control: AbstractControl): {[key: string]: any} | null => {
       if(this.registrationForm === undefined)
         return null;
-      return control.value != String(this.registrationForm.get('email').value).split('@')[0] ? {'match': {value: control.value}} : null;
+      return this.check() ? {'domain': {value: control.value}} : null;
     };
   }
 
-  emailValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
-      if(this.registrationForm === undefined)
-        return null;
-      return String(control.value).split('@')[0] != this.registrationForm.get('serial').value ? {'match': {value: control.value}} : null;
-    };
+  private check() {
+    let domain = String(this.registrationForm.get('email').value).split('@')[1];
+    if(domain === "studenti.polito.it" || domain === "polito.it")
+      return false;
+
+    return true;
   }
 
   passwordValidator(): ValidatorFn {
@@ -69,16 +69,14 @@ export class RegistrationDialogComponent {
     if (this.registrationForm.get('serial').hasError('required')) {
       return 'You must enter a value';
     }
-
-    return this.registrationForm.get('serial').hasError('match') ? 'Error' : '';
   }
    
   getErrorEmailMessage() {
     if (this.registrationForm.get('email').hasError('required'))
       return 'You must enter a value';
 
-    if(this.registrationForm.get('email').hasError('match'))
-      return 'Error';
+    if(this.registrationForm.get('email').hasError('domain'))
+      return 'Not valid domain';
   
     return this.registrationForm.get('email').hasError('email') ? 'Not a valid email' : '';
   }
@@ -112,11 +110,9 @@ export class RegistrationDialogComponent {
       
       this.authService.registration(registration).subscribe(
         ok => {
-          console.log(ok);
           this.dialogRef.close(true);
         },
         err => {
-          console.log(err);
           this.errorMsg = 'Registration failed!';
         }
       );

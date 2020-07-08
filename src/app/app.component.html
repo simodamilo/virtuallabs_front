@@ -1,29 +1,24 @@
 <mat-toolbar color="primary">
-  <mat-icon (click)="sideNav.toggle()">menu</mat-icon>
+  <mat-icon (click)="logged ? sideNav.toggle() : null">menu</mat-icon>
   <p class="titleLabel" routerLink="/home">VirtualLabs</p>
   <span class="example-fill-remaining-space"></span>
-  <button mat-raised-button color="primary" [routerLink]="['home']" [queryParams]="{doRegistration: true}">Registration</button>
+  <button mat-raised-button *ngIf="!logged" color="primary" [routerLink]="['home']" [queryParams]="{doRegistration: true}">Sign up</button>
+  <button mat-mini-fab *ngIf="logged" color="white" (click)="openProfileDialog()"><mat-icon>account_circle</mat-icon></button>
 </mat-toolbar>
-<mat-toolbar>Home</mat-toolbar>
+<mat-toolbar>{{logged ? selectedCourse : "Home"}}</mat-toolbar>
 
 <mat-sidenav-container>
-  <mat-sidenav mode="side" position="start" opened>
+  <mat-sidenav mode="side" position="start" *ngIf="logged" closed>
     <div class="container">
       <mat-nav-list>
-        <a mat-list-item [routerLink]="['courses', course.name]" *ngFor="let course of courses$ | async">{{course.name}}</a>
+        <a mat-list-item [routerLink]="[role, 'courses', course.name, tabs[0]]" *ngFor="let course of courses" (click)="setCourse(course.name)">{{course.name}}</a>
       </mat-nav-list>
     </div>
   </mat-sidenav>
   <mat-sidenav-content>
-    <nav mat-tab-nav-bar>
-      <!-- <a mat-tab-link routerLink="teacher/course/applicazioni-internet/students">
-        Students
-      </a> -->
-      <a mat-tab-link routerLink="teacher/course/applicazioni-internet/vms">
-        Vms
-      </a>
+    <nav mat-tab-nav-bar *ngIf="logged">
+      <a mat-tab-link [routerLink]="[role, 'courses', selectedCourse, tab]" *ngFor="let tab of tabs">{{tab}}</a>
     </nav>
-
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
