@@ -41,6 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
   getCourses() {
     this.courseService.getCourses().subscribe(courses => {
       this.courses = courses;
+      console.log(courses);
       this.selectedCourse = this.courses[0].name
       this.role = localStorage.getItem("role");
       if(this.role === "student")

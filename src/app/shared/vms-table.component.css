@@ -1,0 +1,29 @@
+table {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+mat-paginator {
+    margin-bottom: 30px;
+}
+
+.nameColumn {
+    width: 30%;
+}
+
+.studentColumn {
+    width: 30%;
+}
+
+.stateColumn {
+    width: 20%;
+}
+
+.actionsColumn {
+    width: 20%;
+}
+
+.studentHeader {
+    padding-left: 16px;
+}

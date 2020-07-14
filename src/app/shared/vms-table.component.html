@@ -1,0 +1,48 @@
+<!-- It is used to display all Virtual Machines for the specific student -->
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+
+    <!-- Vm Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="nameColumn"> Name </th>
+      <td mat-cell *matCellDef="let vm"> {{vm.name}} </td>
+    </ng-container>
+  
+    <!-- Student Column -->
+    <ng-container matColumnDef="student" class="studentColumn">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="studentHeader"> Student </th>
+      <td mat-cell *matCellDef="let vm">
+        <mat-list>
+          <mat-list-item *ngFor="let owner of vm.owners">
+            {{owner.name}} {{owner.surname}}
+          </mat-list-item>
+        </mat-list> 
+      </td>
+    </ng-container>
+  
+    <!-- State(on/off) Column -->
+    <ng-container matColumnDef="state" class="stateColumn">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> State </th>
+      <td mat-cell *matCellDef="let vm"> {{vm.active ? "On" : "Off"}} </td>
+    </ng-container>
+
+    <!-- Action -->
+    <ng-container matColumnDef="actions" class="actionsColumn">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+      <td mat-cell *matCellDef="let vm" class="actionsColumn">
+          <button mat-icon-button color="primary" aria-label="Turn the virtual machine on or off" (click)="onOffVm(vm.id)">
+              <mat-icon>power_settings_new</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" aria-label="Modify the virtual machine" (click)="modifyVm(vm)" [disabled]="vm.active">
+              <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" aria-label="Delete the virtual machine" (click)="deleteVm(vm.id)" [disabled]="vm.active">
+              <mat-icon>delete</mat-icon>
+          </button>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons style="margin-right: 5%; margin-left: 5%;"></mat-paginator>
+

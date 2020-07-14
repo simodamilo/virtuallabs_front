@@ -1,0 +1,169 @@
+<div class="container">
+
+    <h2>Virtual Machines</h2>
+
+
+
+
+
+
+
+    <!-- tabella da cambiare con quella dei team -->
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+      
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="studentColumn"> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+      
+        <!-- Students Column -->
+        <ng-container matColumnDef="students">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="studentColumn"> Students </th>
+          <td mat-cell *matCellDef="let element"> Nomi </td>
+        </ng-container>
+
+        <!-- Action -->
+        <ng-container matColumnDef="actions" class="actionsColumn">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+          <td mat-cell *matCellDef="let vm" class="actionsColumn">
+            <button mat-icon-button color="primary" aria-label="Turn the virtual machine on or off" [disabled]="vm.active">
+                <mat-icon>delete</mat-icon>
+            </button>
+              <button mat-icon-button color="primary" aria-label="Turn the virtual machine on or off" [disabled]="vm.active">
+                  <mat-icon>edit</mat-icon>
+              </button>
+          </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    
+    <!-- It is used to modify team constraint -->
+    <!-- <div class="mat-elevation-z1 insert-vm" *ngIf="showAddDiv">
+        <mat-horizontal-stepper linear #stepper>
+            <mat-step label="Name">
+                <mat-form-field class="name">
+                    <mat-label>Name</mat-label>
+                    <input matInput [(ngModel)]="vm.name">
+                </mat-form-field>
+                <div class="stepperButton">
+                    <button mat-button (click)="closeStepper()">Close</button>
+                    <button mat-button matStepperNext>Next</button>
+                </div>
+            </mat-step>
+  
+            <mat-step label="Config">
+                <div>
+                    <mat-slider [max]="ram" [(ngModel)]="vm.ram"></mat-slider>
+                    <mat-form-field>
+                        <mat-label>Ram</mat-label>
+                        <input matInput type="number" [max]="ram" [(ngModel)]="vm.ram">
+                    </mat-form-field>
+                    <p>Max available ram: {{ram}}</p>
+                </div>
+                <div>
+                    <mat-slider [max]="vcpu" [(ngModel)]="vm.vcpu"></mat-slider>
+                    <mat-form-field>
+                        <mat-label>VCpu</mat-label>
+                        <input matInput type="number" [max]="vcpu" [(ngModel)]="vm.vcpu">
+                    </mat-form-field>
+                    <p>Max available vcpu: {{vcpu}}</p>
+                </div>
+                <div>
+                    <mat-slider [max]="disk" [(ngModel)]="vm.disk"></mat-slider>
+                    <mat-form-field>
+                        <mat-label>Disk</mat-label>
+                        <input matInput type="number" [max]="disk" [(ngModel)]="vm.disk">
+                    </mat-form-field>
+                    <p>Max available disk: {{disk}}</p>
+                </div>
+                <div class="stepperButton">
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button matStepperNext>Next</button>
+                </div>
+            </mat-step>
+  
+            <mat-step label="Other owners">
+                <h3>Add other owners to the virtual machine</h3>
+                <mat-form-field class="name">
+                    <mat-label>Select</mat-label>
+                    <mat-select (selectionChange)="addStudent($event)">
+                        <mat-option *ngFor="let option of _teamStudents" [value]="option">{{option.name + " " + option.surname}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngFor="let option of selectedStudents" value="option">
+                    <button mat-icon-button color="primary" aria-label="Delete student" (click)="removeStudent(option)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <p>{{option.name + " " + option.surname}}</p>
+                </div>
+                <div class="stepperButton">
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button matStepperNext>Next</button>
+                </div>
+            </mat-step>
+  
+            <mat-step label="Summary">
+                <h3>Summary configuration</h3>
+                <div>
+                    <p>Ram: {{vm.ram}}</p>
+                    <p>VCpu: {{vm.vcpu}}</p>
+                    <p>Disk: {{vm.disk}}</p>
+                </div>
+                <h3 *ngIf="selectedStudents.length">Other owners</h3>
+                <div *ngFor="let option of selectedStudents" value="option">
+                    <p>{{option.name + " " + option.surname}}</p>
+                </div>
+                <p class="error">{{_errorMsg}}</p>
+                <div class="stepperButton">
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button (click)="confirmVm()">Confirm</button>
+                </div>
+            </mat-step> 
+          </mat-horizontal-stepper>
+    </div> -->
+  
+    <!-- It is used to display all teams for the specific course -->
+      <!-- <table mat-table dataSource="dataSource" class="mat-elevation-z8" matSort>
+  
+        <!-- Vm Name Column -->
+        <!-- <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="nameColumn"> Name </th>
+          <td mat-cell *matCellDef="let vm"> {{vm.name}} </td>
+        </ng-container>
+      
+        <!-- Student Column -->
+        <!-- <ng-container matColumnDef="student" class="studentColumn">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Student </th>
+          <td mat-cell *matCellDef="let vm"> Email </td>
+        </ng-container>
+  
+        <!-- Action -->
+        <!-- <ng-container matColumnDef="actions" class="actionsColumn">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+          <td mat-cell *matCellDef="let vm" class="actionsColumn">
+            <button mat-icon-button color="primary" aria-label="Turn the virtual machine on or off" [disabled]="vm.active">
+                <mat-icon>delete</mat-icon>
+            </button>
+              <button mat-icon-button color="primary" aria-label="Turn the virtual machine on or off" [disabled]="vm.active">
+                  <mat-icon>edit</mat-icon>
+              </button>
+          </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons style="margin-right: 5%; margin-left: 5%;"></mat-paginator> -->
+  
+  
+    <!-- <app-vms-table 
+                [vms]="_vms"
+                (onOff)="onOffVm($event)"
+                (modify)="modifyVm($event)"
+                (delete)="deleteVm($event)">
+    </app-vms-table> -->
+  </div>
+  

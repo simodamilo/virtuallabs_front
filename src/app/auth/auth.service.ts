@@ -17,7 +17,6 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(user: User) {
-    console.log("authService.login() " + user.username)
     return this.http.post<any>(`/api/authenticate`, user).pipe(
       tap(res => {
         const tkn = JSON.parse(atob(res.jwtToken.split('.')[1]));
@@ -47,7 +46,7 @@ export class AuthService {
   }
 
   registration(user: Registration) {
-    console.log("registrationService.registration()")
+    console.log("registrationService.registration() " + user.email);
     return this.http.post<Registration>(`/api/register`, user);
   }
 

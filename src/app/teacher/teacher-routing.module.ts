@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from '../auth/login.component';
+import { TVmsContComponent } from './vm/t-vms-cont.component';
+import { TestComponent } from '../test.component';
 
 const routes: Routes = [
-    {path: 'courses/:courseName/', 
+    {path: 'courses/:courseName', 
         children: [
             {
             path: 'students',
-            component: LoginComponent
+            component: TestComponent
             },
             {
             path: 'vms',
-            component: LoginComponent
+            component: TVmsContComponent
             },
             {
             path: 'assignments',
@@ -22,7 +24,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class TeacherRoutingModule { }

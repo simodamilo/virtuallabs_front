@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Student } from '../models/student.model';
-import { Observable, from } from 'rxjs';
-import { mergeMap, toArray } from 'rxjs/operators';
+import { Observable, from, of } from 'rxjs';
+import { mergeMap, toArray, concatMap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { VM } from '..';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
+
   constructor(private http: HttpClient) { }
 
+  getTeamStudents(teamId: number): Observable<Student[]> {
+    return this.http.get<Student[]>(`api/API/students/${teamId}/members`);
+  }
 
   /* getAllStudents(): Observable<Student[]> {
     console.log("getAllStudents service")
