@@ -30,8 +30,12 @@ import { LoginComponent } from './auth/login.component';
 import { TestComponent } from './test.component';
 import { StudentModule } from './student/student.module';
 import { TeacherModule } from './teacher/teacher.module';
-import { AuthGuard } from './auth/auth.guard';
 import { ProfileDialogComponent } from './shared/profile-dialog.component';
+import { StudentsContComponent } from './teacher/students-cont.component';
+import { StudentsComponent } from './shared/students.component';
+import { PreviewDialogComponent } from './shared/preview-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { AssignmentModule } from './assignment/assignment.module';
 
 @NgModule({
   declarations: [
@@ -41,7 +45,10 @@ import { ProfileDialogComponent } from './shared/profile-dialog.component';
     RegistrationDialogComponent,
     LoginComponent,
     TestComponent,
-    ProfileDialogComponent
+    ProfileDialogComponent,
+    StudentsComponent,
+    StudentsContComponent,
+    PreviewDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,9 +74,10 @@ import { ProfileDialogComponent } from './shared/profile-dialog.component';
     MatStepperModule,
     MatSliderModule,
     StudentModule,
-    TeacherModule
+    TeacherModule,
+    AssignmentModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthGuard],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, MatDatepickerModule],
   bootstrap: [AppComponent],
   entryComponents: [RegistrationDialogComponent]
 })

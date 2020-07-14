@@ -1,0 +1,76 @@
+<div class="container">
+  <h2>Students enrolled in the course</h2>
+  <mat-form-field>
+    <mat-label>Add Student</mat-label>
+    <input
+      matInput
+      #search
+      type="search"
+      placeholder="Name of the student"
+      [matAutocomplete]="auto"
+      (keyup)="customFilter(search.value)"
+    />
+    <mat-autocomplete
+      #auto
+      [displayWith]="displayFn"
+      (optionSelected)="studentSelected($event)">
+      <mat-option *ngFor="let option of filteredOptions" [value]="option">
+        {{ option.name }} {{ option.surname }} ({{ option.serial }})
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button mat-button (click)="enrollStudent(); search.value = ''">Add</button
+  ><br />
+  <button mat-button (click)="removeStudent()">Delete Selected</button>
+  <div class="mat-elevation-z8">
+    <table #table mat-table matSort [dataSource]="dataSource">
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            (change)="toggleMasterTable()"
+            [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox
+            (change)="toggleRowsTable($event, row)"
+            [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- Id Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+        <td mat-cell *matCellDef="let s">{{ s.serial }}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let s">{{ s.name }}</td>
+      </ng-container>
+
+      <!-- FirstName Column -->
+      <ng-container matColumnDef="surname">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Surname</th>
+        <td mat-cell *matCellDef="let s">{{ s.surname }}</td>
+      </ng-container>
+
+      <!-- Group Column -->
+      <ng-container matColumnDef="group">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Group</th>
+        <td mat-cell *matCellDef="let s">{{ s.group ? s.group.name: "" }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="colsToDisplay"></tr>
+      <tr mat-row *matRowDef="let row; columns: colsToDisplay"></tr>
+    </table>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
+</div>
