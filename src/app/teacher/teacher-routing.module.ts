@@ -3,13 +3,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from '../auth/login.component';
 import { TVmsContComponent } from './vm/t-vms-cont.component';
 import { TestComponent } from '../test.component';
+import { StudentsContComponent } from './students-cont.component';
+import { AssignmentContComponent } from '../assignment/assignment-cont.component';
 
 const routes: Routes = [
     {path: 'courses/:courseName', 
         children: [
             {
             path: 'students',
-            component: TestComponent
+            component: StudentsContComponent
             },
             {
             path: 'vms',
@@ -17,7 +19,7 @@ const routes: Routes = [
             },
             {
             path: 'assignments',
-            component: LoginComponent
+            component: AssignmentContComponent
             }
         ] 
     }

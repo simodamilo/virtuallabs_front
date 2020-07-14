@@ -15,7 +15,7 @@
       </mat-nav-list>
     </div>
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content style="overflow-y: hidden;">
     <nav mat-tab-nav-bar *ngIf="logged">
       <a mat-tab-link [routerLink]="[role, 'courses', selectedCourse, tab]" *ngFor="let tab of tabs">{{tab}}</a>
     </nav>

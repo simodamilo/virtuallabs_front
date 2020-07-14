@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Student } from '../models/student.model';
-import { Observable, from, of } from 'rxjs';
-import { mergeMap, toArray, concatMap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { VM } from '..';
+import { Student } from '..';
+import { Observable, from } from 'rxjs';
+import { mergeMap, toArray } from 'rxjs/operators';
 
 
 @Injectable({
@@ -17,25 +16,28 @@ export class StudentService {
     return this.http.get<Student[]>(`api/API/students/${teamId}/members`);
   }
 
-  /* getAllStudents(): Observable<Student[]> {
+  getAllStudents(): Observable<Student[]> {
     console.log("getAllStudents service")
-    return this.http.get<Student[]>(`/api/students`);
+    return this.http.get<Student[]>(`/api/API/students`);
   }
 
-  getEnrolled(courseId: number):Observable<Student[]> {
-    console.log("getEnrolled service")
-    return this.http.get<Student[]>(`/api/students?courseId=${courseId}&_expand=group`);
+  getEnrolled(courseName: string):Observable<Student[]> {
+    console.log(courseName)
+    return this.http.get<Student[]>(`/api/API/students/${courseName}/enrolled`);
   }
 
-
-  updateEnrolled(students: Student[], courseId: number): Observable<Student[]> {    
-    students.forEach(s => s.courseId = courseId);
-    console.log(students);
-    
+  enroll(students: Student[], courseName: string): Observable<Student[]> {    
     return from(students).pipe(
-      mergeMap(student => this.http.put<Student>(`/api/students/${student.id}`, student)),
+      mergeMap(student => this.http.post<Student>(`/api/API/students/${courseName}/enroll`, {serial:student.serial})),
       toArray()
     );
-  } */
+  } 
 
+  remove(students: Student[], courseName: string){  
+    return from(students).pipe( //TODO sistemare delete parametro
+      //mergeMap(student => this.http.request('delete', `/api/API/students/${courseName}/deleteStudent`, { body: {student :student.serial} })),
+      //mergeMap(student => this.http.delete<Student>(`/api/API/students/${courseName}/deleteStudent`, {serial: student.serial})),
+      toArray()
+    );
+  } 
 }

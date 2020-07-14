@@ -1,0 +1,7 @@
+<app-students
+  [enrolledStudents]="enrolledStudents | async"
+  [allStudents]="allStudents | async"
+  (enrollStudent)="enrollStudent($event)"
+  (removeStudent)="removeStudent($event)"
+>
+</app-students>

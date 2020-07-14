@@ -30,11 +30,26 @@ import { AuthGuard } from './auth/auth.guard';
 import { MatSelectModule } from '@angular/material/select';
 import { AuthModule } from './auth/auth.module';
 import { SharedModule } from './shared/shared.module';
+import { ProfileDialogComponent } from './shared/profile-dialog.component';
+import { StudentsContComponent } from './teacher/students-cont.component';
+import { StudentsComponent } from './shared/students.component';
+import { PreviewDialogComponent } from './shared/preview-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { AssignmentModule } from './assignment/assignment.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     TestComponent
+    VmsContComponent,
+    VmsComponent,
+    RegistrationDialogComponent,
+    LoginComponent,
+    TestComponent,
+    ProfileDialogComponent,
+    StudentsComponent,
+    StudentsContComponent,
+    PreviewDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,8 +77,9 @@ import { SharedModule } from './shared/shared.module';
     AuthModule,
     SharedModule,
     MatSelectModule
+    AssignmentModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthGuard],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, MatDatepickerModule],
   bootstrap: [AppComponent],
   entryComponents: [RegistrationDialogComponent]
 })
