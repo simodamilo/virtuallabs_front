@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Student, StudentService} from '../core';
+import { Student, StudentService} from '../../core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 

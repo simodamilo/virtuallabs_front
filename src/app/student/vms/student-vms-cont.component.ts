@@ -4,11 +4,11 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-vms-cont',
-  templateUrl: './vms-cont.component.html',
-  styleUrls: ['./vms-cont.component.css']
+  selector: 'app-student-vms-cont',
+  templateUrl: './student-vms-cont.component.html',
+  styles: []
 })
-export class VmsContComponent implements OnInit {
+export class StudentVmsContComponent implements OnInit {
 
   vms$: Observable<VM[]>;
   teamStudents$: Observable<Student[]>;

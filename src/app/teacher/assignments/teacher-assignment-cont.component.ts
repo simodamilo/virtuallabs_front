@@ -6,17 +6,17 @@ import {
   SolutionService,
   StudentService,
   Student,
-} from '../core';
+} from '../../core';
 import { ActivatedRoute } from '@angular/router';
 import { of, Observable } from 'rxjs';
 
 
 @Component({
-  selector: 'app-assignment-cont',
-  templateUrl: './assignment-cont.component.html',
-  styleUrls: ['./assignment-cont.component.css'],
+  selector: 'app-teacher-assignment-cont',
+  templateUrl: './teacher-assignment-cont.component.html',
+  styles: [],
 })
-export class AssignmentContComponent implements OnInit {
+export class TeacherAssignmentContComponent implements OnInit {
   assignments$: Observable<Assignment[]>;
   solutions$: Observable<Solution[]>;
   enrolledStudents$: Observable<Student[]>;

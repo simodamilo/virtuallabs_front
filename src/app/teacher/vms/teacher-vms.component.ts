@@ -5,11 +5,11 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
-  selector: 'app-tvms',
-  templateUrl: './t-vms.component.html',
-  styleUrls: ['./t-vms.component.css']
+  selector: 'app-teacher-vms',
+  templateUrl: './teacher-vms.component.html',
+  styleUrls: ['./teacher-vms.component.css']
 })
-export class TVmsComponent implements OnInit, AfterViewInit {
+export class TeacherVmsComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['name', 'students', 'actions'];
   dataSource: MatTableDataSource<VM> = new MatTableDataSource<VM>();

@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from '../auth/login.component';
 import { TestComponent } from '../test.component';
-import { VmsContComponent } from './vm/vms-cont.component';
-import { AssignmentComponent } from '../assignment/assignment.component';
+import { StudentVmsContComponent } from './vms/student-vms-cont.component';
 
 const routes: Routes = [
     {path: 'courses/:courseName', 
@@ -14,11 +12,11 @@ const routes: Routes = [
             },
             {
             path: 'vms',
-            component: VmsContComponent
+            component: StudentVmsContComponent
             },
             {
             path: 'assignments',
-            component: AssignmentComponent
+            component: TestComponent
             }
         ] 
     }

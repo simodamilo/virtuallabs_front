@@ -10,9 +10,9 @@ import * as moment from 'moment';
 import { MatTableDataSource } from '@angular/material/table';
 import { Assignment } from '../../core';
 import { SelectionModel } from '@angular/cdk/collections';
-import { PreviewDialogComponent } from '../../shared/preview-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
+import { ContentDialogComponent } from '../content-dialog/content-dialog.component';
 
 @Component({
   selector: 'app-assignments-table',
@@ -41,7 +41,7 @@ export class AssignmentsTableComponent implements OnInit {
   }
 
   viewContent(assignment: Assignment) {
-    const dialogRef = this.dialog.open(PreviewDialogComponent, {
+    const dialogRef = this.dialog.open(ContentDialogComponent, {
       width: '70%',
       height: '80%',
       panelClass: 'custom-dialog-panel',

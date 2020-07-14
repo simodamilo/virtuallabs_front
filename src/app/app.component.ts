@@ -3,10 +3,10 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { RegistrationDialogComponent } from './auth/registration-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './auth/auth.service';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { Subscription, Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Course, CourseService } from './core';
-import { ProfileDialogComponent } from './shared/profile-dialog.component';
+import { ProfileDialogComponent } from './shared/profile-dialog/profile-dialog.component';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatSidenav) sideNav: MatSidenav;
   title = 'VirtualLabs';
-  logged: boolean = false;
+  logged: boolean;
   sub: Subscription;
   courses: Course[];
   selectedCourse: string;
@@ -27,14 +27,15 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private courseService: CourseService, public dialog: MatDialog, private authService: AuthService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(){
+    console.log("AAA")
     this.authService.isAuthenticated.subscribe( authenticated => {
+      console.log("Gianmarco sei bellissimo")
       this.logged = authenticated;
       if(authenticated === true){
         this.getCourses();
         this.setTabs();
       }
     });
-
     this.routeManagement();
   }
 

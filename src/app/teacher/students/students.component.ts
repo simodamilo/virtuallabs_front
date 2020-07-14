@@ -8,7 +8,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { Student } from '../core';
+import { Student } from '../../core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';

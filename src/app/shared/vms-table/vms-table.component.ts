@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
-import { VM } from '../core';
+import { VM } from '../../core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';

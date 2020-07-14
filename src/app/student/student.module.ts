@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StudentRoutingModule } from './student-routing.module';
-import { VmsComponent } from './vm/vms.component';
-import { VmsContComponent } from './vm/vms-cont.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,15 +13,17 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
 import { SharedModule } from '../shared/shared.module';
-
+import { StudentVmsContComponent } from './vms/student-vms-cont.component';
+import { StudentVmsComponent } from './vms/student-vms.component';
 
 @NgModule({
   declarations: [
-    VmsComponent,
-    VmsContComponent
+    StudentVmsContComponent,
+    StudentVmsComponent
   ],
   imports: [
     CommonModule,
+    SharedModule,
     StudentRoutingModule,
     MatIconModule,
     MatTableModule,
@@ -35,8 +35,7 @@ import { SharedModule } from '../shared/shared.module';
     MatStepperModule,
     MatSelectModule,
     MatInputModule,
-    MatSliderModule,
-    SharedModule
+    MatSliderModule
   ]
 })
 export class StudentModule { }

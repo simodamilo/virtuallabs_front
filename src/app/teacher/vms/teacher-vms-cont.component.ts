@@ -4,11 +4,11 @@ import { Observable } from 'rxjs';
 import { VM, VmService } from 'src/app/core';
 
 @Component({
-  selector: 'app-vms-cont',
-  templateUrl: './t-vms-cont.component.html',
-  styleUrls: ['./t-vms-cont.component.css']
+  selector: 'app-teacher-vms-cont',
+  templateUrl: './teacher-vms-cont.component.html',
+  styles: []
 })
-export class TVmsContComponent implements OnInit {
+export class TeacherVmsContComponent implements OnInit {
 
   vms$: Observable<VM[]>;
   courseName: string;

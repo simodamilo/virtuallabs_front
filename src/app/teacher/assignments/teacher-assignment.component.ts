@@ -1,18 +1,18 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { Assignment, Solution, Student } from '../core';
+import { Assignment, Solution } from '../../core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { PreviewDialogComponent } from '../shared/preview-dialog.component';
 import * as moment from 'moment';
+import { ContentDialogComponent } from 'src/app/shared/content-dialog/content-dialog.component';
 
 @Component({
-  selector: 'app-assignment',
-  templateUrl: './assignment.component.html',
-  styleUrls: ['./assignment.component.css'],
+  selector: 'app-teacher-assignment',
+  templateUrl: './teacher-assignment.component.html',
+  styleUrls: ['./teacher-assignment.component.css'],
 })
-export class AssignmentComponent implements OnInit, AfterViewInit {
+export class TeacherAssignmentComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) solutionPaginator: MatPaginator;
@@ -43,7 +43,7 @@ export class AssignmentComponent implements OnInit, AfterViewInit {
   }
 
   viewContent(assignment: Assignment){
-    const dialogRef = this.dialog.open(PreviewDialogComponent, {
+    const dialogRef = this.dialog.open(ContentDialogComponent, {
       width: '70%',
       height: '80%',
       panelClass: 'custom-dialog-panel'

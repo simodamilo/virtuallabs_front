@@ -1,4 +1,4 @@
-<app-vms [vms]="vms$ | async"
+<app-student-vms [vms]="vms$ | async"
         [teamStudents]="teamStudents$ | async"
         [errorMsg]="errorMsg"
         [team]="team"
@@ -7,5 +7,5 @@
         (modify)="modifyVm($event)"
         (delete)="deleteVm($event)"
         (getStudents)="getTeamStudents($event)">
-</app-vms>
+</app-student-vms>
 

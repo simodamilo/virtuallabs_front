@@ -5,11 +5,11 @@ import { Team, Student } from '../../core';
 import { MatSelectChange } from '@angular/material/select';
 
 @Component({
-  selector: 'app-vms',
-  templateUrl: './vms.component.html',
-  styleUrls: ['./vms.component.css']
+  selector: 'app-student-vms',
+  templateUrl: './student-vms.component.html',
+  styleUrls: ['./student-vms.component.css']
 })
-export class VmsComponent {
+export class StudentVmsComponent {
   
   /* Used for vms-table */
   _vms: VM[];

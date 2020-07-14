@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from '../auth/login.component';
-import { TVmsContComponent } from './vm/t-vms-cont.component';
-import { TestComponent } from '../test.component';
-import { StudentsContComponent } from './students-cont.component';
-import { AssignmentContComponent } from '../assignment/assignment-cont.component';
+import { TeacherVmsContComponent } from './vms/teacher-vms-cont.component';
+import { TeacherAssignmentContComponent } from './assignments/teacher-assignment-cont.component';
+import { StudentsContComponent } from './students/students-cont.component';
 
 const routes: Routes = [
     {path: 'courses/:courseName', 
@@ -15,11 +13,11 @@ const routes: Routes = [
             },
             {
             path: 'vms',
-            component: TVmsContComponent
+            component: TeacherVmsContComponent
             },
             {
             path: 'assignments',
-            component: AssignmentContComponent
+            component: TeacherAssignmentContComponent
             }
         ] 
     }
