@@ -1,0 +1,46 @@
+<div class="mat-elevation-z8">
+  <table
+    mat-table
+    matSort
+    [dataSource]="solutionsDataSource"
+    matSortActive="deliveryTs"
+    matSortDirection="asc"
+  >
+    <ng-container matColumnDef="state">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>State</th>
+      <td mat-cell *matCellDef="let s">{{ s.state }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="deliveryTs">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        Delivered
+      </th>
+      <td mat-cell *matCellDef="let s">
+        {{ formatDate(s.deliveryTs) }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="modifiable">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        Modifiable
+      </th>
+      <td mat-cell *matCellDef="let s">{{ s.modifiable }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let s">
+        <button
+          mat-button
+          *ngIf="s.state == 'DELIVERED' ||s.state=='REVIEWED'"
+          (click)="viewContent(s)"
+        >
+          <mat-icon color="primary">visibility</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="solutionsCols"></tr>
+    <tr mat-row *matRowDef="let row; columns: solutionsCols"></tr>
+  </table>
+</div>

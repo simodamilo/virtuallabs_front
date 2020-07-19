@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TestComponent } from '../test.component';
 import { StudentVmsContComponent } from './vms/student-vms-cont.component';
+import { StudentAssignmentContComponent } from './assignments/student-assignment-cont.component';
 
 const routes: Routes = [
     {path: 'courses/:courseName', 
@@ -16,7 +17,7 @@ const routes: Routes = [
             },
             {
             path: 'assignments',
-            component: TestComponent
+            component: StudentAssignmentContComponent
             }
         ] 
     }

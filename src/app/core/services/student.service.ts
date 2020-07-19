@@ -40,4 +40,10 @@ export class StudentService {
       toArray()
     );
   } 
+
+  uploadImage(event: File): Observable<Student>{
+    const formData = new FormData()
+    formData.append("imageFile", event)
+    return this.http.put<Student>("/api/API/students/uploadImage", formData)
+  }
 }

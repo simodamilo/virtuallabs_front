@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
-import { Solution, Student } from '../models';
+import { Solution, Student, Assignment } from '../models';
 import { HttpClient } from '@angular/common/http';
 import { mergeMap, map } from 'rxjs/operators';
 
@@ -25,6 +25,47 @@ export class SolutionService {
               )
             )
           )
+        )
+      );
+  }
+
+  getSolutionHistory(serial: String, assignment: Assignment): Observable<Solution[]>{
+    return this.http.get<Solution[]>(`/api/API/solutions/assignments/${assignment.id}/students/${serial}`)
+  }
+
+  addSolution(solution: Solution, assignment: Assignment): Observable<Solution>{
+    console.log("WEWEWE")
+    const formData = new FormData();
+    formData.append('imageFile', solution.content);
+    solution.content = null;
+    return this.http
+      .post<Solution>(`/api/API/solutions/${assignment.id}/`, solution)
+      .pipe(
+        mergeMap(
+          (assignment): Observable<Solution> => {
+            return this.http.put<Solution>(
+              `/api/API/solutions/${assignment.id}`,
+              formData
+            );
+          }
+        )
+      );
+  }
+
+  addReview(solution:Solution, assignment: Assignment): Observable<Solution>{
+    const formData = new FormData();
+    formData.append('imageFile', solution.content);
+    solution.content = null;
+    return this.http
+      .post<Solution>(`/api/API/solutions/${assignment.id}/${solution.student.serial}`, solution)
+      .pipe(
+        mergeMap(
+          (assignment): Observable<Solution> => {
+            return this.http.put<Solution>(
+              `/api/API/solutions/${assignment.id}`,
+              formData
+            );
+          }
         )
       );
   }

@@ -17,6 +17,7 @@ import { MatListModule } from '@angular/material/list';
 import { ContentDialogComponent } from './content-dialog/content-dialog.component';
 import { AssignmentsTableComponent } from './assignments-table/assignments-table.component';
 import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
+import { SolutionsTableComponent } from './solutions-table/solutions-table.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { ProfileDialogComponent } from './profile-dialog/profile-dialog.componen
     VmsTableComponent,
     AssignmentsTableComponent,
     ProfileDialogComponent,
-    ContentDialogComponent
+    ContentDialogComponent,
+    SolutionsTableComponent
   ],
   imports: [
     CommonModule,
@@ -46,7 +48,8 @@ import { ProfileDialogComponent } from './profile-dialog/profile-dialog.componen
     VmsTableComponent,
     AssignmentsTableComponent,
     ProfileDialogComponent,
-    ContentDialogComponent
+    ContentDialogComponent,
+    SolutionsTableComponent
   ]
 })
 export class SharedModule { }

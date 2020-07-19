@@ -1,0 +1,28 @@
+<mat-sidenav-container autosize>
+    <mat-sidenav mode="side" position="start" opened>
+      <h2>Assignment</h2>
+      <app-assignments-table
+        [assignments]="assignments$"
+        (assignmentSelected)="assignmentSelected($event)"
+      >
+      </app-assignments-table>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <h2>Solution</h2>
+      <div class="mat-elevation-z1" *ngIf="isValid">
+        <h4>
+          Add your solution
+        </h4>
+        <input #solutionInput type="file" (change)="onSolutionSelected($event)"/>&nbsp;&nbsp;&nbsp;
+        <br/>
+        <button mat-button (click)="addSolution()">
+          Add
+        </button>
+      </div>
+      <br/>
+      <app-solutions-table
+      [solutions]="history$"
+      ></app-solutions-table>
+    </mat-sidenav-content>
+  </mat-sidenav-container>

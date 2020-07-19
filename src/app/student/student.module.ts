@@ -15,11 +15,16 @@ import { MatSliderModule } from '@angular/material/slider';
 import { SharedModule } from '../shared/shared.module';
 import { StudentVmsContComponent } from './vms/student-vms-cont.component';
 import { StudentVmsComponent } from './vms/student-vms.component';
+import { StudentAssignmentContComponent } from './assignments/student-assignment-cont.component';
+import { StudentAssignmentComponent } from './assignments/student-assignment.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
     StudentVmsContComponent,
-    StudentVmsComponent
+    StudentVmsComponent,
+    StudentAssignmentContComponent,
+    StudentAssignmentComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +40,8 @@ import { StudentVmsComponent } from './vms/student-vms.component';
     MatStepperModule,
     MatSelectModule,
     MatInputModule,
-    MatSliderModule
+    MatSliderModule,
+    MatSidenavModule
   ]
 })
 export class StudentModule { }

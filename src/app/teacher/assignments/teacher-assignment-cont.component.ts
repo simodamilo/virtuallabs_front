@@ -3,13 +3,10 @@ import {
   AssignmentService,
   Assignment,
   Solution,
-  SolutionService,
-  StudentService,
-  Student,
+  SolutionService
 } from '../../core';
 import { ActivatedRoute } from '@angular/router';
-import { of, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-teacher-assignment-cont',
@@ -19,14 +16,12 @@ import { of, Observable } from 'rxjs';
 export class TeacherAssignmentContComponent implements OnInit {
   assignments$: Observable<Assignment[]>;
   solutions$: Observable<Solution[]>;
-  enrolledStudents$: Observable<Student[]>;
-  currentAssignment: Assignment;
+  history$: Observable<Solution[]>;
   courseName: string;
 
   constructor(
     private assignmentService: AssignmentService,
     private solutionService: SolutionService,
-    private studentService: StudentService,
     private route: ActivatedRoute
   ) {}
 
@@ -34,9 +29,6 @@ export class TeacherAssignmentContComponent implements OnInit {
     this.route.params.subscribe((url) => {
       this.courseName = url['courseName'];
       this.assignments$ = this.assignmentService.getAssignments(
-        url['courseName']
-      );
-      this.enrolledStudents$ = this.studentService.getEnrolled(
         url['courseName']
       );
     });
@@ -53,14 +45,26 @@ export class TeacherAssignmentContComponent implements OnInit {
       );
   }
 
-  selectedEmitter(assignment: Assignment) {
-    if (this.currentAssignment == null || assignment.id !== this.currentAssignment.id) {
-      this.solutions$ = this.solutionService.getSolutions(assignment.id);
-      this.currentAssignment = assignment;
-    }
-    else{
-      this.solutions$ = of<Solution[]>([]);
-      this.currentAssignment = null;
-    }
+  addReview(event: { solution: Solution; assignment: Assignment; }) {
+    console.log(event.solution)
+    this.solutionService
+      .addReview(event.solution, event.assignment)
+      .subscribe(
+        (item) =>
+          (this.solutions$ = this.solutionService.getSolutions(
+            event.assignment.id
+          ))
+      );
+  }
+
+  selectedAssignment(assignment: Assignment) {
+    this.solutions$ = this.solutionService.getSolutions(assignment.id);
+  }
+
+  loadHistory(event: { solution: Solution; assignment: Assignment; }) {
+    this.history$ = this.solutionService.getSolutionHistory(
+      event.solution.student.serial,
+      event.assignment
+    );
   }
 }

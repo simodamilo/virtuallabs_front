@@ -1,7 +1,10 @@
 <app-teacher-assignment
   [assignments]="assignments$ | async"
   [solutions]="solutions$ | async"
+  [history]="history$ | async"
   (addAssignment)="addAssignment($event)"
-  (selectedEmitter)="selectedEmitter($event)"
+  (selectedEmitter)="selectedAssignment($event)"
+  (historyEmitter)="loadHistory($event)"
+  (addReview)="addReview($event)"
 >
 </app-teacher-assignment>

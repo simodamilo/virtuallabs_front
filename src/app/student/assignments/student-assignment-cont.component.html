@@ -1,0 +1,8 @@
+<app-student-assignment
+  [assignments]="assignments$ | async"
+  [history]="solutions$ | async"
+  (selectedEmitter)="selectedAssignment($event)"
+  (addSolution)="addSolution($event)"
+
+>
+</app-student-assignment>

@@ -3,5 +3,5 @@ export interface Assignment {
     name:string;
     releaseDate: Date;
     deadline: Date;
-    content?: any;
+    content?: File;
 }

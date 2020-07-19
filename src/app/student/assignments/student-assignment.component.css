@@ -1,21 +1,27 @@
 mat-sidenav-container {
   height:100vh;
+  
 }
 
 mat-sidenav {
+  margin-right: 40px;
   padding: 20px;
   background: none;
 }
 
 mat-sidenav-content {
   padding: 20px;
+
 }
 
 table {
   width: 100%;
 }
 
+.class{
+  margin: 20px;
+}
+
 mat-form-field {
   font-size: 16;
 }
-
