@@ -1,11 +1,19 @@
 <div class="container">
 
+    <h2>Virtual Machine Model</h2>
+    <div class="mat-elevation-z1 insert-vm" *ngIf="showModelView">
+        <h3>The Virtual Machine model "{{_modelVm.name}}" is available, the {{_modelVm.type}} type is setted.</h3>
+    </div>
+
+    <br>
     <h2>Virtual Machines</h2>
-    <div class="fabButton">
-        <button mat-mini-fab color="primary" aria-label="Add a new Virtual Machine" (click)="openStepper()">
+    <div class="fabButton" *ngIf="showAddButton && showModelView">
+        <button mat-mini-fab color="primary" aria-label="Add a new Virtual Machine" (click)="addOpenStepper()">
             <mat-icon>add</mat-icon>
         </button>
     </div>
+    <br>
+    <p class="errorMsg">{{_errorMsg}}</p>
     
     <!-- It is used to add or modify a Virtual Machine -->
     <div class="mat-elevation-z1 insert-vm" *ngIf="showAddDiv">
@@ -56,7 +64,7 @@
                 <h3>Add other owners to the virtual machine</h3>
                 <mat-form-field class="name">
                     <mat-label>Select</mat-label>
-                    <mat-select (selectionChange)="addStudent($event)">
+                    <mat-select #matSelect (selectionChange)="addStudent($event)">
                         <mat-option *ngFor="let option of _teamStudents" [value]="option">{{option.name + " " + option.surname}}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -83,7 +91,7 @@
                 <div *ngFor="let option of vm.owners" value="option">
                     <p>{{option.name + " " + option.surname}}</p>
                 </div>
-                <p class="error">{{_errorMsg}}</p>
+                <!-- <p class="error">{{_errorMsg}}</p> -->
                 <div class="stepperButton">
                     <button mat-button matStepperPrevious>Back</button>
                     <button mat-button (click)="confirmVm()">Confirm</button>
@@ -92,10 +100,10 @@
           </mat-horizontal-stepper>
     </div>
 
-    <app-vms-table 
+    <app-vms-table *ngIf="showAddButton && showModelView"
                 [vms]="_vms"
                 (onOff)="onOffVm($event)"
-                (modify)="modifyVm($event)"
+                (modify)="modifyOpenStepper($event)"
                 (delete)="deleteVm($event)">
     </app-vms-table>
   </div>

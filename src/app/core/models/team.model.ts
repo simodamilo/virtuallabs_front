@@ -1,3 +1,5 @@
+import { Student } from '.';
+
 export interface Team {
     id?: number;
     name: string;
@@ -8,4 +10,5 @@ export interface Team {
     ram?: number;
     activeInstance?: number;
     maxInstance?: number;
+    members?: Student[];
 }

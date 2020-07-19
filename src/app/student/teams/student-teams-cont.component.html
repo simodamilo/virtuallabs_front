@@ -1,0 +1,6 @@
+<app-student-teams
+        [team]="team$ | async"
+        [availableStudents]="availableStudents$ | async"
+        [errorMsg]="errorMsg"
+        (proposeTeam)="proposeTeam($event)">
+</app-student-teams>

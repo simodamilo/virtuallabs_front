@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
 import { SharedModule } from '../shared/shared.module';
 import { StudentVmsContComponent } from './vms/student-vms-cont.component';
@@ -18,13 +18,18 @@ import { StudentVmsComponent } from './vms/student-vms.component';
 import { StudentAssignmentContComponent } from './assignments/student-assignment-cont.component';
 import { StudentAssignmentComponent } from './assignments/student-assignment.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { StudentTeamsContComponent } from './teams/student-teams-cont.component';
+import { StudentTeamsComponent } from './teams/student-teams.component';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
     StudentVmsContComponent,
     StudentVmsComponent,
     StudentAssignmentContComponent,
-    StudentAssignmentComponent
+    StudentAssignmentComponent,
+    StudentTeamsContComponent,
+    StudentTeamsComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +46,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatSelectModule,
     MatInputModule,
     MatSliderModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatListModule,
+    ReactiveFormsModule
   ]
 })
 export class StudentModule { }

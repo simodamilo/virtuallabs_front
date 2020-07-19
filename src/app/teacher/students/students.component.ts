@@ -21,41 +21,44 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrls: ['./students.component.css'],
 })
 export class StudentsComponent implements OnInit, AfterViewInit {
-  dataSource: MatTableDataSource<Student>;
+  /* dataSource: MatTableDataSource<Student>;
   colsToDisplay = ['select', 'id', 'name', 'surname', 'group'];
-  selection: SelectionModel<Student>;
+  selection: SelectionModel<Student>; */
+  _enrolledStudents: Student[];
+  toRemove: Student[] = [];
   selectedAddStudent: Student;
   filteredOptions: Student[];
   private _allStudents: Student[];
 
   constructor() {
-    this.dataSource = new MatTableDataSource();
+    //this.dataSource = new MatTableDataSource();
   }
 
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  /* @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator; */
   @Input('allStudents') set allStudents(student: Student[]) {
     this._allStudents = student;
     this.filteredOptions = student;
   }
   @Input('enrolledStudents') set enrolledStudents(students: Student[]) {
     if (students != null) {
-      this.dataSource.data = [...students];
+      //this.dataSource.data = [...students];
+      this._enrolledStudents = [...students];
     }
   }
   @Output('enrollStudent') addEmitter = new EventEmitter<Student[]>();
   @Output('removeStudent') removeEmitter = new EventEmitter<Student[]>();
 
   ngOnInit() {
-    this.selection = new SelectionModel<Student>(true, []);
+    //this.selection = new SelectionModel<Student>(true, []);
   }
 
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    //this.dataSource.sort = this.sort;
+    //this.dataSource.paginator = this.paginator;
   }
 
-  toggleRowsTable(event: MatCheckboxChange, row: Student) {
+  /* toggleRowsTable(event: MatCheckboxChange, row: Student) {
     this.selection.toggle(row);
   }
 
@@ -69,11 +72,14 @@ export class StudentsComponent implements OnInit, AfterViewInit {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
+  } */
+
+  changeSelection(event: Student[]) {
+    this.toRemove = [...event];
   }
 
   removeStudent() {
-    this.removeEmitter.emit(this.selection.selected);
-    this.selection.clear();
+    this.removeEmitter.emit(this.toRemove);
   }
 
   displayFn(s: Student): string {
@@ -97,7 +103,7 @@ export class StudentsComponent implements OnInit, AfterViewInit {
   enrollStudent() {
     if (
       this.selectedAddStudent != null &&
-      this.dataSource.data.filter((s) => s.serial == this.selectedAddStudent.serial)
+      this._enrolledStudents.filter((s) => s.serial == this.selectedAddStudent.serial)
         .length == 0
     ) {
       this.addEmitter.emit([this.selectedAddStudent]);

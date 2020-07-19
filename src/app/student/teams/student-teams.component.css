@@ -1,0 +1,44 @@
+h2 {
+    margin: 20px;
+}
+
+mat-list-item-content {
+    width: 500px !important;
+}
+
+table {
+    width: 80%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.nameColumn {
+    width: 33%;
+}
+
+.surnameColumn {
+    width: 33%;
+}
+
+.serialColumn {
+    width: 33%;
+}
+
+mat-form-field {
+    margin-bottom: 30px;
+    width: 20%;
+    margin-left: 5%;
+}
+
+button {
+    margin-bottom: 30px;
+    margin-left: 5%;
+}
+
+.errorMsg {
+    margin-top: 0px;
+    margin-left: 20px;
+    margin-bottom: 30px;
+    font-size: large;
+    color: red;
+}

@@ -1,0 +1,57 @@
+<div *ngIf="showTeamInfo">
+    <h2>Your team is: {{_team.name}}</h2>
+    <!-- <mat-list>
+        <mat-list-item *ngFor="let student of _team.members">
+          {{student.name}} {{student.surname}}
+        </mat-list-item>
+      </mat-list>  -->
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef class="nameColumn"> Name </th>
+            <td mat-cell *matCellDef="let student"> {{student.name}} </td>
+        </ng-container>
+      
+        <!-- Surname Column -->
+        <ng-container matColumnDef="surname">
+            <th mat-header-cell *matHeaderCellDef class="surnameColumn"> Surname </th>
+            <td mat-cell *matCellDef="let student"> {{student.surname}} </td>
+        </ng-container>
+      
+        <!-- Serial Column -->
+        <ng-container matColumnDef="serial">
+            <th mat-header-cell *matHeaderCellDef class="serialColumn"> Serial </th>
+            <td mat-cell *matCellDef="let student"> {{student.serial}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>
+
+<div *ngIf="showTeamProposals">
+    <h2>Propose a team</h2>
+    <p class="errorMsg">{{_errorMsg}}</p>
+    <form [formGroup]="proposeTeamForm">
+        <mat-form-field>
+            <mat-label>Team name</mat-label>
+            <input matInput formControlName="name" type="text" placeholder="Name" #name required>
+            <mat-error *ngIf="proposeTeamForm.get('name').invalid">{{getErrorNameMessage()}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Timeout(hours)</mat-label>
+            <input matInput formControlName="timeout" type="number" placeholder="Timeout(hours)" #timeout required>
+            <mat-error *ngIf="proposeTeamForm.get('timeout').invalid">{{getErrorTimeoutMessage()}}</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="proposeTeam(name.value, timeout.value)">Propose Team</button>
+    </form>
+
+    <app-students-table
+      [students]="_availableStudents"
+      (selectedStudents)="changeSelection($event)">
+    </app-students-table>
+
+    <h2>Your requests</h2>
+</div>

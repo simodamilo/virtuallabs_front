@@ -9,8 +9,6 @@ export class AuthGuard implements CanActivate {
   constructor(public auth: AuthService, public router: Router) {}
 
   canActivate(next: ActivatedRouteSnapshot,state: RouterStateSnapshot): boolean {
-    console.log(next.data.expectedRole+ " " + localStorage.getItem("role"))
-
     if(!this.auth.isLoggedIn())
       return false;
     if(next.data.expectedRole !== localStorage.getItem("role"))
