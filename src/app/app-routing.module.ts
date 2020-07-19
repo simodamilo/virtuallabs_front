@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './auth/login.component';
 import { AuthGuard } from './auth/auth.guard';
+import { StartComponent } from './start.component';
+import { RegistrationComponent } from './auth/registration.component';
 
 const routes: Routes = [
   { path: '',   redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: LoginComponent},
+  { path: 'home', component: RegistrationComponent},
   { path: 'teacher', 
     loadChildren: './teacher/teacher.module#TeacherModule', 
     canActivate: [AuthGuard], 
@@ -20,6 +21,7 @@ const routes: Routes = [
       expectedRole: 'student'
     }
   },
+  {path: 'empty', component: StartComponent}
 ];
 
 @NgModule({

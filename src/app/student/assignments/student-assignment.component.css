@@ -4,7 +4,6 @@ mat-sidenav-container {
 }
 
 mat-sidenav {
-  margin-right: 40px;
   padding: 20px;
   background: none;
 }

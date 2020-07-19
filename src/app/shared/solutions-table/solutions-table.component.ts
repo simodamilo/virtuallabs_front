@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ContentDialogComponent } from '../content-dialog/content-dialog.component';
 import { Solution } from 'src/app/core';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
@@ -13,9 +12,10 @@ import * as moment from 'moment';
   styleUrls: ['./solutions-table.component.css']
 })
 export class SolutionsTableComponent implements OnInit {
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
   solutionsDataSource = new MatTableDataSource<Solution>();
-  solutionsCols = ['state', 'deliveryTs', 'modifiable', 'actions'];
+  solutionsCols = ['state', 'deliveryTs', 'grade', 'actions'];
+
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   
   @Input('solutions') set solutions(solutions: Solution[]) {
     if (solutions != null) 
@@ -25,6 +25,7 @@ export class SolutionsTableComponent implements OnInit {
   constructor(public dialog: MatDialog) {}
 
   ngOnInit(): void {
+    this.solutionsDataSource.sort = this.sort;
   }
 
   viewContent(solution: Solution) {
@@ -38,6 +39,4 @@ export class SolutionsTableComponent implements OnInit {
   formatDate(date: Date) {
     return moment(date).format('DD-MM-YYYY, hh:mm:ss');
   }
-
-
 }

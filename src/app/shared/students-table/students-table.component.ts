@@ -23,7 +23,7 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
 
   @Input()
   set students(students: Student[]) {
-    if(students !== null) {
+    if(students != null) {
       this.dataSource.data = [...students]; // da errore ma non capisco perchè
       this.selection.clear();
     }

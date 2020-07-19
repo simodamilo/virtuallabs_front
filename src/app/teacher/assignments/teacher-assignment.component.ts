@@ -24,7 +24,7 @@ import { empty } from 'rxjs';
 })
 export class TeacherAssignmentComponent implements OnInit, AfterViewInit {
   solutionsDataSource = new MatTableDataSource<Solution>();
-  solutionsCols = ['student', 'state', 'deliveryTs', 'modifiable', 'actions'];
+  solutionsCols = ['student', 'state', 'deliveryTs', 'grade', 'actions'];
   state = ['NULL','READ','DELIVERED','REVIEWED'];
   assignments$: Assignment[];
   history$: Solution[];

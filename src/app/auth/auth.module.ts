@@ -8,11 +8,15 @@ import { LoginComponent } from './login.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
+import { LoginDialogComponent } from './login-dialog.component';
+import { RegistrationComponent } from './registration.component';
 
 @NgModule({
   declarations: [
     RegistrationDialogComponent,
-    LoginComponent
+    LoginComponent,
+    LoginDialogComponent,
+    RegistrationComponent
   ],
   imports: [
     CommonModule,

@@ -38,7 +38,7 @@
       <!-- Group Column -->
       <ng-container matColumnDef="group" *ngIf="!isStudent">
         <th mat-header-cell *matHeaderCellDef mat-sort-header class="groupColumn">Group</th>
-        <td mat-cell *matCellDef="let s">{{ s.group ? s.group.name: "" }}</td>
+        <td mat-cell *matCellDef="let s">{{ s.group ? s.group.name: "-" }}</td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="colsToDisplay"></tr>

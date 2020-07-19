@@ -16,6 +16,12 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  startUp(){
+    console.log(localStorage.getItem("role"))
+    if(localStorage.getItem("jwt")) this.isAuthenticatedSubject.next(true)
+    else this.isAuthenticatedSubject.next(false)
+  }
+
   login(user: User) {
     return this.http.post<any>(`/api/authenticate`, user).pipe(
       tap(res => {

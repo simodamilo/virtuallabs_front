@@ -61,14 +61,6 @@ export class StudentAssignmentComponent implements OnInit {
     this.solutionsDataSource.paginator = this.solutionPaginator;
   }
 
-  viewContent(assignment: Assignment) {
-    const dialogRef = this.dialog.open(ContentDialogComponent, {
-      width: '70%',
-      height: '80%',
-      panelClass: 'custom-dialog-panel',
-    });
-  }
-
   formatDate(date: Date) {
     return moment(date).format('yyyy-MM-DD');
   }
