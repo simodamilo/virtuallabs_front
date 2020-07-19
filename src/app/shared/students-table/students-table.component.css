@@ -1,0 +1,30 @@
+table { 
+    width: 100%;
+}
+
+.tableDiv {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 40px;
+}
+
+.checkboxColumn {
+    width: 20%;
+}
+
+.nameColumn {
+    width: 20%;
+}
+
+.surnameColumn {
+    width: 20%;
+}
+
+.serialColumn {
+    width: 20%;
+}
+
+.groupColumn {
+    width: 20%;
+}

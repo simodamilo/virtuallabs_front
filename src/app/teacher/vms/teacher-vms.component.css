@@ -1,0 +1,84 @@
+table {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+mat-paginator {
+    margin-bottom: 30px;
+}
+
+.nameColumn {
+    width: 40%;
+}
+
+.studentColumn {
+    width: 40%;
+}
+
+.actionsColumn {
+    width: 20%;
+}
+
+.modify-team {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 20px;
+}
+
+.resources-team {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    background-color: white;
+}
+
+.errorMsg {
+    margin-top: 0px;
+    margin-left: 20px;
+    margin-bottom: 30px;
+    font-size: large;
+    color: red;
+}
+
+mat-slider {
+    margin-right: 16px;
+    margin-left: 16px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    padding-left: 0px;
+    width: 40%;
+    max-width: 250px;
+}
+
+mat-form-field {
+    max-width: 80px;
+    margin-right: 16px;
+    margin-left: 16px;
+}
+
+.stepperButton {
+    margin-top: 16px;
+}
+
+.studentHeader {
+    padding-left: 16px;
+}
+
+h2 {
+    margin: 20px;
+}
+
+.mat-row.hovered {
+  background: #eee;
+}
+
+.mat-row.highlighted {
+  background: #999;
+}
+
+.res {
+    padding: 12px;
+    margin: 0px;
+}

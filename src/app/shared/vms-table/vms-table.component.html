@@ -8,8 +8,8 @@
     </ng-container>
   
     <!-- Student Column -->
-    <ng-container matColumnDef="student" class="studentColumn">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="studentHeader"> Student </th>
+    <ng-container matColumnDef="student">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="studentHeader studentColumn"> Student </th>
       <td mat-cell *matCellDef="let vm">
         <mat-list>
           <mat-list-item *ngFor="let owner of vm.owners">
@@ -20,23 +20,35 @@
     </ng-container>
   
     <!-- State(on/off) Column -->
-    <ng-container matColumnDef="state" class="stateColumn">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> State </th>
+    <ng-container matColumnDef="state">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="stateColumn"> State </th>
       <td mat-cell *matCellDef="let vm"> {{vm.active ? "On" : "Off"}} </td>
     </ng-container>
 
     <!-- Action -->
-    <ng-container matColumnDef="actions" class="actionsColumn">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="actionsColumn"></th>
       <td mat-cell *matCellDef="let vm" class="actionsColumn">
-          <button mat-icon-button color="primary" aria-label="Turn the virtual machine on or off" (click)="onOffVm(vm.id)">
-              <mat-icon>power_settings_new</mat-icon>
+          <button mat-icon-button color="primary" 
+                                  aria-label="Turn the virtual machine on or off" 
+                                  (click)="onOffVm(vm.id)"
+                                  [disabled]="!isOwner(vm) && isStudent">
+              <mat-icon [matTooltip]="(!isOwner(vm) && isStudent) ? 'You are not the owner' : null">power_settings_new</mat-icon>
           </button>
-          <button mat-icon-button color="primary" aria-label="Modify the virtual machine" (click)="modifyVm(vm)" [disabled]="vm.active">
-              <mat-icon>edit</mat-icon>
+          <button mat-icon-button *ngIf="isStudent" 
+                                  color="primary" 
+                                  aria-label="Modify the virtual machine" 
+                                  (click)="modifyVm(vm)" 
+                                  [disabled]="vm.active || !isOwner(vm)"
+                                  [matTooltip]="!isOwner(vm) ? 'You are not the owner' : null">
+              <mat-icon [matTooltip]="!isOwner(vm) ? 'You are not the owner' : null">edit</mat-icon>
           </button>
-          <button mat-icon-button color="primary" aria-label="Delete the virtual machine" (click)="deleteVm(vm.id)" [disabled]="vm.active">
-              <mat-icon>delete</mat-icon>
+          <button mat-icon-button *ngIf="isStudent" 
+                                  color="primary"
+                                  aria-label="Delete the virtual machine" 
+                                  (click)="deleteVm(vm.id)" 
+                                  [disabled]="vm.active || !isOwner(vm)">
+              <mat-icon [matTooltip]="!isOwner(vm) ? 'You are not the owner' : null">delete</mat-icon>
           </button>
       </td>
     </ng-container>

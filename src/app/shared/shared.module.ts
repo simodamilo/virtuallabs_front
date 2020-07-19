@@ -17,6 +17,9 @@ import { MatListModule } from '@angular/material/list';
 import { ContentDialogComponent } from './content-dialog/content-dialog.component';
 import { AssignmentsTableComponent } from './assignments-table/assignments-table.component';
 import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { StudentsTableComponent } from './students-table/students-table.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -24,7 +27,8 @@ import { ProfileDialogComponent } from './profile-dialog/profile-dialog.componen
     VmsTableComponent,
     AssignmentsTableComponent,
     ProfileDialogComponent,
-    ContentDialogComponent
+    ContentDialogComponent,
+    StudentsTableComponent
   ],
   imports: [
     CommonModule,
@@ -40,13 +44,16 @@ import { ProfileDialogComponent } from './profile-dialog/profile-dialog.componen
     MatInputModule,
     MatSliderModule,
     MatDialogModule,
-    MatListModule
+    MatListModule,
+    MatTooltipModule,
+    MatCheckboxModule
   ],
   exports: [
     VmsTableComponent,
     AssignmentsTableComponent,
     ProfileDialogComponent,
-    ContentDialogComponent
+    ContentDialogComponent,
+    StudentsTableComponent
   ]
 })
 export class SharedModule { }

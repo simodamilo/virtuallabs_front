@@ -11,7 +11,8 @@ p {
 }
 
 mat-sidenav-container {
-    height: 100%;
+    height: auto;
+    min-height: 100%;
 }
 
 .container {

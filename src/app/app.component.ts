@@ -27,9 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private courseService: CourseService, public dialog: MatDialog, private authService: AuthService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(){
-    console.log("AAA")
     this.authService.isAuthenticated.subscribe( authenticated => {
-      console.log("Gianmarco sei bellissimo")
       this.logged = authenticated;
       if(authenticated === true){
         this.getCourses();

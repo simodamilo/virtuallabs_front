@@ -22,8 +22,11 @@ export class StudentService {
   }
 
   getEnrolled(courseName: string):Observable<Student[]> {
-    console.log(courseName)
     return this.http.get<Student[]>(`/api/API/students/${courseName}/enrolled`);
+  }
+
+  getAvailable(courseName: string): Observable<Student[]> {
+    return this.http.get<Student[]>(`/api/API/students/${courseName}/available`);
   }
 
   enroll(students: Student[], courseName: string): Observable<Student[]> {    
