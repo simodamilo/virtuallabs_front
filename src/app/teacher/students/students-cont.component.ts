@@ -26,18 +26,24 @@ export class StudentsContComponent implements OnInit {
      this.studentService
       .enroll(students, this.courseName)
       .subscribe(
-        (item) =>
-          (this.enrolledStudents = this.studentService.getEnrolled(this.courseName))
+        () => this.enrolledStudents = this.studentService.getEnrolled(this.courseName)
       );
-
   }
 
-   removeStudent(students: Student[]) {
+  enrollCsv(file: File) {
+    this.studentService
+     .enrollCSV(file, this.courseName)
+     .subscribe(
+       () => this.enrolledStudents = this.studentService.getEnrolled(this.courseName)
+     );
+  }
+  
+
+  removeStudent(students: Student[]) {
     this.studentService
       .remove(students, this.courseName)
       .subscribe(
-        (item) =>
-          (this.enrolledStudents = this.studentService.getEnrolled(this.courseName))
+        () => this.enrolledStudents = this.studentService.getEnrolled(this.courseName)
       );
   } 
 }

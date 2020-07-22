@@ -29,14 +29,17 @@ export class SolutionsTableComponent implements OnInit {
   }
 
   viewContent(solution: Solution) {
-    const dialogRef = this.dialog.open(ContentDialogComponent, {
+    this.dialog.open(ContentDialogComponent, {
       width: '70%',
       height: '80%',
       panelClass: 'custom-dialog-panel',
+      data:{
+        solution: solution
+      }
     });
   }
 
   formatDate(date: Date) {
-    return moment(date).format('DD-MM-YYYY, hh:mm:ss');
+    return moment(date).format('DD-MM-YYYY, HH:mm:ss');
   }
 }

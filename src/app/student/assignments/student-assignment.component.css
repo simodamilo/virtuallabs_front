@@ -24,3 +24,19 @@ table {
 mat-form-field {
   font-size: 16;
 }
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+  z-index: -1;
+}
+
+.inputfile + label {
+  color: white;
+  background-color: #3f51b5;
+  display: inline-flex;
+  cursor: pointer; 
+}

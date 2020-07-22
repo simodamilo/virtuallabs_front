@@ -19,12 +19,14 @@
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <input type="file"/>
   <button mat-button (click)="enrollStudent(); search.value = ''">Add</button
   ><br />
   <button mat-button (click)="removeStudent()">Delete Selected</button>
   
   <app-students-table
       [students]="_enrolledStudents"
-      (selectedStudentsEmitter)="changeSelection($event)">
+      (selectedStudents)="changeSelection($event)">
   </app-students-table>
 </div>

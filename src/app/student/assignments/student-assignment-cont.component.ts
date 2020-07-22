@@ -12,7 +12,6 @@ export class StudentAssignmentContComponent implements OnInit {
 
   assignments$: Observable<Assignment[]>;
   solutions$: Observable<Solution[]>;
-  courseName: string;
 
   constructor(
     private assignmentService: AssignmentService,
@@ -21,12 +20,8 @@ export class StudentAssignmentContComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((url) => {
-      this.courseName = url['courseName'];
-      this.assignments$ = this.assignmentService.getAssignments(
-        url['courseName']
-      );
-    });
+    this.route.params.subscribe(url =>
+      this.assignments$ = this.assignmentService.getAssignments(url['courseName']));
   }
 
   selectedAssignment(assignment: Assignment) {
@@ -34,14 +29,12 @@ export class StudentAssignmentContComponent implements OnInit {
   }
 
   addSolution(event:{solution:Solution, assignment:Assignment}){
-    this.solutionService
-      .addSolution(event.solution, event.assignment)
-      .subscribe(
-        (item) =>
-          (this.solutions$ = this.solutionService.getSolutionHistory(
-            localStorage.getItem("email").split("@")[0], event.assignment
-          ))
-      );
+    event.solution.state == 1 
+    ? this.solutionService
+        .addReaded(event.solution, event.assignment, localStorage.getItem("email").split("@")[0],)
+        .subscribe(() => this.solutions$ = this.solutionService.getSolutionHistory(localStorage.getItem("email").split("@")[0], event.assignment)) 
+    : this.solutionService
+        .addDelivered(event.solution, event.assignment)
+        .subscribe(() => this.solutions$ = this.solutionService.getSolutionHistory(localStorage.getItem("email").split("@")[0], event.assignment))
   }
-
 }

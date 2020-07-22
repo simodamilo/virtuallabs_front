@@ -34,19 +34,29 @@ export class StudentService {
       mergeMap(student => this.http.post<Student>(`/api/API/students/${courseName}/enroll`, {serial:student.serial})),
       toArray()
     );
-  } 
+  }
+
+  enrollCSV(file:File, courseName: string): Observable<Student[]>{
+    const formData = new FormData()
+    formData.append("file", file)
+    return this.http.post<Student[]>(`/api/API/students/${courseName}/enrollCsv`, formData)
+  }
 
   remove(students: Student[], courseName: string){  
-    return from(students).pipe( //TODO sistemare delete parametro
-      //mergeMap(student => this.http.request('delete', `/api/API/students/${courseName}/deleteStudent`, { body: {student :student.serial} })),
-      //mergeMap(student => this.http.delete<Student>(`/api/API/students/${courseName}/deleteStudent`, {serial: student.serial})),
+    return from(students).pipe(
+      mergeMap(student => this.http.delete<Student>(`/api/API/students/${courseName}/deleteStudent/${student.serial}`)),
       toArray()
     );
   } 
 
-  uploadImage(event: File): Observable<Student>{
+  getImage(): Observable<Blob>{
+    const serial = localStorage.getItem("email").split("@")[0];
+    return this.http.get<Blob>(`/api/API/students/${serial}`, { observe: 'body', responseType: 'blob' as 'json' })
+  }
+
+  uploadImage(file: File): Observable<Student>{
     const formData = new FormData()
-    formData.append("imageFile", event)
+    formData.append("imageFile", file)
     return this.http.put<Student>("/api/API/students/uploadImage", formData)
   }
 }

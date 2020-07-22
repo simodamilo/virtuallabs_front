@@ -1,9 +1,7 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import {
   MatSidenav,
-  throwMatDuplicatedDrawerError,
 } from '@angular/material/sidenav';
-import { RegistrationDialogComponent } from './auth/registration-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,6 +17,8 @@ import { LoginDialogComponent } from './auth/login-dialog.component';
 })
 export class AppComponent implements OnInit, OnDestroy {
   @ViewChild(MatSidenav) sideNav: MatSidenav;
+  @ViewChild("rla") routerLinkActive: any;
+
   title = 'VirtualLabs';
 
   logged: boolean;
@@ -54,9 +54,9 @@ export class AppComponent implements OnInit, OnDestroy {
       if (this.courses.length == 0) {
         this.router.navigate(['empty']);
       } else {
-        console.log(localStorage.getItem("role"))
         this.router.navigate([localStorage.getItem("role"), 'courses', this.courses[0].name, this.tabs[0]]);
         this.selectedCourse = this.courses[0].name;
+        //this.routerLinkActive.isActive;
         this.sideNav.toggle();
       }
     });
@@ -84,12 +84,9 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-
   setCourse(courseName: string) {
     this.selectedCourse = courseName;
+    this.routerLinkActive.isActive;
   }
 
   openProfileDialog() {
@@ -98,5 +95,9 @@ export class AppComponent implements OnInit, OnDestroy {
       position: { top: '64px', right: '10px' },
       backdropClass: 'backdropBackground',
     });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

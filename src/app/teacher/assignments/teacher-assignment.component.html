@@ -1,39 +1,38 @@
 <mat-sidenav-container>
   <mat-sidenav mode="side" position="start" opened>
     <h2>Assignment</h2>
-    <mat-form-field style="width: 65%;">
-      <mat-label>Add assignment</mat-label>
-      <input
-        matInput
-        [(ngModel)]="newAssignment.name"
-        placeholder="name" /></mat-form-field
-    >&nbsp;&nbsp;&nbsp;
-    <mat-form-field style="width: 30%;">
-      <mat-label>Deadline</mat-label>
-      <input
-        matInput
-        [(ngModel)]="newAssignment.deadline"
-        #date
-        [matDatepickerFilter]="myFilter"
-        [matDatepicker]="picker"
-      />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-    <br />
-    <input
-      #assignmentInput
-      type="file"
-      (change)="onAssingmentSelected($event)"
-    />
+    <form [formGroup]="assignmentForm">
+      <mat-form-field style="width: 65%;">
+        <mat-label>Add assignment</mat-label>
+        <input matInput
+          formControlName="name"
+          placeholder="Assignment name" 
+          required/>
+        <mat-error *ngIf="assignmentForm.get('name').invalid">{{getErrorNameMessage()}}</mat-error>
+      </mat-form-field>&nbsp;&nbsp;&nbsp;
+      <mat-form-field style="width: 30%;">
+        <mat-label>Deadline</mat-label>
+        <input matInput
+          formControlName="deadline"
+          placeholder="dd/mm/yyyy" 
+          [matDatepickerFilter]="myFilter"
+          [matDatepicker]="picker"
+          required/>
+        <mat-error *ngIf="assignmentForm.get('deadline').invalid">{{getErrorDeadlineMessage()}}</mat-error>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field><br/>
+      <input type="file"
+        formControlName="content"
+        (change)="addAssignmentContent($event)"
+        required/>
+    </form>
     <button mat-button (click)="addAssignment()">
       Add
-    </button>
-    <br />
+    </button><br/>
     <app-assignments-table
       [assignments]="assignments$"
-      (assignmentSelected)="assignmentSelected($event)"
-    >
+      (assignmentSelected)="assignmentSelected($event)">
     </app-assignments-table>
   </mat-sidenav>
 
@@ -48,7 +47,7 @@
       <input
         #solutionInput
         type="file"
-        (change)="onSolutionSelected($event)"
+        (change)="addSolutionContent($event)"
       />&nbsp;&nbsp;&nbsp;
       <mat-checkbox
         [checked]="modifiable"
@@ -107,7 +106,6 @@
             Delivered
           </th>
           <td mat-cell *matCellDef="let s">
-            
             {{ formatDate(s.deliveryTs) }}
           </td>
         </ng-container>

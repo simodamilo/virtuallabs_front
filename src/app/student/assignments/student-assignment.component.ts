@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   ViewChild,
   Output,
   Input,
@@ -9,25 +8,20 @@ import {
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
-import { Assignment, Solution, SolutionService } from 'src/app/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { ContentDialogComponent } from 'src/app/shared/content-dialog/content-dialog.component';
-import * as moment from 'moment';
+import { Assignment, Solution } from 'src/app/core';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-student-assignment',
   templateUrl: './student-assignment.component.html',
   styleUrls: ['./student-assignment.component.css'],
 })
-export class StudentAssignmentComponent implements OnInit {
-
-  solutionsDataSource = new MatTableDataSource<Solution>();
-  solutionsCols = ['student', 'state', 'deliveryTs', 'modifiable', 'actions'];
+export class StudentAssignmentComponent {
 
   assignments$: Assignment[];
   history$: Solution[];
+  solution = new FormControl('', Validators.required);
 
-  isValid: boolean = false;
   currentAssignment: Assignment;
   newSolution: Solution = {} as Solution;
 
@@ -36,12 +30,11 @@ export class StudentAssignmentComponent implements OnInit {
 
   @Input('assignments')
   set assignments(assignments: Assignment[]) {
-    if (assignments != null) 
-    this.assignments$ = assignments;
+    if (assignments != null) this.assignments$ = assignments;
   }
-  @Input('history') set history(history: Solution[]) {
-    if (history != null) 
-    this.history$ = history;
+  @Input('history')
+  set history(history: Solution[]) {
+    if (history != null && this.currentAssignment!= null) this.history$ = history;
   }
 
   @Output('selectedEmitter') selectedEmitter = new EventEmitter<Assignment>();
@@ -50,24 +43,11 @@ export class StudentAssignmentComponent implements OnInit {
     assignment: Assignment;
   }>();
 
-  constructor(public dialog: MatDialog) {}
-
-  ngOnInit(): void {
-
+  constructor(public dialog: MatDialog) {
   }
 
-  ngAfterViewInit() {
-    this.solutionsDataSource.sort = this.sort;
-    this.solutionsDataSource.paginator = this.solutionPaginator;
-  }
-
-  formatDate(date: Date) {
-    return moment(date).format('yyyy-MM-DD');
-  }
-
-
-  onSolutionSelected(event){
-    this.newSolution.content = event.target.files[0]
+  onSolutionSelected(event) {
+    this.newSolution.content = event.target.files[0];
   }
 
   assignmentSelected(assignment: Assignment) {
@@ -75,23 +55,40 @@ export class StudentAssignmentComponent implements OnInit {
       this.currentAssignment == null ||
       this.currentAssignment.id != assignment.id
     ) {
-      if(new Date(assignment.deadline).getTime() > new Date().getTime()){
-        this.isValid = true;
-      }
       this.selectedEmitter.emit(assignment);
       this.currentAssignment = assignment;
-    }
-    else{
-      this.isValid = false;
-      this.solutionsDataSource.data = [];
-      this.currentAssignment=null;
+    } else {
+      this.history$ =[];
+      this.currentAssignment = null;
     }
   }
 
-  addSolution(){
-    this.newSolution.deliveryTs = new Date();
-    this.newSolution.state = 2;
-    this.newSolution.modifiable= true;
-    this.solutionEmitter.emit({solution: this.newSolution, assignment: this.currentAssignment})
+  assignmentReaded(assignment: Assignment) {
+      this.newSolution.content = null;
+      this.newSolution.state = 1;
+
+      this.newSolution.deliveryTs = new Date();
+      this.newSolution.modifiable = true;
+      this.solutionEmitter.emit({ solution: this.newSolution, assignment: assignment});
+  
+  }
+
+  addSolution() {
+    if(this.solution.valid){
+      this.newSolution.state = 2;
+
+      this.newSolution.deliveryTs = new Date();
+      this.newSolution.modifiable = true;
+      this.solutionEmitter.emit({ solution: this.newSolution, assignment: this.currentAssignment});
+      this.solution.reset();
+    }
+  }
+
+  isSolutionDelivarable(){
+    if(this.currentAssignment != null && 
+      new Date(this.currentAssignment.deadline).getTime() > new Date().getTime())
+      return true;
+
+    return false;
   }
 }

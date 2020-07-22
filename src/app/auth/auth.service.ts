@@ -56,4 +56,6 @@ export class AuthService {
     return this.http.post<Registration>(`/api/register`, user);
   }
 
+  //TODO metodo che verifica scadenza token
+
 }

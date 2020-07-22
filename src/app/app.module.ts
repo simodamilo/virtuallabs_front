@@ -12,7 +12,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
-import { RegistrationDialogComponent } from './auth/registration-dialog.component';
 import { StudentModule } from './student/student.module';
 import { TeacherModule } from './teacher/teacher.module';
 import { MatSelectModule } from '@angular/material/select';
@@ -21,6 +20,7 @@ import { SharedModule } from './shared/shared.module';
 import { MatListModule } from '@angular/material/list';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { StartComponent } from './start.component';
+import { LoginDialogComponent } from './auth/login-dialog.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +49,6 @@ import { StartComponent } from './start.component';
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],
-  entryComponents: [RegistrationDialogComponent]
+  entryComponents: [LoginDialogComponent]
 })
 export class AppModule { }

@@ -97,7 +97,6 @@ export class RegistrationComponent {
 
 
   registration() {
-    console.log(String(this.registrationForm.get('email').value).split('@')[0]);
     if (this.registrationForm.status !== 'INVALID') {
       var registration: Registration = {
         name: this.registrationForm.get('name').value,

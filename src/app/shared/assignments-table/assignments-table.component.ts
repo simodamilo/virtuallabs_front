@@ -21,10 +21,14 @@ import { ContentDialogComponent } from '../content-dialog/content-dialog.compone
 })
 export class AssignmentsTableComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @Input('assignments') set assignments(assignments: Assignment[]) {
-    if (assignments != null) this.assignmentsDataSource.data = [...assignments];
+  @Input('assignments') 
+  set assignments(assignments: Assignment[]) {
+    if (assignments != null) 
+    this.assignmentsDataSource.data = [...assignments]
   }
   @Output('assignmentSelected') selectionEmitter = new EventEmitter<Assignment>();
+  @Output('assignmentReaded') readEmitter = new EventEmitter<Assignment>();
+
 
   assignmentsDataSource = new MatTableDataSource<Assignment>();
   assignmentCols = ['name', 'releaseDate', 'deadline', 'view'];
@@ -40,11 +44,16 @@ export class AssignmentsTableComponent implements OnInit {
     this.assignmentsDataSource.sort = this.sort;
   }
 
-  viewContent(assignment: Assignment) {
-    const dialogRef = this.dialog.open(ContentDialogComponent, {
+  viewContent( assignment:Assignment) {
+    if(localStorage.getItem('role')== "student"){this.readEmitter.emit(assignment)}
+
+    this.dialog.open(ContentDialogComponent, {
       width: '70%',
       height: '80%',
       panelClass: 'custom-dialog-panel',
+      data:{
+        assignment: assignment
+      }
     });
   }
 

@@ -4,17 +4,19 @@
       <app-assignments-table
         [assignments]="assignments$"
         (assignmentSelected)="assignmentSelected($event)"
+        (assignmentReaded)="assignmentReaded($event)"
       >
       </app-assignments-table>
     </mat-sidenav>
   
     <mat-sidenav-content>
       <h2>Solution</h2>
-      <div class="mat-elevation-z1" *ngIf="isValid">
+      <div class="mat-elevation-z1" *ngIf="isSolutionDelivarable()">
         <h4>
           Add your solution
         </h4>
-        <input #solutionInput type="file" (change)="onSolutionSelected($event)"/>&nbsp;&nbsp;&nbsp;
+        <input [formControl]="solution" type="file" id="file" class="inputfile" (change)="onSolutionSelected($event)" required/>
+        <label mat-label for="file"><mat-icon>cloud_upload</mat-icon>select your file</label>
         <br/>
         <button mat-button (click)="addSolution()">
           Add
