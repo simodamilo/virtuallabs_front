@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Team } from '../models/team.model';
-import { Observable, forkJoin, of } from 'rxjs';
+import { Observable, forkJoin, of, from } from 'rxjs';
 import { mergeMap, map, catchError } from 'rxjs/operators';
-import { Student } from '..';
+import { Student, Token } from '..';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +18,7 @@ export class TeamService {
         map((members: Student[]) => {
           team.members = members;
           return team;
-        }))),
-      catchError(err => of(null))
+        })))
     );
   }
 
@@ -44,8 +43,29 @@ export class TeamService {
     return this.http.post<Team>(`api/API/teams/${courseName}`, {name: teamName, serials: studentSerials, timeout: timeout});
   }
 
-  getPendingTeams() {
-    //prendere tutti i team "pending", dei team prendere tutti i membri come facciamo con getCourseTeams
-    //e poi per ogni membro prendere lo stato vedendo il relativo token(?)
+  getPendingTeams(courseName: string): Observable<Team[]> {
+    return this.http.get<Team[]>(`api/API/teams/students/${courseName}/pending`).pipe(
+      mergeMap( teams =>
+        forkJoin( teams.map( team => 
+          this.http.get<Student[]>(`api/API/students/${team.id}/members`).pipe(
+            mergeMap(members => {
+              forkJoin( members.map( member =>
+                this.http.get<Token>(`api/API/students/${team.id}/${member.serial}/token`).subscribe(token => member.teamToken = token)
+              ))
+              team.members = members;
+              return of(team);
+            }))
+          )
+        )
+        )
+    );
+  }
+
+  acceptTeam(token: Token): Observable<Team> {
+    return this.http.put<Team>(`api/API/teams/accept`, token);
+  }
+
+  rejectTeam(token: Token): Observable<Team> {
+    return this.http.put<Team>(`api/API/teams/reject`, token);
   }
 }

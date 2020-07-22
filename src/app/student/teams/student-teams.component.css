@@ -7,9 +7,10 @@ mat-list-item-content {
 }
 
 table {
-    width: 80%;
+    width: 90%;
     margin-left: 5%;
     margin-right: 5%;
+    margin-bottom: 20px;
 }
 
 .nameColumn {
@@ -41,4 +42,8 @@ button {
     margin-bottom: 30px;
     font-size: large;
     color: red;
+}
+
+.membersHeader {
+    padding-left: 16px;
 }
