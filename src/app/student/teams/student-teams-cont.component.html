@@ -2,5 +2,9 @@
         [team]="team$ | async"
         [availableStudents]="availableStudents$ | async"
         [errorMsg]="errorMsg"
-        (proposeTeam)="proposeTeam($event)">
+        [errorRequestMsg]="errorRequestMsg"
+        [pendingTeams]="pendingTeams$ | async"
+        (proposeTeam)="proposeTeam($event)"
+        (acceptToken)="acceptTeam($event)"
+        (rejectToken)="rejectTeam($event)">
 </app-student-teams>

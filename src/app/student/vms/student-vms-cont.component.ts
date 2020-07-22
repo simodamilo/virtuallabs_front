@@ -10,7 +10,6 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class StudentVmsContComponent implements OnInit {
 
-  //modelVm$: Observable<ModelVM>;
   vms$: Observable<VM[]>;
   teamStudents$: Observable<Student[]>;
   errorMsg: string;
@@ -33,7 +32,7 @@ export class StudentVmsContComponent implements OnInit {
   }
 
   getModelVm() {
-    /* this.modelVm$ =  */this.modelVmService.getModelVm(this.courseName).subscribe(
+    this.modelVmService.getModelVm(this.courseName).subscribe(
     model => {
       this.modelVm = model
     }, 
@@ -46,9 +45,9 @@ export class StudentVmsContComponent implements OnInit {
     this.teamService.getStudentTeamByCourse(this.courseName).subscribe(
       team => {
         this.team = team;
-        this.vms$ = this.vmService.getTeamVms(this.team.id);
+        this.vms$ = this.vmService.getTeamVms(team.id);
       },
-      err => {
+      () => {
         this.team = null;
         this.errorMsg = "No team available, you must be part of a team to add a new virtual machine"
       }

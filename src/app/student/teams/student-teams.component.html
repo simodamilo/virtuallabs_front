@@ -1,10 +1,5 @@
 <div *ngIf="showTeamInfo">
     <h2>Your team is: {{_team.name}}</h2>
-    <!-- <mat-list>
-        <mat-list-item *ngFor="let student of _team.members">
-          {{student.name}} {{student.surname}}
-        </mat-list-item>
-      </mat-list>  -->
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
 
         <!-- Name Column -->
@@ -45,7 +40,7 @@
             <input matInput formControlName="timeout" type="number" placeholder="Timeout(hours)" #timeout required>
             <mat-error *ngIf="proposeTeamForm.get('timeout').invalid">{{getErrorTimeoutMessage()}}</mat-error>
         </mat-form-field>
-        <button mat-raised-button color="primary" (click)="proposeTeam(name.value, timeout.value)">Propose Team</button>
+        <button mat-raised-button color="primary" (click)="proposeTeam()">Propose Team</button>
     </form>
 
     <app-students-table
@@ -54,4 +49,41 @@
     </app-students-table>
 
     <h2>Your requests</h2>
+    <p class="errorMsg">{{_errorRequestMsg}}</p>
+    <table mat-table [dataSource]="teamsDataSource" class="mat-elevation-z8">
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef class="teamNameColumn"> Name </th>
+            <td mat-cell *matCellDef="let team"> {{team.name}} </td>
+        </ng-container>
+      
+        <!-- Serial Column -->
+        <ng-container matColumnDef="members">
+            <th mat-header-cell *matHeaderCellDef class="membersColumn membersHeader"> Members </th>
+            <td mat-cell *matCellDef="let team">
+                <mat-list>
+                    <mat-list-item *ngFor="let member of team.members"> 
+                        {{member.serial}} {{member.name}} {{member.surname}} ({{member.teamToken == null ? 'Creator' : (member.teamToken.status === 0 ? 'Not accepted' : 'Accepted')}})
+                    </mat-list-item>
+                </mat-list>
+            </td>
+        </ng-container>
+
+        <!-- Action -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="actionsColumn"></th>
+            <td mat-cell *matCellDef="let team" class="actionsColumn">
+                <button mat-icon-button *ngIf="isNotAccepted(team)" color="primary" aria-label="Accept request" (click)="accept(team)">
+                    <mat-icon>done</mat-icon>
+                </button>
+                <button mat-icon-button *ngIf="isNotAccepted(team)" color="primary" aria-label="Reject request" (click)="reject(team)">
+                    <mat-icon>clear</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="teamsDisplayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: teamsDisplayedColumns;"></tr>
+    </table>
 </div>

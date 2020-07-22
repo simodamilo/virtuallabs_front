@@ -11,9 +11,11 @@ import { Observable } from 'rxjs';
 export class StudentTeamsContComponent implements OnInit {
 
   team$: Observable<Team>;
+  pendingTeams$: Observable<Team[]>
   availableStudents$: Observable<Student[]>
   course: Course;
   errorMsg: string;
+  errorRequestMsg: string;
 
   constructor(private route: ActivatedRoute,
     private teamService: TeamService,
@@ -25,6 +27,7 @@ export class StudentTeamsContComponent implements OnInit {
       this.getCourse(params['courseName']);
       this.getTeam(params['courseName']);
       this.getAvailableStudents(params['courseName']);
+      this.getPendingTeams(params['courseName']);
     });
   }
 
@@ -42,8 +45,12 @@ export class StudentTeamsContComponent implements OnInit {
     this.availableStudents$ = this.studentService.getAvailable(courseName);
   }
 
+  getPendingTeams(courseName: string) {
+    this.pendingTeams$ = this.teamService.getPendingTeams(courseName);
+  }
+
   proposeTeam(event) {
-    let studentSerials = event.students.map(student => student.serial);
+    let studentSerials = event.students.map((student: Student) => student.serial);
     studentSerials.push(localStorage.getItem('email').split('@')[0]);
     if(studentSerials.length < this.course.min || studentSerials.length > this.course.max){
       this.errorMsg = "Course constraints are not respected";
@@ -52,12 +59,37 @@ export class StudentTeamsContComponent implements OnInit {
         team => {
           this.errorMsg = "";
           this.getAvailableStudents(this.course.name);
-          // si potrebbe aggiornare tutte le richieste dell'utente pending, per vedere anche la sua richiesta
+          this.getPendingTeams(this.course.name);
         },
         err => {
           this.errorMsg = "Some problems occur, please try again!"
         }
       );
     }
+  }
+
+  acceptTeam(event) {
+    this.teamService.acceptTeam(event).subscribe(
+      () => {
+        this.getTeam(this.course.name);
+        this.getPendingTeams(this.course.name);
+        this.errorRequestMsg = "";
+      },
+      () => {
+        this.errorRequestMsg = "It is not possible to accept the request";
+      }
+    );
+  }
+
+  rejectTeam(event) {
+    this.teamService.rejectTeam(event).subscribe(
+      () => {
+        this.getPendingTeams(this.course.name);
+        this.errorRequestMsg = "";
+      },
+      () => {
+        this.errorRequestMsg = "It is not possible to reject the request";
+      }
+    );
   }
 }

@@ -1,8 +1,36 @@
 <div class="container">
+    <h2>Model Virtual Machine</h2>
+    <form [formGroup]="modelVmForm" *ngIf="showModelForm">
+        <mat-form-field>
+            <mat-label>Model name</mat-label>
+            <input matInput formControlName="name" type="text" placeholder="Name" #name required>
+            <mat-error *ngIf="modelVmForm.get('name').invalid">{{getErrorNameMessage()}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Type</mat-label>
+            <input matInput formControlName="type" type="text" placeholder="Type" #type required>
+            <mat-error *ngIf="modelVmForm.get('type').invalid">{{getErrorTypeMessage()}}</mat-error>
+        </mat-form-field>
+
+        <input type="file" (change)="onModelVmSelected($event)" />
+
+        <button mat-raised-button color="primary" (click)="addModelVm(name.value, type.value)">Add Model</button>
+    </form>
+
+    <div *ngIf="showModelDiv">Name: {{_modelVm.name}}, type: {{_modelVm.type}}
+        <button mat-icon-button color="primary" aria-label="Visualize modelVm" (click)="viewModelVm()">
+            <mat-icon>visibility</mat-icon>
+        </button> 
+        <button mat-icon-button color="primary" aria-label="Delete modelVm" (click)="deleteModelVm()">
+            <mat-icon>delete</mat-icon>
+        </button> 
+    </div>
+
     <h2>Course Teams</h2>
     <p class="errorMsg">{{_errorMsg}}</p>
 
-    <!-- It is used to add or modify a Virtual Machine -->
+    <!-- It is used to add or modify a Team -->
     <div class="mat-elevation-z1 modify-team" *ngIf="showModifyDiv">
         <mat-horizontal-stepper linear #stepper>
             <mat-step label="Config">
@@ -96,12 +124,9 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef mat-sort-header class="actionsColumn"></th>
             <td mat-cell *matCellDef="let team" class="actionsColumn">
-                <button mat-icon-button color="primary" aria-label="Edit the virtual machine" (click)="modifyTeam(team)">
+                <button mat-icon-button color="primary" aria-label="Edit the virtual machine" (click)="modifyTeam(team); $event.stopImmediatePropagation()">
                     <mat-icon>edit</mat-icon>
                 </button>
-                <!-- <button mat-icon-button color="primary" aria-label="Visualize team resources" (click)="viewTeamResources(team)">
-                    <mat-icon>visibility</mat-icon>
-                </button> -->
             </td>
         </ng-container>
         
@@ -116,17 +141,19 @@
     </table>
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons style="margin-right: 5%; margin-left: 5%;"></mat-paginator>
     
-    <h2 *ngIf="showVms">Team Virtual Machines</h2>
-    <div class="mat-elevation-z9 resources-team" *ngIf="showResourcesDiv">
-        <h3 class="res">Real time virtual machine resources</h3>
-        <p class="res">
-            Ram: {{resourcesTeam.ram}}, Disk: {{resourcesTeam.disk}}, VCpu: {{resourcesTeam.vcpu}}, ActiveInstance: {{resourcesTeam.activeInstance}} 
-        </p>
+    <div *ngIf="showVms">
+        <h2>Team Virtual Machines</h2>
+        <div class="mat-elevation-z9 resources-team" *ngIf="showResourcesDiv">
+            <h3 class="res">Real time virtual machine resources</h3>
+            <p class="res">
+                Ram: {{resourcesTeam.ram}}, Disk: {{resourcesTeam.disk}}, VCpu: {{resourcesTeam.vcpu}}, ActiveInstance: {{resourcesTeam.activeInstance}} 
+            </p>
+        </div>
+        <!-- It is used to display the virtual machine of the selected team -->
+        <app-vms-table
+                    [vms]="_vms"
+                    (onOff)="onOffVm($event)">
+        </app-vms-table>
     </div>
-    <!-- It is used to display the virtual machine of the selected team -->
-    <app-vms-table *ngIf="showVms"
-                [vms]="_vms"
-                (onOff)="onOffVm($event)">
-    </app-vms-table>
 </div>
   

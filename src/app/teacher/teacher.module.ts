@@ -24,7 +24,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -57,7 +57,8 @@ import { FormsModule } from '@angular/forms';
     MatStepperModule,
     MatSelectModule,
     MatSliderModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [MatDatepickerModule]
 })

@@ -1,9 +1,7 @@
 import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { VM } from '../../core/models/vm.model';
-import { MatDialog } from '@angular/material/dialog';
 import { Team, Student, ModelVM } from '../../core';
 import { MatSelectChange, MatSelect } from '@angular/material/select';
-import { SelectionModel } from '@angular/cdk/collections';
 import { MatStepper } from '@angular/material/stepper';
 
 @Component({
@@ -36,11 +34,7 @@ export class StudentVmsComponent {
     if(modelVm != null) {
       this._modelVm = modelVm;
       this.showModelView = true;
-    } /* else {
-      console.log("Prova")
-      this._errorMsg = "No model available, it is not possible to add a new Virtual Machine";
-      this.showModelView = false;
-    } */
+    }
   }
 
   @Input()
@@ -71,11 +65,11 @@ export class StudentVmsComponent {
     this._teamStudents = students;
   }
 
-  @Output() add = new EventEmitter<VM>();
-  @Output() modify = new EventEmitter<VM>();
-  @Output() delete = new EventEmitter<number>();
-  @Output() onOff = new EventEmitter<number>();
-  @Output() getStudents = new EventEmitter<number>();
+  @Output('add') add = new EventEmitter<VM>();
+  @Output('modify') modify = new EventEmitter<VM>();
+  @Output('delete') delete = new EventEmitter<number>();
+  @Output('onOff') onOff = new EventEmitter<number>();
+  @Output('getStudents') getStudents = new EventEmitter<number>();
 
 
   /* It is used to show/close the stepper */

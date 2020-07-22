@@ -1,7 +1,6 @@
-import { Component, OnInit, AfterViewInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Team, Student } from 'src/app/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Team, Student, Token } from 'src/app/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -9,10 +8,13 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   templateUrl: './student-teams.component.html',
   styleUrls: ['./student-teams.component.css']
 })
-export class StudentTeamsComponent implements OnInit {
+export class StudentTeamsComponent {
 
   displayedColumns: string[] = ['name', 'surname', 'serial'];
   dataSource: MatTableDataSource<Student> = new MatTableDataSource<Student>();
+
+  teamsDisplayedColumns: string[] = ['name', 'members', 'actions'];
+  teamsDataSource: MatTableDataSource<Team> = new MatTableDataSource<Team>();
 
   proposeTeamForm: FormGroup;
   showTeamInfo: Boolean = false;
@@ -20,6 +22,7 @@ export class StudentTeamsComponent implements OnInit {
   _team: Team = {} as Team; 
   _availableStudents: Student[];
   _errorMsg: string;
+  _errorRequestMsg: string;
   proposedStudents: Student[] = [];
 
   constructor(private fb: FormBuilder) { 
@@ -29,10 +32,8 @@ export class StudentTeamsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
 
-  @Input()
+  @Input('team')
   set team(team: Team){
     if(team !== null) {
       this._team = team;
@@ -45,7 +46,8 @@ export class StudentTeamsComponent implements OnInit {
     }
   }
 
-  @Input('availableStudents') set availableStudents(students: Student[]) {
+  @Input('availableStudents') 
+  set availableStudents(students: Student[]) {
     if (students != null) {
       this._availableStudents = [...students];
     }
@@ -62,7 +64,25 @@ export class StudentTeamsComponent implements OnInit {
     }
   }
 
+  @Input('errorRequestMsg')
+  set errorRequestMsg(errorRequestMsg: string){
+    if(errorRequestMsg !== null) {
+      this._errorRequestMsg = errorRequestMsg;
+    }
+  }
+
+  @Input('pendingTeams')
+  set teams(teams: Team[]){
+    if(teams !== null) {
+      this.teamsDataSource.data = [...teams];
+    } else {
+      this.teamsDataSource.data = [];
+    }
+  }
+
   @Output('proposeTeam') proposeTeamEmitter = new EventEmitter<{name: string, timeout: number, students: Student[]}>();
+  @Output('acceptToken') acceptToken = new EventEmitter<Token>();
+  @Output('rejectToken') rejectToken = new EventEmitter<Token>();
 
   getErrorNameMessage() {
     if (this.proposeTeamForm.get('name').hasError('required'))
@@ -79,10 +99,39 @@ export class StudentTeamsComponent implements OnInit {
     this.proposedStudents = [...event];
   }
 
-  proposeTeam(teamName: string, timeout: number) {
-    console.log("Name: " + teamName + " Timeout: " + timeout + " Selected: " + this.proposedStudents);
+
+  proposeTeam() {
+    console.log("Name: " + this.proposeTeamForm.get('name').value + " Timeout: " + this.proposeTeamForm.get('timeout').value + " Selected: " + this.proposedStudents);
     if (this.proposeTeamForm.get('name').valid && this.proposeTeamForm.get('timeout').valid) {
-      this.proposeTeamEmitter.emit({name: teamName, timeout: timeout, students: this.proposedStudents});
+      this.proposeTeamEmitter.emit({name: this.proposeTeamForm.get('name').value, timeout: this.proposeTeamForm.get('timeout').value, students: this.proposedStudents});
     }
+  }
+
+
+  isNotAccepted(team: Team): Boolean {
+    let res: Boolean;
+    team.members.forEach(student => {
+      if(student.serial === localStorage.getItem('email').split('@')[0]) {
+        if(student.teamToken == null || student.teamToken.status === 1)
+          res = false;
+        else
+          res = true;
+      }
+    })
+    return res;
+  }
+
+  accept(team: Team) {
+    team.members.forEach(student => {
+      if(student.serial === localStorage.getItem('email').split('@')[0])
+        this.acceptToken.emit(student.teamToken);
+    });
+  }
+
+  reject(team: Team) {
+    team.members.forEach(student => {
+      if(student.serial === localStorage.getItem('email').split('@')[0])
+        this.rejectToken.emit(student.teamToken);
+    });
   }
 }

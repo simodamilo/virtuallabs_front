@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { VM, VmService, TeamService, Team } from 'src/app/core';
+import { Observable, of } from 'rxjs';
+import { VM, VmService, TeamService, Team, ModelVM, ModelVmService } from 'src/app/core';
 
 @Component({
   selector: 'app-teacher-vms-cont',
@@ -11,17 +11,23 @@ import { VM, VmService, TeamService, Team } from 'src/app/core';
 export class TeacherVmsContComponent implements OnInit {
 
   teams$: Observable<Team[]>;
+  modelVm$: Observable<ModelVM>;
   vms$: Observable<VM[]>
   courseName: string;
   errorMsg: string; 
 
-  constructor(private route: ActivatedRoute, private vmService: VmService, private teamService: TeamService) { }
+  constructor(private route: ActivatedRoute, private vmService: VmService, private teamService: TeamService, private modelVmService: ModelVmService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.courseName = params['courseName'];
       this.getTeams();
+      this.getModelVm();
     });
+  }
+
+  getModelVm() {
+    this.modelVm$ = this.modelVmService.getModelVm(this.courseName);
   }
 
   getTeams() {
@@ -30,6 +36,26 @@ export class TeacherVmsContComponent implements OnInit {
 
   getVms(team: Team) {
     this.vms$ = this.vmService.getTeamVms(team.id);
+  }
+
+  addModelVm(event) {
+    this.modelVmService.addModelVm(event, this.courseName).subscribe(
+      modelVm => {
+        console.log(modelVm)
+        this.modelVm$ = of(modelVm);
+      },
+      () => {
+        
+      }
+    );
+  }
+
+  deleteModelVm(event) {
+    this.modelVmService.deleteModelVm(event.id).subscribe(
+      () => {
+        this.getModelVm();
+      }
+    );
   }
 
   modifyTeam(team: Team) {
