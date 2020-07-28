@@ -68,7 +68,7 @@ export class StudentVmsComponent {
   @Output('add') add = new EventEmitter<VM>();
   @Output('modify') modify = new EventEmitter<VM>();
   @Output('delete') delete = new EventEmitter<number>();
-  @Output('onOff') onOff = new EventEmitter<number>();
+  @Output('onOff') onOff = new EventEmitter<VM>();
   @Output('getStudents') getStudents = new EventEmitter<number>();
 
 
@@ -116,10 +116,9 @@ export class StudentVmsComponent {
     this.showAddDiv = false;
   }
 
-  onOffVm(vmId: number) {
-    // The content dialog must be shown
+  onOffVm(vm: VM) {
     this.showAddDiv = false;
-    this.onOff.emit(vmId);
+    this.onOff.emit(vm);
   }
 
   deleteVm(vmId: number) {

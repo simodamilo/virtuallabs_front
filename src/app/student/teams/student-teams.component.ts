@@ -95,11 +95,12 @@ export class StudentTeamsComponent {
   }
 
 
+  /* Students selected for the team */
   changeSelection(event: Student[]) {
     this.proposedStudents = [...event];
   }
 
-
+  /* Propose team button */
   proposeTeam() {
     console.log("Name: " + this.proposeTeamForm.get('name').value + " Timeout: " + this.proposeTeamForm.get('timeout').value + " Selected: " + this.proposedStudents);
     if (this.proposeTeamForm.get('name').valid && this.proposeTeamForm.get('timeout').valid) {
@@ -108,6 +109,7 @@ export class StudentTeamsComponent {
   }
 
 
+  /* Used to check show the buttons in request table if used has not accepted */
   isNotAccepted(team: Team): Boolean {
     let res: Boolean;
     team.members.forEach(student => {
@@ -121,6 +123,7 @@ export class StudentTeamsComponent {
     return res;
   }
 
+  /* accept button */
   accept(team: Team) {
     team.members.forEach(student => {
       if(student.serial === localStorage.getItem('email').split('@')[0])
@@ -128,6 +131,7 @@ export class StudentTeamsComponent {
     });
   }
 
+  /* reject button */
   reject(team: Team) {
     team.members.forEach(student => {
       if(student.serial === localStorage.getItem('email').split('@')[0])

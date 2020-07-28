@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, from, forkJoin } from 'rxjs';
-import { VM, Team, Student } from '../models';
+import { VM, Team, Student, ModelVM } from '../models';
 import { mergeMap, toArray, map } from 'rxjs/operators';
 import { CdkMonitorFocus } from '@angular/cdk/a11y';
 
@@ -59,5 +59,13 @@ export class VmService {
   
   deleteVm(vmId: number): Observable<void> {
     return this.http.delete<void>(`api/API/vms/${vmId}`);
+  }
+
+  getContent(courseName: string): Observable<Blob>{
+    return this.http.get<ModelVM>(`api/API/modelVms/${courseName}`).pipe(
+      mergeMap((modelVm: ModelVM) => {
+        return this.http.get<Blob>(`/api/API/modelVms/${modelVm.id}/image`, { observe: 'body', responseType: 'blob' as 'json' })
+      })
+    );
   }
 }

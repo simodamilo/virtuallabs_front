@@ -85,7 +85,7 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
 
   @Output('modify') modify = new EventEmitter<Team>();
   @Output('team') team = new EventEmitter<Team>();
-  @Output('onOff') onOff = new EventEmitter<{id: number, team: Team}>();
+  @Output('onOff') onOff = new EventEmitter<{vm: VM, team: Team}>();
   @Output('addModelVm') addModel = new EventEmitter<ModelVM>();
   @Output('deleteModelVm') deleteModel = new EventEmitter<ModelVM>();
 
@@ -99,6 +99,7 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
   }
 
 
+  /* Error functions */
   getErrorNameMessage() {
     if (this.modelVmForm.get('name').hasError('required'))
       return 'You must enter a value';
@@ -109,12 +110,7 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
       return 'You must enter a value';
   }
 
-  modifyTeam(team: Team) {
-    this._errorMsg = "";
-    this.modifiedTeam = team;
-    this.showModifyDiv = true;
-  }
-  
+  /* Used to compute real time resources */
   computeResources() {
     this._vms.forEach(vm => {
       if(vm.active) {
@@ -126,15 +122,57 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     })
   }
 
+
+
+  /* Used to add an image to the modelVm */
+  onModelVmSelected(event) {
+    this._modelVm.content = event.target.files[0]
+  }
+
+  /* Button used to add the modelVm */
+  addModelVm(name: string, type: string) {
+    if (this.modelVmForm.get('name').valid && this.modelVmForm.get('type').valid) {
+      this._modelVm.name = name;
+      this._modelVm.type = type;
+      console.log(this._modelVm);
+      this.addModel.emit(this._modelVm);
+    }
+  }
+  
+  /* Used to open the content dialog for modelVm image */
+  viewModelVm() {
+    const dialogRef = this.dialog.open(ContentDialogComponent, {
+      width: '70%',
+      height: '80%',
+      panelClass: 'custom-dialog-panel',
+      data: {modelVm: this._modelVm}
+    });
+  }
+
+  /* Used to delete the modelVm */
+  deleteModelVm() {
+    this.deleteModel.emit(this._modelVm);
+  }
+
+
+  /* Edit button in team table */
+  modifyTeam(team: Team) {
+    this._errorMsg = "";
+    this.modifiedTeam = team;
+    this.showModifyDiv = true;
+  }
+
+  /* Close button in modify div */
   closeDiv() {
     this.showModifyDiv = false;
   }
 
+  /* Confirm button in modify div */ 
   confirmTeam() {
     this.modify.emit(this.modifiedTeam);
   }
 
-
+  /* Called when the user tap on one row */
   teamSelected(team: Team) {
     this.teamSelection.toggle(team);
     if(this.teamSelection.hasValue()) {
@@ -150,38 +188,11 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     this.resourcesTeam = {name: "", ram: 0, disk: 0, vcpu: 0, activeInstance: 0};
   }
 
-
-  onOffVm(vmId: number) {
-    // The content dialog must be shown
-    this.onOff.emit({id: vmId, team: this.actualTeam});
+  
+  /* Turn on/off button in vms table */
+  onOffVm(vm: VM) { 
+    this.onOff.emit({vm: vm, team: this.actualTeam});
     this.resourcesTeam = {name: "", ram: 0, disk: 0, vcpu: 0, activeInstance: 0};
   }
 
-
-  onModelVmSelected(event) {
-    this._modelVm.content = event.target.files[0]
-  }
-
-  addModelVm(name: string, type: string) {
-    if (this.modelVmForm.get('name').valid && this.modelVmForm.get('type').valid) {
-      this._modelVm.name = name;
-      this._modelVm.type = type;
-      console.log(this._modelVm);
-      this.addModel.emit(this._modelVm);
-    }
-  }
-  
-  viewModelVm() {
-    console.log(this._modelVm.content)
-    const dialogRef = this.dialog.open(ContentDialogComponent, {
-      width: '70%',
-      height: '80%',
-      panelClass: 'custom-dialog-panel',
-      data: {content: this._modelVm.content}
-    });
-  }
-
-  deleteModelVm() {
-    this.deleteModel.emit(this._modelVm);
-  }
 }

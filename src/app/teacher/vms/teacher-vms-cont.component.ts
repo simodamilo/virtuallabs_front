@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { VM, VmService, TeamService, Team, ModelVM, ModelVmService } from 'src/app/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ContentDialogComponent } from 'src/app/shared/content-dialog/content-dialog.component';
 
 @Component({
   selector: 'app-teacher-vms-cont',
@@ -16,7 +18,11 @@ export class TeacherVmsContComponent implements OnInit {
   courseName: string;
   errorMsg: string; 
 
-  constructor(private route: ActivatedRoute, private vmService: VmService, private teamService: TeamService, private modelVmService: ModelVmService) { }
+  constructor(private route: ActivatedRoute, 
+    private vmService: VmService, 
+    private teamService: TeamService, 
+    private modelVmService: ModelVmService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -72,9 +78,19 @@ export class TeacherVmsContComponent implements OnInit {
 
   onOffVm(event) {
     this.errorMsg = "";
-    this.vmService.onOffVm(event.id).subscribe(
+    this.vmService.onOffVm(event.vm.id).subscribe(
       vm => {
         this.getVms(event.team);
+        if(vm.active) {
+          const dialogRef = this.dialog.open(ContentDialogComponent, {
+            width: '70%',
+            height: '80%',
+            panelClass: 'custom-dialog-panel',
+            data: {vm: vm, courseName: this.courseName}
+          });
+
+          //devo mettere la close per farlo spegnere in automatico o deve premere lo studente?
+        }
       },
       err => {
         this.errorMsg = "It is not possible to turn on the Virtual Machine"

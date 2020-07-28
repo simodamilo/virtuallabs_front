@@ -20,7 +20,7 @@ export class VmsTableComponent implements AfterViewInit, OnInit {
 
   @Output() modify = new EventEmitter<VM>();
   @Output() delete = new EventEmitter<number>();
-  @Output() onOff = new EventEmitter<number>();
+  @Output() onOff = new EventEmitter<VM>();
 
   constructor() { }
 
@@ -57,8 +57,8 @@ export class VmsTableComponent implements AfterViewInit, OnInit {
     this.modify.emit(vm);
   }
 
-  onOffVm(vmId: number) {
-    this.onOff.emit(vmId);
+  onOffVm(vm: VM) {
+    this.onOff.emit(vm);
   }
 
   deleteVm(vmId: number) {
@@ -68,7 +68,6 @@ export class VmsTableComponent implements AfterViewInit, OnInit {
 
 
   isOwner(vm: VM) {
-    //console.log(vm.name + " " + vm.owners.some(owner => owner.serial === localStorage.getItem("email").split("@")[0]) + " " + this.g++);
     return vm.owners.some(owner => owner.serial === localStorage.getItem("email").split("@")[0]);
   }
 

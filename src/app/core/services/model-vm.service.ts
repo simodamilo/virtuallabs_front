@@ -15,6 +15,10 @@ export class ModelVmService {
     return this.http.get<ModelVM>(`api/API/modelVms/${courseName}`);
   }
 
+  getContent(modelVm: ModelVM): Observable<Blob>{
+    return this.http.get<Blob>(`/api/API/modelVms/${modelVm.id}/image`, { observe: 'body', responseType: 'blob' as 'json' })
+  }
+
   addModelVm(modelVm: ModelVM, courseName: string): Observable<ModelVM> {
     const formData = new FormData();
     formData.append('imageFile', modelVm.content);

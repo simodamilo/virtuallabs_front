@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SolutionService, AssignmentService } from 'src/app/core';
+import { SolutionService, AssignmentService, ModelVmService, VmService } from 'src/app/core';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { Url } from 'url';
 
@@ -18,6 +18,8 @@ export class ContentDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private solutionService: SolutionService,
     private assignmentService: AssignmentService, 
+    private modelVmService: ModelVmService,
+    private vmService: VmService,
     private sanitizer: DomSanitizer
   ) {}
 
@@ -29,6 +31,14 @@ export class ContentDialogComponent implements OnInit, OnDestroy {
     } else if (this.data.solution != null) {
       this.solutionService
         .getContent(this.data.solution)
+        .subscribe((result) => this.createURL(result));
+    } else if(this.data.modelVm != null) {
+      this.modelVmService
+        .getContent(this.data.modelVm)
+        .subscribe((result) => this.createURL(result));
+    } else if(this.data.vm) {
+      this.vmService
+        .getContent(this.data.courseName)
         .subscribe((result) => this.createURL(result));
     }
   }

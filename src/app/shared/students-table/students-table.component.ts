@@ -17,6 +17,7 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
   colsToDisplay = ['select', 'id', 'name', 'surname'];
   selection: SelectionModel<Student>;
   isStudent: Boolean = true;
+  showButton: Boolean = false;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -24,7 +25,7 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
   @Input()
   set students(students: Student[]) {
     if(students != null) {
-      this.dataSource.data = [...students]; // da errore ma non capisco perchè
+      this.dataSource.data = [...students];
       this.selection.clear();
     }
   }
@@ -56,18 +57,28 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
     this.selectedStudentsEmitter.emit(this.selection.selected);
   }
 
-  toggleMasterTable() {
-    this.isAllSelected()
-      ? this.selection.clear()
-      : this.dataSource.data.forEach((row) => this.selection.select(row));
-    
+  getPageData() {
+    return this.dataSource._pageData(this.dataSource._orderData(this.dataSource.filteredData));
+  }
+
+  isEntirePageSelected() {
+    return this.getPageData().every((row) => this.selection.isSelected(row));
+  }
+
+  masterToggle(checkboxChange: MatCheckboxChange) {
+    if(this.isEntirePageSelected()) {
+      this.selection.deselect(...this.getPageData());
+      this.showButton = false;
+    } else {
+      this.selection.select(...this.getPageData())
+      this.showButton = true;
+    }
+
     this.selectedStudentsEmitter.emit(this.selection.selected);
   }
 
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
+  selectAll() {
+    this.selection.select(...this.dataSource.data);
   }
 
 }
