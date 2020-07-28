@@ -1,0 +1,19 @@
+<mat-form-field>
+    <input
+      matInput
+      #search
+      type="search"
+      placeholder="Name"
+      [matAutocomplete]="auto"
+      (keyup)="customFilter(search.value)"
+    />
+    <mat-autocomplete
+      #auto
+      [displayWith]="displayFn"
+      (optionSelected)="selectedOption($event)">
+      <mat-option *ngFor="let option of filteredOptions$" [value]="option">
+        {{ option.name }} {{ option.surname }} ({{ option.serial }})
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button mat-button (click)="sendOption(); search.value = ''">Add</button>

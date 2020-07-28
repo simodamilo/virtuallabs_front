@@ -111,7 +111,7 @@ export class StudentTeamsComponent {
   isNotAccepted(team: Team): Boolean {
     let res: Boolean;
     team.members.forEach(student => {
-      if(student.serial === localStorage.getItem('email').split('@')[0]) {
+      if(student.serial === localStorage.getItem("serial")) {
         if(student.teamToken == null || student.teamToken.status === 1)
           res = false;
         else
@@ -123,14 +123,14 @@ export class StudentTeamsComponent {
 
   accept(team: Team) {
     team.members.forEach(student => {
-      if(student.serial === localStorage.getItem('email').split('@')[0])
+      if(student.serial === localStorage.getItem("serial"))
         this.acceptToken.emit(student.teamToken);
     });
   }
 
   reject(team: Team) {
     team.members.forEach(student => {
-      if(student.serial === localStorage.getItem('email').split('@')[0])
+      if(student.serial === localStorage.getItem("serial"))
         this.rejectToken.emit(student.teamToken);
     });
   }

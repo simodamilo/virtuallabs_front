@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from './user.model';
 import { Registration } from './registration.model';
-import { tap, shareReplay } from 'rxjs/operators';
+import { tap, shareReplay, map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { Observable, observable, of, ReplaySubject } from 'rxjs';
 
@@ -16,10 +16,20 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  startUp(){
-    console.log(localStorage.getItem("role"))
-    if(localStorage.getItem("jwt")) this.isAuthenticatedSubject.next(true)
-    else this.isAuthenticatedSubject.next(false)
+   startUp(){
+    this.isLoggedIn() 
+    ? this.isAuthenticatedSubject.next(true)
+    : this.isAuthenticatedSubject.next(false)
+  } 
+
+  public isLoggedIn() {
+    if(localStorage.getItem("jwt") && moment().isBefore(moment.unix(+localStorage.getItem("expires_at")))){
+      return true;
+    }
+    else{
+      this.logout()
+      return false;
+    }
   }
 
   login(user: User) {
@@ -28,7 +38,7 @@ export class AuthService {
         const tkn = JSON.parse(atob(res.jwtToken.split('.')[1]));
         localStorage.setItem("jwt", res.jwtToken);
         localStorage.setItem("expires_at", tkn.exp);
-        localStorage.setItem("email", tkn.sub);
+        localStorage.setItem("serial", tkn.sub.split("@")[0]);
         if(tkn.sub.split("@")[1] === "studenti.polito.it")
           localStorage.setItem("role", "student");
         else
@@ -43,19 +53,11 @@ export class AuthService {
     localStorage.removeItem("jwt");
     localStorage.removeItem("expires_at");
     localStorage.removeItem("role");
+    localStorage.removeItem("serial")
     this.isAuthenticatedSubject.next(false);
   }
 
-  public isLoggedIn() {
-    console.log("isLoggedIn", localStorage.getItem("expires_at"))
-    return moment().isBefore(moment.unix(+localStorage.getItem("expires_at")));
-  }
-
   registration(user: Registration) {
-    console.log("registrationService.registration() " + user.email);
     return this.http.post<Registration>(`/api/register`, user);
   }
-
-  //TODO metodo che verifica scadenza token
-
 }

@@ -1,8 +1,11 @@
 <app-students
   [enrolledStudents]="enrolledStudents | async"
   [allStudents]="allStudents | async"
-  (enrollStudent)="enrollStudent($event)"
+  [allTeachers]="allTeachers | async"
+  [course]="course | async"
+  (enroll)="enroll($event)"
   (enrollCSV)="enrollCsv($event)"
   (removeStudent)="removeStudent($event)"
+  (modifyCourse)="changeCourse($event)"
 >
 </app-students>

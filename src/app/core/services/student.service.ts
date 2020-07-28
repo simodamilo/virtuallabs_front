@@ -12,12 +12,16 @@ export class StudentService {
 
   constructor(private http: HttpClient) { }
 
+  getStudent(): Observable<Student> {
+    const studentSerial = localStorage.getItem("serial");
+    return this.http.get<Student>(`api/API/students/${studentSerial}`);
+  }
+
   getTeamStudents(teamId: number): Observable<Student[]> {
     return this.http.get<Student[]>(`api/API/students/${teamId}/members`);
   }
 
   getAllStudents(): Observable<Student[]> {
-    console.log("getAllStudents service")
     return this.http.get<Student[]>(`/api/API/students`);
   }
 
@@ -29,11 +33,8 @@ export class StudentService {
     return this.http.get<Student[]>(`/api/API/students/${courseName}/available`);
   }
 
-  enroll(students: Student[], courseName: string): Observable<Student[]> {    
-    return from(students).pipe(
-      mergeMap(student => this.http.post<Student>(`/api/API/students/${courseName}/enroll`, {serial:student.serial})),
-      toArray()
-    );
+  enrollStudent(student: Student, courseName: string): Observable<Student> {    
+    return this.http.post<Student>(`/api/API/students/${courseName}/enroll`, {serial:student.serial})
   }
 
   enrollCSV(file:File, courseName: string): Observable<Student[]>{
@@ -50,8 +51,8 @@ export class StudentService {
   } 
 
   getImage(): Observable<Blob>{
-    const serial = localStorage.getItem("email").split("@")[0];
-    return this.http.get<Blob>(`/api/API/students/${serial}`, { observe: 'body', responseType: 'blob' as 'json' })
+    const studentSerial = localStorage.getItem("serial");
+    return this.http.get<Blob>(`/api/API/students/${studentSerial}/image`, { observe: 'body', responseType: 'blob' as 'json' })
   }
 
   uploadImage(file: File): Observable<Student>{

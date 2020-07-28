@@ -1,32 +1,33 @@
 <div class="container">
+  <div >
+    <h2 style="display:inline-block; margin-right:10px;">Course</h2>
+    <button mat-flat-button (click)="openCourseDialog()"><mat-icon color="primary">edit</mat-icon></button>
+  </div>
+  <div>
+    <mat-label>Add Teacher</mat-label><br/>
+    <app-autocomplete 
+      [options]="allTeachers$"
+      (selectedOption)="selectedOption($event)">
+    </app-autocomplete>
+  </div><br/>
+
   <h2>Students enrolled in the course</h2>
-  <mat-form-field>
-    <mat-label>Add Student</mat-label>
-    <input
-      matInput
-      #search
-      type="search"
-      placeholder="Name of the student"
-      [matAutocomplete]="auto"
-      (keyup)="customFilter(search.value)"
-    />
-    <mat-autocomplete
-      #auto
-      [displayWith]="displayFn"
-      (optionSelected)="studentSelected($event)">
-      <mat-option *ngFor="let option of filteredOptions" [value]="option">
-        {{ option.name }} {{ option.surname }} ({{ option.serial }})
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
+  <div>
+    <mat-label>Add Student</mat-label><br/>
+    <app-autocomplete 
+      [options]="allStudents$"
+      (selectedOption)="selectedOption($event)">
+    </app-autocomplete>
+  </div>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <input type="file"/>
-  <button mat-button (click)="enrollStudent(); search.value = ''">Add</button
-  ><br />
+  <br />
   <button mat-button (click)="removeStudent()">Delete Selected</button>
   
   <app-students-table
-      [students]="_enrolledStudents"
+      [students]="enrolledStudents$"
       (selectedStudents)="changeSelection($event)">
   </app-students-table>
+
+
 </div>

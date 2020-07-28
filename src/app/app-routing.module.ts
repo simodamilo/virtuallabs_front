@@ -5,23 +5,18 @@ import { StartComponent } from './start.component';
 import { RegistrationComponent } from './auth/registration.component';
 
 const routes: Routes = [
-  { path: '',   redirectTo: '/home', pathMatch: 'full' },
+  { path: '',   redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: RegistrationComponent},
   { path: 'teacher', 
     loadChildren: './teacher/teacher.module#TeacherModule', 
-    canActivate: [AuthGuard], 
-    data: { 
-      expectedRole: 'teacher'
-    }
+    canActivate: [AuthGuard]
   },
   { path: 'student', 
     loadChildren: './student/student.module#StudentModule', 
-    canActivate: [AuthGuard],
-    data: { 
-      expectedRole: 'student'
-    }
+    canActivate: [AuthGuard]
   },
-  {path: 'empty', component: StartComponent}
+  {path: 'empty', component: StartComponent},
+  {path: '**', redirectTo: 'home'}
 ];
 
 @NgModule({

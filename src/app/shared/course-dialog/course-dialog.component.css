@@ -1,0 +1,28 @@
+mat-dialog-content{
+    height: 200px;
+}
+
+mat-slide-toggle{
+    margin-top: 16px;
+    float: right;
+}
+
+.error{
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+mat-form-field{
+    width: 100%;
+}
+
+.start-field{
+    vertical-align: auto;
+    display: inline-block;
+    width: 44%;
+}
+
+.end-field{
+    width: 44%;
+    float: right;
+}

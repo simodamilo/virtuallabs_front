@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>{{data== null ? "Add course" : "Modify course"}}</h2>
+<mat-dialog-content>
+  <mat-error class="error">{{ errorMsg }}</mat-error>
+  <form [formGroup]="courseForm">
+    <mat-form-field>
+      <mat-label>Course Name</mat-label>
+      <input
+        matInput
+        formControlName="name"
+        placeholder="Name"
+        type="text"
+        required/>
+      <mat-error *ngIf="courseForm.get('name').invalid">{{getErrorNameMessage()}}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="start-field">
+      <mat-label>Tag</mat-label>
+      <input
+        matInput
+        formControlName="tag"
+        placeholder="tag"
+        type="text"
+        required/>
+      <mat-error *ngIf="courseForm.get('tag').invalid">{{getErrorTagMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-slide-toggle color='primary' [checked]="data== null ? false : data.enabled">status </mat-slide-toggle>
+
+
+    <mat-form-field class="start-field">
+      <mat-label>min team size</mat-label>
+      <input
+        matInput
+        formControlName="min"
+        placeholder="min"
+        type="number"
+        required/>
+      <mat-error *ngIf="courseForm.get('min').invalid">{{getErrorMinMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="end-field">
+      <mat-label>max team size</mat-label>
+      <input
+        matInput
+        formControlName="max"
+        placeholder="max"
+        type="number"
+        required/>
+      <mat-error *ngIf="courseForm.get('max').invalid">{{getErrorMaxMessage()}}</mat-error>
+    </mat-form-field>
+       
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-flat-button (click)="setCourse()">Confirm</button>
+</mat-dialog-actions>

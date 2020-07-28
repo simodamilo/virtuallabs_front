@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/auth/auth.service';
-import { StudentService, TeacherService } from 'src/app/core';
+import { StudentService, TeacherService, Student, Teacher } from 'src/app/core';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -12,7 +12,9 @@ import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 })
 export class ProfileDialogComponent implements OnInit, OnDestroy {
   selectedFile: File;
-  email: string = localStorage.getItem("email");
+  role: string;
+  student: Student = {} as Student;
+  teacher: Teacher = {} as Teacher;
   imageURL: string;
   imageSafeURL: SafeUrl;
 
@@ -24,14 +26,24 @@ export class ProfileDialogComponent implements OnInit, OnDestroy {
     private router: Router) {}
 
   ngOnInit(): void {
-    localStorage.getItem("role")=="student" 
-    ? this.studentService.getImage().subscribe((result) => this.createURL(result))
-    : this.teacherService.getImage().subscribe((result) => this.createURL(result));
+    this.role = localStorage.getItem("role")
+    if(this.role === "student" ){
+      this.studentService.getStudent().subscribe(result=> this.student = result)      
+      this.studentService.getImage().subscribe((result) => this.createURL(result));
+    }
+    else{
+      this.teacherService.getTeacher().subscribe(result=> this.teacher = result)
+      this.teacherService.getImage().subscribe((result) => this.createURL(result));
+    }
   }
 
   createURL(blob: Blob){
+    if(blob.size === 0){
+      this.imageSafeURL = "../../assets/user_icon_black.svg"
+    }else{
     this.imageURL = URL.createObjectURL(blob);
     this.imageSafeURL = this.sanitizer.bypassSecurityTrustUrl(this.imageURL);
+    }
   }
 
   onChangeEvent(event){

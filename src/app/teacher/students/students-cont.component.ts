@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Student, StudentService} from '../../core';
+import { Student, StudentService, Teacher, TeacherService, Course, CourseService} from '../../core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
@@ -9,25 +9,32 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class StudentsContComponent implements OnInit {
   allStudents: Observable<Student[]>;
+  allTeachers: Observable<Teacher[]>;
   enrolledStudents: Observable<Student[]>;
+  course:Observable<Course>
 
   courseName: string;
-  constructor(private studentService: StudentService, private route: ActivatedRoute) {}
+  constructor(private studentService: StudentService,private teacherService: TeacherService, private courseService: CourseService , private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.allStudents = this.studentService.getAllStudents();
+    this.allTeachers = this.teacherService.getAllTeachers();
     this.route.params.subscribe(url =>{
       this.courseName = url["courseName"];
+      this.course = this.courseService.getCourse(url["courseName"]);
       this.enrolledStudents = this.studentService.getEnrolled(url["courseName"])
     })
   }
 
-   enrollStudent(students: Student[]) {
-     this.studentService
-      .enroll(students, this.courseName)
-      .subscribe(
-        () => this.enrolledStudents = this.studentService.getEnrolled(this.courseName)
-      );
+  enroll(option: Student | Teacher) {
+    option.serial.charAt(0)== "s"
+    ? this.studentService
+        .enrollStudent(option, this.courseName)
+        .subscribe(
+        () => this.enrolledStudents = this.studentService.getEnrolled(this.courseName))
+    : this.teacherService
+        .assignTeacher(option, this.courseName)
+        .subscribe(() => console.log("lista professori?"))
   }
 
   enrollCsv(file: File) {
@@ -45,5 +52,11 @@ export class StudentsContComponent implements OnInit {
       .subscribe(
         () => this.enrolledStudents = this.studentService.getEnrolled(this.courseName)
       );
-  } 
+  }   
+
+  changeCourse(course: Course){
+    this.courseService.modifyCourse(course).subscribe(
+      () => this.course = this.courseService.getCourse(this.courseName)
+    )
+  }
 }

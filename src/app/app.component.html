@@ -1,26 +1,25 @@
 <mat-toolbar color="primary">
-  <mat-icon (click)="logged ? sideNav.toggle() : null">menu</mat-icon>
-  <p class="titleLabel" routerLink="/home">VirtualLabs</p>
+  <button mat-icon-button (click)="logged ? sideNav.toggle() : null"><mat-icon >menu</mat-icon></button>
+  <h1>VirtualLabs</h1>
   <span class="example-fill-remaining-space"></span>
-  <button mat-flat-button *ngIf="!logged" color="primary" [routerLink]="['home']" [queryParams]="{doLogin: true}"><mat-icon color="white">login</mat-icon></button>
-  <button mat-mini-fab *ngIf="logged" color="white" (click)="openProfileDialog()"><!--<mat-icon>account_circle</mat-icon>-->
-    <img src="../../assets/4129476_1922_lama.jpg">
-
-  </button>
+  <button mat-icon-button *ngIf="!logged" [routerLink]="['home']" [queryParams]="{doLogin: true}"><mat-icon>login</mat-icon></button>
+  <button mat-icon-button *ngIf="logged" (click)="openProfileDialog()"><img [src]="imageSafeURL"></button>
 </mat-toolbar>
-<mat-toolbar>{{logged ? selectedCourse : "Home"}}</mat-toolbar>
+
+<mat-toolbar><h2>{{logged ? selectedCourse : "Home"}}</h2></mat-toolbar>
 
 <mat-sidenav-container>
+
   <mat-sidenav mode="side" position="start" *ngIf="logged" closed>
-    <div class="container">
-      <mat-nav-list>
-        <a mat-list-item *ngFor="let course of courses"
-        [routerLink]="[role, 'courses', course.name, tabs[0]]" 
-        (click)="setCourse(course.name)">{{course.name}}</a>
-      </mat-nav-list>
-      <button mat-flat-button *ngIf="logged && role == 'teacher'" color="white" (click)="openProfileDialog()"><mat-icon>add</mat-icon></button>
-    </div>
+    <mat-nav-list>
+      <a mat-list-item *ngFor="let course of courses"
+      [routerLink]="[role, 'courses', course.name, tabs[0]]" 
+      (click)="selectedCourse = course.name"><p class="side-element">{{course.name}}</p><mat-divider></mat-divider></a>
+    </mat-nav-list>
+    <button mat-stroked-button class="course-button" color="primary" *ngIf="logged && role == 'teacher'" (click)="openCourseDialog()">New</button>
+
   </mat-sidenav>
+
   <mat-sidenav-content>
     <nav mat-tab-nav-bar *ngIf="logged && courses.length>0">
       <a mat-tab-link *ngFor="let tab of tabs"
@@ -30,4 +29,5 @@
     </nav>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
+
 </mat-sidenav-container>

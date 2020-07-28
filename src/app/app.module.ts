@@ -21,6 +21,7 @@ import { MatListModule } from '@angular/material/list';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { StartComponent } from './start.component';
 import { LoginDialogComponent } from './auth/login-dialog.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { LoginDialogComponent } from './auth/login-dialog.component';
     HttpClientModule,
     MatDialogModule,
     MatSelectModule,
-    MatListModule
+    MatListModule,
+    MatDividerModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],

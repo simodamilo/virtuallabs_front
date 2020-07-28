@@ -1,95 +1,99 @@
-<div class="mat-elevation-z2">
-  <h2 mat-dialog-title>Sign up</h2>
-  <p>{{ errorMsg }}</p>
-  <form [formGroup]="registrationForm">
-    <mat-form-field appearance="outline">
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" placeholder="Name" required />
-      <mat-error *ngIf="registrationForm.get('name').invalid">{{
-        getErrorNameMessage()
-      }}</mat-error>
-    </mat-form-field>
+<div class="container">
+  <img src="../../assets/polito_logo.png">
 
-    <mat-form-field appearance="outline">
-      <mat-label>Surname</mat-label>
-      <input
-        matInput
-        formControlName="surname"
-        placeholder="Surname"
-        required
-      />
-      <mat-error *ngIf="registrationForm.get('surname').invalid">{{
-        getErrorSurnameMessage()
-      }}</mat-error>
-    </mat-form-field>
+  <div class="mat-elevation-z4 content">
+    <h2 mat-dialog-title>Sign up</h2>
+    <p>{{ errorMsg }}</p>
+    <form [formGroup]="registrationForm">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" placeholder="Name" required />
+        <mat-error *ngIf="registrationForm.get('name').invalid">{{
+          getErrorNameMessage()
+        }}</mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Serial</mat-label>
-      <input matInput formControlName="serial" placeholder="Serial" required />
-      <mat-error *ngIf="registrationForm.get('serial').invalid">{{
-        getErrorSerialMessage()
-      }}</mat-error>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Surname</mat-label>
+        <input
+          matInput
+          formControlName="surname"
+          placeholder="Surname"
+          required
+        />
+        <mat-error *ngIf="registrationForm.get('surname').invalid">{{
+          getErrorSurnameMessage()
+        }}</mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
-      <input
-        matInput
-        formControlName="email"
-        placeholder="Email"
-        type="email"
-        required
-      />
-      <mat-error *ngIf="registrationForm.get('email').invalid">{{
-        getErrorEmailMessage()
-      }}</mat-error>
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Serial</mat-label>
+        <input matInput formControlName="serial" placeholder="Serial" required />
+        <mat-error *ngIf="registrationForm.get('serial').invalid">{{
+          getErrorSerialMessage()
+        }}</mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Password</mat-label>
-      <input
-        matInput
-        formControlName="password"
-        placeholder="Password"
-        [type]="hide ? 'password' : 'text'"
-        required
-      />
-      <button
-        mat-icon-button
-        matSuffix
-        (click)="hide = !hide"
-        [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="hide"
-      >
-        <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-      </button>
-      <mat-error *ngIf="registrationForm.get('password').invalid">{{
-        getErrorPasswordMessage()
-      }}</mat-error>
-    </mat-form-field>
+      <mat-form-field >
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          formControlName="email"
+          placeholder="Email"
+          type="email"
+          required
+        />
+        <mat-error *ngIf="registrationForm.get('email').invalid">{{
+          getErrorEmailMessage()
+        }}</mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Confirm Password</mat-label>
-      <input
-        matInput
-        formControlName="confirmPassword"
-        placeholder="Password"
-        [type]="hide ? 'password' : 'text'"
-        required
-      />
-      <button
-        mat-icon-button
-        matSuffix
-        (click)="hide = !hide"
-        [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="hide"
-      >
-        <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-      </button>
-      <mat-error *ngIf="registrationForm.get('confirmPassword').invalid">{{
-        getErrorPasswordMessage()
-      }}</mat-error>
-    </mat-form-field>
-  </form>
-  <button mat-button (click)="registration()">Register</button>
+      <mat-form-field >
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          formControlName="password"
+          placeholder="Password"
+          [type]="hide ? 'password' : 'text'"
+          required
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        <mat-error *ngIf="registrationForm.get('password').invalid">{{
+          getErrorPasswordMessage()
+        }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field >
+        <mat-label>Confirm Password</mat-label>
+        <input
+          matInput
+          formControlName="confirmPassword"
+          placeholder="Password"
+          [type]="hide ? 'password' : 'text'"
+          required
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        <mat-error *ngIf="registrationForm.get('confirmPassword').invalid">{{
+          getErrorConfirmPasswordMessage()
+        }}</mat-error>
+      </mat-form-field>
+    </form>
+    <button mat-flat-button color="primary" (click)="registration()">Register</button>
+  </div>
 </div>
