@@ -68,7 +68,6 @@ export class VmsTableComponent implements AfterViewInit, OnInit {
 
 
   isOwner(vm: VM) {
-    return vm.owners.some(owner => owner.serial === localStorage.getItem("email").split("@")[0]);
+    return vm.owners.some(owner => owner.serial === localStorage.getItem("serial"));
   }
-
 }

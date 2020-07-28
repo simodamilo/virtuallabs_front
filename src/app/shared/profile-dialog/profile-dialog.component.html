@@ -1,8 +1,9 @@
 <mat-dialog-content>
     <div class="center">
         <img [src]="imageSafeURL" class="image">
-        <h4>{{email}}</h4>
-        <button mat-stroked-button (click)="logout()">Logout</button>
+        <h2>{{role === "student" ? student.name+" "+student.surname : teacher.name+" "+teacher.surname}}</h2>
+        <h3>{{role === "student" ? student.email : teacher.email}}</h3>
         <input type="file"  (change)="onChangeEvent($event)"/>
+        <button mat-stroked-button color="primary" (click)="logout()">Logout</button>
     </div>
 </mat-dialog-content>

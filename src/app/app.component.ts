@@ -6,9 +6,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Course, CourseService } from './core';
+import { Course, CourseService, StudentService, TeacherService } from './core';
 import { ProfileDialogComponent } from './shared/profile-dialog/profile-dialog.component';
 import { LoginDialogComponent } from './auth/login-dialog.component';
+import { CourseDialogComponent } from './shared/course-dialog/course-dialog.component';
+import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -27,51 +29,76 @@ export class AppComponent implements OnInit, OnDestroy {
   selectedCourse: string;
   tabs: string[];
   role: string;
+  isAddingCourse: boolean;
+  imageURL: string;
+  imageSafeURL: SafeUrl;
+
   constructor(
     private courseService: CourseService,
-    public dialog: MatDialog,
+    public profileDialog: MatDialog,
+    public loginDialog: MatDialog,
+    public courseDialog: MatDialog,
     private authService: AuthService,
+    private studentService: StudentService,
+    private teacherService: TeacherService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private sanitizer: DomSanitizer,
+    private router: Router,
+  ){}
 
   ngOnInit() {
     this.authService.startUp();
     this.authService.isAuthenticated.subscribe((authenticated) => {
       this.logged = authenticated;
       if (authenticated === true) {
+        this.role = localStorage.getItem("role");
+        this.loadImage();
         this.setTabs();
         this.getCourses();
       }
     });
-    this.routeManagement();
+    this.openLoginDialog();
+  }
+
+  loadImage(){
+    this.role === 'student'
+    ? this.studentService.getImage().subscribe((result) => this.createURL(result))
+    : this.teacherService.getImage().subscribe((result) => this.createURL(result))
+  }
+
+  createURL(blob: Blob){
+    if(blob.size === 0){
+      this.imageSafeURL = "../../assets/user_icon.svg"
+    }else{
+    this.imageURL = URL.createObjectURL(blob);
+    this.imageSafeURL = this.sanitizer.bypassSecurityTrustUrl(this.imageURL);
+    }
+  }
+
+  setTabs() {
+    this.role === 'student'
+    ? this.tabs = ['teams', 'vms', 'assignments']
+    : this.tabs = ['students', 'vms', 'assignments']; 
   }
 
   getCourses() {
     this.courseService.getCourses().subscribe((courses) => {
       this.courses = courses;
-      this.role = localStorage.getItem("role");
       if (this.courses.length == 0) {
         this.router.navigate(['empty']);
-      } else {
-        this.router.navigate([localStorage.getItem("role"), 'courses', this.courses[0].name, this.tabs[0]]);
+      } 
+      else {
+        this.router.navigate([this.role, 'courses', this.courses[0].name, this.tabs[0]]);
         this.selectedCourse = this.courses[0].name;
-        //this.routerLinkActive.isActive;
         this.sideNav.toggle();
       }
     });
   }
 
-  setTabs() {
-    if (localStorage.getItem('role') === 'student')
-      this.tabs = ['teams', 'vms', 'assignments'];
-    else this.tabs = ['students', 'vms', 'assignments']; 
-  }
-
-  routeManagement() {
+  openLoginDialog() {
     this.sub = this.route.queryParams.subscribe((params) => {
       if (params['doLogin'] === 'true') {
-        const dialogRef = this.dialog.open(LoginDialogComponent, {
+        const dialogRef = this.loginDialog.open(LoginDialogComponent, {
           width: '300px',
         });
         dialogRef.afterClosed().subscribe(
@@ -84,20 +111,27 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  setCourse(courseName: string) {
-    this.selectedCourse = courseName;
-    this.routerLinkActive.isActive;
-  }
-
   openProfileDialog() {
-    const dialogRef = this.dialog.open(ProfileDialogComponent, {
+    this.profileDialog.open(ProfileDialogComponent, {
       width: '300px',
       position: { top: '64px', right: '10px' },
       backdropClass: 'backdropBackground',
     });
   }
 
+  openCourseDialog() {
+    const dialogRef =this.courseDialog.open(CourseDialogComponent, {
+      width: '300px',
+      position: { top: '176px', left: '15%' },
+    });
+    dialogRef.afterClosed().subscribe(course => {
+      if(course != null)
+        this.courses = this.courses.concat(course);
+    });
+  }
+
   ngOnDestroy() {
+    URL.revokeObjectURL(this.imageURL);
     this.sub.unsubscribe();
   }
 }

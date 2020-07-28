@@ -25,16 +25,16 @@ export class StudentAssignmentContComponent implements OnInit {
   }
 
   selectedAssignment(assignment: Assignment) {
-    this.solutions$ = this.solutionService.getSolutionHistory(localStorage.getItem("email").split("@")[0], assignment);
+    this.solutions$ = this.solutionService.getSolutionHistory(localStorage.getItem("serial"), assignment);
   }
 
   addSolution(event:{solution:Solution, assignment:Assignment}){
     event.solution.state == 1 
     ? this.solutionService
-        .addReaded(event.solution, event.assignment, localStorage.getItem("email").split("@")[0],)
-        .subscribe(() => this.solutions$ = this.solutionService.getSolutionHistory(localStorage.getItem("email").split("@")[0], event.assignment)) 
+        .addReaded(event.solution, event.assignment, localStorage.getItem("serial"))
+        .subscribe(() => this.solutions$ = this.solutionService.getSolutionHistory(localStorage.getItem("serial"), event.assignment)) 
     : this.solutionService
         .addDelivered(event.solution, event.assignment)
-        .subscribe(() => this.solutions$ = this.solutionService.getSolutionHistory(localStorage.getItem("email").split("@")[0], event.assignment))
+        .subscribe(() => this.solutions$ = this.solutionService.getSolutionHistory(localStorage.getItem("serial"), event.assignment))
   }
 }

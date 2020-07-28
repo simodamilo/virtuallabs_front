@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
@@ -21,7 +21,11 @@ import { SolutionsTableComponent } from './solutions-table/solutions-table.compo
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { StudentsTableComponent } from './students-table/students-table.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
+import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { HttpClientModule } from '@angular/common/http';
+import { CourseDialogComponent } from './course-dialog/course-dialog.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 
 @NgModule({
   declarations: [
@@ -30,7 +34,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ProfileDialogComponent,
     ContentDialogComponent,
     SolutionsTableComponent,
-    StudentsTableComponent
+    StudentsTableComponent,
+    AutocompleteComponent,
+    CourseDialogComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +54,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatDialogModule,
     MatListModule,
     MatTooltipModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatAutocompleteModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    MatSlideToggleModule
   ],
   exports: [
     VmsTableComponent,
@@ -56,7 +66,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ProfileDialogComponent,
     ContentDialogComponent,
     SolutionsTableComponent,
-    StudentsTableComponent
+    StudentsTableComponent,
+    AutocompleteComponent,
+    CourseDialogComponent
   ]
 })
 export class SharedModule { }

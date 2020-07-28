@@ -1,22 +1,41 @@
-.titleLabel {
+h1{
     margin-left: 16px;
+}
+
+h2{
+    margin-left: 12px;
 }
 
 .example-fill-remaining-space {
     flex: 1 1 auto;
 }
 
-p {
-    margin: 0px;
+mat-form-field{
+    width: 45%;
+    margin-left: 10px;
 }
 
 mat-sidenav-container {
-    height: auto;
-    min-height: 100%;
+    height: calc(100% - 128px);
 }
 
-.container {
-    margin: 20px;
+mat-sidenav {
+    width: 15%;
+}
+
+mat-nav-list{
+    padding: 16px;
+}
+
+.side-element{
+    margin:0px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.course-button{
+    margin-left: 16px;
+    width: calc(100% - 32px)
 }
 
 img {
@@ -24,5 +43,4 @@ img {
     width: 40px;
     border-radius: 50%;
 }
-
 

@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Sign up</h2>
 <mat-dialog-content>
-  <p>{{ errorMsg }}</p>
+  <mat-error>{{ errorMsg }}</mat-error>
   <form [formGroup]="loginForm">
     <mat-form-field appearance="outline">
       <mat-label>Email</mat-label>
@@ -11,9 +11,7 @@
         type="email"
         required
       />
-      <mat-error *ngIf="loginForm.get('email').invalid">{{
-        getErrorEmailMessage()
-      }}</mat-error>
+      <mat-error *ngIf="loginForm.get('email').invalid">{{getErrorEmailMessage()}}</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -34,10 +32,9 @@
       >
         <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
       </button>
-      <mat-error *ngIf="loginForm.get('password').invalid">{{
-        getErrorPasswordMessage()
-      }}</mat-error>
+      <mat-error *ngIf="loginForm.get('password').invalid">{{getErrorPasswordMessage()}}</mat-error>
     </mat-form-field>
+    
   </form>
 </mat-dialog-content>
 <mat-dialog-actions>

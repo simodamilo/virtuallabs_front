@@ -4,8 +4,9 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { Student } from '../../core';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Student, Teacher, Course } from '../../core';
+import { CourseDialogComponent } from 'src/app/shared/course-dialog/course-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -14,29 +15,40 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
   styleUrls: ['./students.component.css'],
 })
 export class StudentsComponent{
-  _enrolledStudents: Student[];
   toRemove: Student[] = [];
   selectedAddStudent: Student;
-  filteredOptions: Student[];
-  private _allStudents: Student[];
+  allStudents$: Student[];
+  enrolledStudents$: Student[];
+  allTeachers$: Teacher[];
+  isActive: boolean;
+  _course: Course;
 
-  constructor() {
+  constructor(public courseDialog: MatDialog,) {
   }
 
-  @Input('allStudents') set allStudents(student: Student[]) {
-    this._allStudents = student;
-    this.filteredOptions = student;
+  @Input('allStudents') set allStudents(students: Student[]) {
+    this.allStudents$ = students;
+  }
+  @Input('allTeachers') set allTeachers(teachers: Teacher[]) {
+    this.allTeachers$ = teachers;
+  }
+  @Input('course') set courseStatus(course: Course) {
+    if(course != null){
+    this._course = course
+    this.isActive = course.enabled;
+    }
   }
   @Input('enrolledStudents') set enrolledStudents(students: Student[]) {
     if (students != null) {
-      this._enrolledStudents = [...students];
+      this.enrolledStudents$ = [...students];
     }
   }
-  @Output('enrollStudent') addEmitter = new EventEmitter<Student[]>();
+  @Output('enroll') addEmitter = new EventEmitter<Student | Teacher>();
   @Output('removeStudent') removeEmitter = new EventEmitter<Student[]>();
+  @Output('modifyCourse') courseEmitter =  new EventEmitter<Course>();
+  //@Output('removeTeacher') removeTeacherEmitter = new EventEmitter<Teacher>();
 
   changeSelection(event: Student[]) {
-    console.log(event)
     this.toRemove = [...event];
   }
 
@@ -44,31 +56,15 @@ export class StudentsComponent{
     this.removeEmitter.emit(this.toRemove);
   }
 
-  displayFn(s: Student): string {
-    return `${s.name} ${s.surname} (${s.serial})`;
+  selectedOption(option: Student | Teacher){
+      this.addEmitter.emit(option)
   }
 
-  customFilter(value: string = '') {
-    this.filteredOptions = this._allStudents.filter((s) =>
-      value === ''
-        ? true
-        : `${s.name} ${s.surname} (${s.serial})`
-            .toLowerCase()
-            .includes(value.toLowerCase())
-    );
-  }
-
-  studentSelected(event: MatAutocompleteSelectedEvent) {
-    this.selectedAddStudent = event.option.value;
-  }
-
-  enrollStudent() {
-    if (
-      this.selectedAddStudent != null &&
-      this._enrolledStudents.filter((s) => s.serial == this.selectedAddStudent.serial)
-        .length == 0
-    ) {
-      this.addEmitter.emit([this.selectedAddStudent]);
-    }
+  openCourseDialog() {
+    this.courseDialog.open(CourseDialogComponent, {
+      width: '300px',
+      position: { top: '176px', left: '15%' },
+      data: this._course,
+    });
   }
 }

@@ -51,7 +51,7 @@ export class StudentTeamsContComponent implements OnInit {
 
   proposeTeam(event) {
     let studentSerials = event.students.map((student: Student) => student.serial);
-    studentSerials.push(localStorage.getItem('email').split('@')[0]);
+    studentSerials.push(localStorage.getItem("serial"));
     if(studentSerials.length < this.course.min || studentSerials.length > this.course.max){
       this.errorMsg = "Course constraints are not respected";
     } else {
