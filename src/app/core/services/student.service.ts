@@ -14,19 +14,24 @@ export class StudentService {
 
   getStudent(): Observable<Student> {
     const studentSerial = localStorage.getItem("serial");
-    return this.http.get<Student>(`api/API/students/${studentSerial}`);
+    return this.http.get<Student>(`api/API/students/${studentSerial}/getOne`);
+  }
+
+  getImage(): Observable<Blob>{
+    const studentSerial = localStorage.getItem("serial");
+    return this.http.get<Blob>(`/api/API/students/${studentSerial}/image`, { observe: 'body', responseType: 'blob' as 'json' })
+  }
+
+  getAllStudents(courseName: string): Observable<Student[]> {
+    return this.http.get<Student[]>(`/api/API/students/${courseName}/getAll`);
+  }
+
+  getEnrolled(courseName: string):Observable<Student[]> {
+    return this.http.get<Student[]>(`/api/API/students/${courseName}/getEnrolled`);
   }
 
   getTeamStudents(teamId: number): Observable<Student[]> {
     return this.http.get<Student[]>(`api/API/students/${teamId}/members`);
-  }
-
-  getAllStudents(): Observable<Student[]> {
-    return this.http.get<Student[]>(`/api/API/students`);
-  }
-
-  getEnrolled(courseName: string):Observable<Student[]> {
-    return this.http.get<Student[]>(`/api/API/students/${courseName}/enrolled`);
   }
 
   getAvailable(courseName: string): Observable<Student[]> {
@@ -34,7 +39,7 @@ export class StudentService {
   }
 
   enrollStudent(student: Student, courseName: string): Observable<Student> {    
-    return this.http.post<Student>(`/api/API/students/${courseName}/enroll`, {serial:student.serial})
+    return this.http.post<Student>(`/api/API/students/${courseName}/enroll`, {serial:student.serial});
   }
 
   enrollCSV(file:File, courseName: string): Observable<Student[]>{
@@ -50,14 +55,9 @@ export class StudentService {
     );
   } 
 
-  getImage(): Observable<Blob>{
-    const studentSerial = localStorage.getItem("serial");
-    return this.http.get<Blob>(`/api/API/students/${studentSerial}/image`, { observe: 'body', responseType: 'blob' as 'json' })
-  }
-
-  uploadImage(file: File): Observable<Student>{
+  uploadImage(file: File): Observable<Blob>{
     const formData = new FormData()
     formData.append("imageFile", file)
-    return this.http.put<Student>("/api/API/students/uploadImage", formData)
+    return this.http.put<Blob>("/api/API/students/uploadImage", formData, { observe: 'body', responseType: 'blob' as 'json' })
   }
 }

@@ -19,16 +19,23 @@ mat-sidenav-container {
     height: calc(100% - 128px);
 }
 
+mat-sidenav-content {
+    background-color: white;
+}
+
 mat-sidenav {
     width: 15%;
 }
 
 mat-nav-list{
-    padding: 16px;
+    padding-right: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
 }
 
 .side-element{
     margin:0px;
+    margin-left: 12px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -44,3 +51,13 @@ img {
     border-radius: 50%;
 }
 
+.side-link, .side-link:focus, .link:hover {
+    background-color: rgba(63, 81, 181, 0.1);
+    border-bottom-right-radius: 24px;
+    border-top-right-radius: 24px;
+}
+
+.tab-style {
+    color: #3f51b5;
+    opacity: 1;
+}

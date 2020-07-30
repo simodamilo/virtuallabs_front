@@ -16,7 +16,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-   startUp(){
+  startUp(){
     this.isLoggedIn() 
     ? this.isAuthenticatedSubject.next(true)
     : this.isAuthenticatedSubject.next(false)

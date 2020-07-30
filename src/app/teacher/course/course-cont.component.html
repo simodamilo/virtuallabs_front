@@ -1,0 +1,13 @@
+<app-course
+  [enrolledStudents]="enrolledStudents$ | async"
+  [ownerTeachers]="ownerTeachers$ | async"
+  [allStudents]="allStudents$ | async"
+  [allTeachers]="allTeachers$ | async"
+  [course]="course$ | async"
+  [errorMsgStudent]="errorMsgStudent"
+  [errorMsgTeacher]="errorMsgTeacher"
+  (enroll)="enroll($event)"
+  (updateEnrolled)="updateStudents()"
+  (removeStudents)="removeStudents($event)"
+  (removeTeachers)="removeTeachers($event)">
+</app-course>

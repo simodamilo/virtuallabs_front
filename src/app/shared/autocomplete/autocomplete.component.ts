@@ -9,28 +9,34 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 })
 export class AutocompleteComponent {
 
-  allOptions$: Student[] | Teacher[];
-  filteredOptions$: Student[] | Teacher[];
+  allOptions: Student[] | Teacher[];
+  filteredOptions: Student[] | Teacher[];
   selectedAddOption: Student | Teacher;
+  _type: string;
 
   @Input('options')   
   set options(options: Student[] | Teacher[] ) {
     if (options != null) {
-      this.allOptions$ = [...options];
-      this.filteredOptions$ = [...options];
+      this.allOptions = [...options];
+      this.filteredOptions = [...options];
     }
+  }
+
+  @Input('type')   
+  set type(type: string) {
+    this._type = type;
   }
 
   @Output('selectedOption') optionEmitter = new EventEmitter<Student | Teacher>();
 
   constructor() {}
 
-  displayFn(s: Student): string {
+  displayFn(s: Student | Teacher): string {
     return `${s.name} ${s.surname} (${s.serial})`;
   }
 
   customFilter(value: string = '') {
-    this.filteredOptions$ = this.allOptions$.filter((s) =>
+    this.filteredOptions = this.allOptions.filter((s) =>
       value === ''
         ? true
         : `${s.name} ${s.surname} (${s.serial})`
@@ -44,11 +50,7 @@ export class AutocompleteComponent {
   }
 
   sendOption() {
-    if (
-      this.selectedAddOption != null /* &&
-      this.enrolledStudents$.filter((s) => s.serial == this.selectedAddStudent.serial)
-        .length == 0 */
-    )
+    if (this.selectedAddOption != null)
       this.optionEmitter.emit(this.selectedAddOption)
   }
 }

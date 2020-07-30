@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Course } from '../models';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -8,7 +8,14 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CourseService {
 
+  private courseSubject = new ReplaySubject<Course>(1);
+  public course = this.courseSubject.asObservable();
+
   constructor(private http: HttpClient) { }
+
+  changeCourse() {
+    this.courseSubject.next(null);
+  }
 
   getCourse(courseName: string): Observable<Course> {
     return this.http.get<Course>(`/api/API/courses/${courseName}`);
@@ -30,10 +37,10 @@ export class CourseService {
   }
 
   modifyCourse(course: Course): Observable<Course> {
-    return this.http.put<Course>(`/api/API/courses/`, course)
+    return this.http.put<Course>(`/api/API/courses/`, course);
   }
 
   deleteCourse(course: Course) {
-    return this.http.delete(`/api/API/courses/${course.name}`)
+    return this.http.delete(`/api/API/courses/${course.name}`);
   }
 }

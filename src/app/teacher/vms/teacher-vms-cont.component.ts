@@ -16,11 +16,11 @@ export class TeacherVmsContComponent implements OnInit {
   modelVm$: Observable<ModelVM>;
   vms$: Observable<VM[]>
   courseName: string;
-  errorMsg: string; 
+  errorMsg: string;
 
-  constructor(private route: ActivatedRoute, 
-    private vmService: VmService, 
-    private teamService: TeamService, 
+  constructor(private route: ActivatedRoute,
+    private vmService: VmService,
+    private teamService: TeamService,
     private modelVmService: ModelVmService,
     public dialog: MatDialog) { }
 
@@ -50,8 +50,8 @@ export class TeacherVmsContComponent implements OnInit {
         console.log(modelVm)
         this.modelVm$ = of(modelVm);
       },
-      () => {
-        
+      err => {
+        this.errorMsg = err.error.message;
       }
     );
   }
@@ -60,18 +60,21 @@ export class TeacherVmsContComponent implements OnInit {
     this.modelVmService.deleteModelVm(event.id).subscribe(
       () => {
         this.getModelVm();
+      },
+      err => {
+        this.errorMsg = err.error.message;
       }
     );
   }
 
   modifyTeam(team: Team) {
     this.teamService.modifyTeam(team).subscribe(
-      team => {
+      () => {
         this.errorMsg = "";
         this.getTeams();
       },
       err => {
-        this.errorMsg = "It is not possible to modify team constraints";
+        this.errorMsg = err.error.message;
       }
     );
   }
@@ -81,19 +84,21 @@ export class TeacherVmsContComponent implements OnInit {
     this.vmService.onOffVm(event.vm.id).subscribe(
       vm => {
         this.getVms(event.team);
-        if(vm.active) {
+        if (vm.active) {
           const dialogRef = this.dialog.open(ContentDialogComponent, {
             width: '70%',
             height: '80%',
             panelClass: 'custom-dialog-panel',
-            data: {vm: vm, courseName: this.courseName}
+            data: { vm: vm, courseName: this.courseName }
           });
 
-          //devo mettere la close per farlo spegnere in automatico o deve premere lo studente?
+          dialogRef.afterClosed().subscribe(
+            () => this.vmService.onOffVm(event.vm.id).subscribe(vm => this.getVms(event.team))
+          );
         }
       },
       err => {
-        this.errorMsg = "It is not possible to turn on the Virtual Machine"
+        this.errorMsg = err.error.message;
       }
     );
   }

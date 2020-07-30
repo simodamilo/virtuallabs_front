@@ -6,12 +6,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { StudentsComponent } from './students/students.component';
+import { CourseComponent } from './course/course.component';
 import { TeacherAssignmentComponent } from './assignments/teacher-assignment.component';
 import { TeacherAssignmentContComponent } from './assignments/teacher-assignment-cont.component';
 import { TeacherVmsContComponent } from './vms/teacher-vms-cont.component';
 import { TeacherVmsComponent } from './vms/teacher-vms.component';
-import { StudentsContComponent } from './students/students-cont.component';
+import { CourseContComponent } from './course/course-cont.component';
 import { SharedModule } from '../shared/shared.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -25,13 +25,14 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
     TeacherVmsContComponent,
     TeacherVmsComponent,
-    StudentsContComponent,
-    StudentsComponent,
+    CourseContComponent,
+    CourseComponent,
     TeacherAssignmentContComponent,
     TeacherAssignmentComponent
   ],
@@ -57,7 +58,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatStepperModule,
     MatSelectModule,
     MatSliderModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTooltipModule
   ],
   providers: [MatDatepickerModule]
 })

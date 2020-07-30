@@ -1,7 +1,5 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import {
-  MatSidenav,
-} from '@angular/material/sidenav';
+import { Component, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -24,7 +22,8 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'VirtualLabs';
 
   logged: boolean;
-  sub: Subscription;
+  urlSub: Subscription;
+  authSub: Subscription;
   courses: Course[] = [];
   selectedCourse: string;
   tabs: string[];
@@ -32,6 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   isAddingCourse: boolean;
   imageURL: string;
   imageSafeURL: SafeUrl;
+  selectedTab: string;
 
   constructor(
     private courseService: CourseService,
@@ -48,7 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.authService.startUp();
-    this.authService.isAuthenticated.subscribe((authenticated) => {
+    this.authSub = this.authService.isAuthenticated.subscribe((authenticated) => {
       this.logged = authenticated;
       if (authenticated === true) {
         this.role = localStorage.getItem("role");
@@ -57,7 +57,15 @@ export class AppComponent implements OnInit, OnDestroy {
         this.getCourses();
       }
     });
+    this.reloadCourses();
     this.openLoginDialog();
+  }
+
+  reloadCourses() {
+    this.courseService.course.subscribe(course => {
+      if(course == null)
+        this.getCourses();
+    });
   }
 
   loadImage(){
@@ -76,9 +84,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   setTabs() {
-    this.role === 'student'
-    ? this.tabs = ['teams', 'vms', 'assignments']
-    : this.tabs = ['students', 'vms', 'assignments']; 
+    if(this.role === 'student') {
+      this.tabs = ['teams', 'vms', 'assignments'];
+      this.selectedTab = 'teams';
+    } else {
+      this.tabs = ['course', 'vms', 'assignments']; 
+      this.selectedTab = 'course';
+    }
   }
 
   getCourses() {
@@ -90,17 +102,18 @@ export class AppComponent implements OnInit, OnDestroy {
       else {
         this.router.navigate([this.role, 'courses', this.courses[0].name, this.tabs[0]]);
         this.selectedCourse = this.courses[0].name;
-        this.sideNav.toggle();
       }
+      this.sideNav.open();
     });
   }
 
   openLoginDialog() {
-    this.sub = this.route.queryParams.subscribe((params) => {
+    this.urlSub = this.route.queryParams.subscribe((params) => {
       if (params['doLogin'] === 'true') {
         const dialogRef = this.loginDialog.open(LoginDialogComponent, {
           width: '300px',
         });
+        
         dialogRef.afterClosed().subscribe(
           ()=> {
             if(!localStorage.getItem("jwt"))
@@ -112,26 +125,28 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   openProfileDialog() {
-    this.profileDialog.open(ProfileDialogComponent, {
+    console.log(this.routerLinkActive);
+    const dialogRef = this.profileDialog.open(ProfileDialogComponent, {
       width: '300px',
       position: { top: '64px', right: '10px' },
       backdropClass: 'backdropBackground',
     });
+
+    dialogRef.afterClosed().subscribe(image => {
+      if(image != null)
+        this.createURL(image);
+    });
   }
 
   openCourseDialog() {
-    const dialogRef =this.courseDialog.open(CourseDialogComponent, {
-      width: '300px',
-      position: { top: '176px', left: '15%' },
-    });
-    dialogRef.afterClosed().subscribe(course => {
-      if(course != null)
-        this.courses = this.courses.concat(course);
+    this.courseDialog.open(CourseDialogComponent, {
+      width: '300px'
     });
   }
 
   ngOnDestroy() {
     URL.revokeObjectURL(this.imageURL);
-    this.sub.unsubscribe();
+    this.urlSub.unsubscribe();
+    this.authSub.unsubscribe();
   }
 }

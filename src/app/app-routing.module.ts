@@ -5,8 +5,7 @@ import { StartComponent } from './start.component';
 import { RegistrationComponent } from './auth/registration.component';
 
 const routes: Routes = [
-  { path: '',   redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: RegistrationComponent},
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'teacher', 
     loadChildren: './teacher/teacher.module#TeacherModule', 
     canActivate: [AuthGuard]
@@ -15,8 +14,9 @@ const routes: Routes = [
     loadChildren: './student/student.module#StudentModule', 
     canActivate: [AuthGuard]
   },
-  {path: 'empty', component: StartComponent},
-  {path: '**', redirectTo: 'home'}
+  { path: 'home', component: RegistrationComponent},
+  { path: 'empty', component: StartComponent},
+  { path: '**', redirectTo: 'home'}
 ];
 
 @NgModule({

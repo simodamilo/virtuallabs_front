@@ -25,7 +25,8 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { HttpClientModule } from '@angular/common/http';
 import { CourseDialogComponent } from './course-dialog/course-dialog.component';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle'
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component'
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle'
     SolutionsTableComponent,
     StudentsTableComponent,
     AutocompleteComponent,
-    CourseDialogComponent
+    CourseDialogComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     CommonModule,

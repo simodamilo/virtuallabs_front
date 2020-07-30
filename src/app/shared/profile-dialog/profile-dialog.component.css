@@ -10,6 +10,50 @@ img {
     text-align: center;
 }
 
+.container {
+    width: 100px;
+    height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.bottom-right {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}
+
 h2{
+    margin-top: 8px;
     margin-bottom: 4px;
+}
+
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+    z-index: -1;
+}
+
+.inputfile + label {
+    width: 30px;
+    height: 30px;
+    color: #bdbdbd;
+    background-color: white;
+    display: inline-flex;
+    cursor: pointer; 
+    border-radius: 15px;
+}
+
+.inputfile + label:hover {
+    color: #3f51b5;
+}
+
+.add-photo-icon {
+    margin: auto;
 }

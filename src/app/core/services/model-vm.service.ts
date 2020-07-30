@@ -15,7 +15,7 @@ export class ModelVmService {
     return this.http.get<ModelVM>(`api/API/modelVms/${courseName}`);
   }
 
-  getContent(modelVm: ModelVM): Observable<Blob>{
+  getContent(modelVm: ModelVM): Observable<Blob> {
     return this.http.get<Blob>(`/api/API/modelVms/${modelVm.id}/image`, { observe: 'body', responseType: 'blob' as 'json' })
   }
 
@@ -24,7 +24,7 @@ export class ModelVmService {
     formData.append('imageFile', modelVm.content);
     modelVm.content = null;
     return this.http.post<ModelVM>(`api/API/modelVms/${courseName}`, modelVm).pipe(
-      mergeMap((modelVm):Observable<ModelVM> => this.http.put<ModelVM>(`api/API/modelVms/${modelVm.id}`, formData))
+      mergeMap((modelVm): Observable<ModelVM> => this.http.put<ModelVM>(`api/API/modelVms/${modelVm.id}`, formData))
     );
   }
 

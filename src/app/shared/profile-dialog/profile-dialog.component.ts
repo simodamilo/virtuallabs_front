@@ -17,6 +17,7 @@ export class ProfileDialogComponent implements OnInit, OnDestroy {
   teacher: Teacher = {} as Teacher;
   imageURL: string;
   imageSafeURL: SafeUrl;
+  errorMsg: string = "";
 
   constructor(public dialogRef: MatDialogRef<ProfileDialogComponent>,
     private authService: AuthService,
@@ -41,21 +42,33 @@ export class ProfileDialogComponent implements OnInit, OnDestroy {
     if(blob.size === 0){
       this.imageSafeURL = "../../assets/user_icon_black.svg"
     }else{
-    this.imageURL = URL.createObjectURL(blob);
-    this.imageSafeURL = this.sanitizer.bypassSecurityTrustUrl(this.imageURL);
+      this.imageURL = URL.createObjectURL(blob);
+      this.imageSafeURL = this.sanitizer.bypassSecurityTrustUrl(this.imageURL);
     }
   }
 
   onChangeEvent(event){
-    this.teacherService.uploadImage(event.target.files[0]).subscribe( item =>
-      console.log("eureka")
+    this.role === "student"
+    ? this.studentService.uploadImage(event.target.files[0]).subscribe( 
+      image => {
+        this.createURL(image);
+        this.dialogRef.close(image);
+      }, 
+      () => this.errorMsg = "Something went wrong, try later!"
+    )
+    : this.teacherService.uploadImage(event.target.files[0]).subscribe( 
+      image => {
+        this.createURL(image);
+        this.dialogRef.close(image);
+      }, 
+      () => this.errorMsg = "Something went wrong, try later!"
     )
   }
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['home']);
     this.dialogRef.close();
+    this.router.navigate(['home']);
   }
 
   ngOnDestroy(): void {

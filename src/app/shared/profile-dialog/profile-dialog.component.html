@@ -1,9 +1,15 @@
 <mat-dialog-content>
     <div class="center">
+			<div class="container">
         <img [src]="imageSafeURL" class="image">
+        <div class="bottom-right">
+            <input type="file" id="file" class="inputfile" (change)="onChangeEvent($event)" accept="image/png, image/jpeg"/>
+            <label mat-label for="file" class="mat-elevation-z2"><mat-icon class="add-photo-icon material-icons-outlined">photo_camera</mat-icon></label>
+				</div>
+			</div>
         <h2>{{role === "student" ? student.name+" "+student.surname : teacher.name+" "+teacher.surname}}</h2>
-        <h3>{{role === "student" ? student.email : teacher.email}}</h3>
-        <input type="file"  (change)="onChangeEvent($event)"/>
-        <button mat-stroked-button color="primary" (click)="logout()">Logout</button>
+				<h3>{{role === "student" ? student.email : teacher.email}}</h3>
+				<mat-error>{{errorMsg}}</mat-error>
+        <button mat-stroked-button (click)="logout()">Logout</button>
     </div>
 </mat-dialog-content>

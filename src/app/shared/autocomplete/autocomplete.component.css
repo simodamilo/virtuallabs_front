@@ -1,4 +1,9 @@
 mat-form-field{
     font-size: 16;
-    width: 50%;
+    width: 30%;
+    margin-right: 12px;
+}
+
+button {
+    margin-right: 24px;
 }

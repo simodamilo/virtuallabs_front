@@ -18,38 +18,30 @@ export class VmsTableComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort; 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
+  @Input('vms')
+  set vms(vms: VM[]){ 
+    if(vms != null) {
+      this.dataSource.data = [...vms];
+    }
+  }
+
   @Output() modify = new EventEmitter<VM>();
   @Output() delete = new EventEmitter<number>();
   @Output() onOff = new EventEmitter<VM>();
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor() { 
     if(localStorage.getItem("role") === "student")
       this.isStudent = true;
     else
       this.isStudent = false;
   }
 
+  ngOnInit() {
+  }
+
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-  }
-
-  @Input()
-  set vms(vms: VM[]){ 
-    if(vms != null) {
-      vms.sort(function(a, b) { //TODO fare con matSort?
-        var nameA = a.name.toUpperCase();
-        var nameB = b.name.toUpperCase();
-        if (nameA < nameB)
-          return -1;
-        if (nameA > nameB)
-          return 1;
-        return 0;
-      });
-      this.dataSource.data = [...vms];
-    }
   }
 
 
@@ -62,7 +54,6 @@ export class VmsTableComponent implements AfterViewInit, OnInit {
   }
 
   deleteVm(vmId: number) {
-    console.log("vms");
     this.delete.emit(vmId);
   }
 
