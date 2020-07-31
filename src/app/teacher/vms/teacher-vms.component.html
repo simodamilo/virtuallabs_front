@@ -28,11 +28,11 @@
       <mat-error *ngIf="modelVmForm.get('type').invalid">{{getErrorTypeMessage()}}</mat-error>
     </mat-form-field>
 
-    <input type="file" #modelInput id="file" class="inputfile" (change)="onModelVmSelected($event)"/>
+    <input type="file" #modelInput id="file" class="inputfile" (change)="onModelVmSelected($event.target.files[0])" accept="image/png, image/jpeg"/>
     <label mat-label for="file">Upload modelVM</label>
     <label mat-label *ngIf="fileName != ''" class="filename">{{fileName}}</label>
 
-    <button mat-stroked-button (click)="addModelVm(name.value, type.value)">Add Model</button>
+    <button mat-stroked-button class="add-modelVm-button" (click)="addModelVm(name.value, type.value)">Add Model</button>
   </form>
 
 

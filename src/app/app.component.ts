@@ -145,7 +145,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    URL.revokeObjectURL(this.imageURL);
     this.urlSub.unsubscribe();
     this.authSub.unsubscribe();
   }

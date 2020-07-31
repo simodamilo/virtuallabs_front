@@ -3,7 +3,7 @@
 			<div class="container">
         <img [src]="imageSafeURL" class="image">
         <div class="bottom-right">
-            <input type="file" id="file" class="inputfile" (change)="onChangeEvent($event)" accept="image/png, image/jpeg"/>
+            <input type="file" id="file" class="inputimage" (change)="onChangeEvent($event.target.files[0])" accept="image/png, image/jpeg"/>
             <label mat-label for="file" class="mat-elevation-z2"><mat-icon class="add-photo-icon material-icons-outlined">photo_camera</mat-icon></label>
 				</div>
 			</div>

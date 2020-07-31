@@ -4,10 +4,26 @@ table {
 }
 
 .mat-row.hovered {
-  background: #eee;
+  background: rgba(63, 81, 181, 0.04);
 }
 
 .mat-row.highlighted {
-  background: #999;
+  background: rgba(63, 81, 181, 0.1);
+  ;
 }
 
+.name-column{
+  width: 40%;
+}
+
+.release-date-column{
+  width: 25%;
+}
+
+.deadline-column{
+  width: 25%;
+}
+
+.view-column{
+  width: 10%;
+}

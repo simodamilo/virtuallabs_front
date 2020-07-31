@@ -18,6 +18,8 @@ export class TeacherAssignmentContComponent implements OnInit {
   solutions$: Observable<Solution[]>;
   history$: Observable<Solution[]>;
   courseName: string;
+  errorMsgAssignment: string;
+  errorMsgSolution: string;
 
   constructor(
     private assignmentService: AssignmentService,
@@ -28,43 +30,46 @@ export class TeacherAssignmentContComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((url) => {
       this.courseName = url['courseName'];
-      this.assignments$ = this.assignmentService.getAssignments(
-        url['courseName']
-      );
+      this.assignments$ = this.assignmentService.getAssignments(this.courseName);
     });
   }
 
   addAssignment(assignment: Assignment) {
+    this.resetErrors();
     this.assignmentService
       .add(assignment, this.courseName)
       .subscribe(
-        (item) =>
-          (this.assignments$ = this.assignmentService.getAssignments(
-            this.courseName
-          ))
+        () =>this.assignments$ = this.assignmentService.getAssignments(this.courseName),
+        (err) => this.errorMsgAssignment = err.error.message
       );
   }
 
   addReview(event: { solution: Solution; assignment: Assignment; }) {
-    console.log(event.solution)
+    this.resetErrors();
+
     this.solutionService
       .addReview(event.solution, event.assignment)
       .subscribe(
-        (item) =>
-          (this.solutions$ = this.solutionService.getSolutions(
-            event.assignment.id
-          ))
+        () => this.solutions$ = this.solutionService.getSolutions(event.assignment.id),
+        (err) => this.errorMsgSolution = err.error.message
       );
   }
 
   selectedAssignment(assignment: Assignment) {
+    this.resetErrors();
     this.solutions$ = this.solutionService.getSolutions(assignment.id);
   }
 
   loadHistory(event: { solution: Solution; assignment: Assignment; }) {
+    this.resetErrors();
     this.history$ = this.solutionService.getSolutionHistory(
       event.solution.student.serial,
       event.assignment
     );
+  }
+
+  resetErrors() {
+    this.errorMsgAssignment = "";
+    this.errorMsgSolution = "";
   }
 }

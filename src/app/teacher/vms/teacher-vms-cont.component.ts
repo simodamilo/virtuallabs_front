@@ -68,9 +68,9 @@ export class TeacherVmsContComponent implements OnInit {
   }
 
   modifyTeam(team: Team) {
+    this.errorMsg = "";
     this.teamService.modifyTeam(team).subscribe(
       () => {
-        this.errorMsg = "";
         this.getTeams();
       },
       err => {

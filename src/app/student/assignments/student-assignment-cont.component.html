@@ -1,6 +1,7 @@
 <app-student-assignment
   [assignments]="assignments$ | async"
   [history]="solutions$ | async"
+  [errorMsg] = "errorMsg"
   (selectedEmitter)="selectedAssignment($event)"
   (addSolution)="addSolution($event)"
 >

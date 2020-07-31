@@ -2,7 +2,7 @@
     <mat-sidenav mode="side" position="start" opened>
       <h2>Assignment</h2>
       <app-assignments-table
-        [assignments]="assignments$"
+        [assignments]="_assignments"
         (assignmentSelected)="assignmentSelected($event)"
         (assignmentReaded)="assignmentReaded($event)"
       >
@@ -11,20 +11,18 @@
   
     <mat-sidenav-content>
       <h2>Solution</h2>
-      <div class="mat-elevation-z1" *ngIf="isSolutionDelivarable()">
-        <h4>
-          Add your solution
-        </h4>
-        <input [formControl]="solution" type="file" id="file" class="inputfile" (change)="onSolutionSelected($event)" required/>
-        <label mat-label for="file"><mat-icon>cloud_upload</mat-icon>select your file</label>
-        <br/>
-        <button mat-button (click)="addSolution()">
-          Add
-        </button>
+      <mat-error>{{_errorMsg}}</mat-error>
+      <mat-error *ngIf="showReadError">Read the assignment before to add a solution</mat-error>
+      <div *ngIf="showSolutionDeliverable">
+        <input type="file" #solutionInput id="file" class="inputfile" (change)="onSolutionSelected($event.target.files[0])" accept="image/png, image/jpeg"/>
+        <label mat-label for="file">Upload solution</label>
+        <p *ngIf="solutionFileName != ''" class="filename">{{solutionFileName}}</p>
+        <button mat-stroked-button class="add-solution" (click)="addSolution()">Add Solution</button>
       </div>
-      <br/>
+
       <app-solutions-table
-      [solutions]="history$"
+      [solutions]="_history"
       ></app-solutions-table>
+
     </mat-sidenav-content>
   </mat-sidenav-container>

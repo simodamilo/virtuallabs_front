@@ -125,12 +125,10 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     })
   }
 
-
-
   /* Used to add an image to the modelVm */
-  onModelVmSelected(event) {
-    this._modelVm.content = event.target.files[0]
-    this.fileName = event.target.files[0] ? event.target.files[0].name : "";
+  onModelVmSelected(file:File) {
+    this._modelVm.content = file
+    this.fileName = (file ? file.name : "");
   }
 
   /* Button used to add the modelVm */

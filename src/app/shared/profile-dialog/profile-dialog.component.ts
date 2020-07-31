@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -10,7 +10,7 @@ import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
   templateUrl: './profile-dialog.component.html',
   styleUrls: ['./profile-dialog.component.css']
 })
-export class ProfileDialogComponent implements OnInit, OnDestroy {
+export class ProfileDialogComponent implements OnInit {
   selectedFile: File;
   role: string;
   student: Student = {} as Student;
@@ -47,21 +47,21 @@ export class ProfileDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  onChangeEvent(event){
+  onChangeEvent(file: File){
     this.role === "student"
-    ? this.studentService.uploadImage(event.target.files[0]).subscribe( 
-      image => {
+    ? this.studentService.uploadImage(file).subscribe( 
+      (image) => {
         this.createURL(image);
         this.dialogRef.close(image);
       }, 
-      () => this.errorMsg = "Something went wrong, try later!"
+      (err) => this.errorMsg = err.error.message
     )
-    : this.teacherService.uploadImage(event.target.files[0]).subscribe( 
-      image => {
+    : this.teacherService.uploadImage(file).subscribe( 
+      (image) => {
         this.createURL(image);
         this.dialogRef.close(image);
       }, 
-      () => this.errorMsg = "Something went wrong, try later!"
+      (err) => this.errorMsg = err.error.message
     )
   }
 
@@ -70,9 +70,4 @@ export class ProfileDialogComponent implements OnInit, OnDestroy {
     this.dialogRef.close();
     this.router.navigate(['home']);
   }
-
-  ngOnDestroy(): void {
-    URL.revokeObjectURL(this.imageURL)
-  }
-
 }

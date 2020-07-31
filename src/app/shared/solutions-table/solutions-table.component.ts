@@ -13,7 +13,7 @@ import * as moment from 'moment';
 })
 export class SolutionsTableComponent implements OnInit {
   solutionsDataSource = new MatTableDataSource<Solution>();
-  solutionsCols = ['state', 'deliveryTs', 'grade', 'actions'];
+  solutionsCols = [ 'deliveryTs', 'state', 'grade', 'actions'];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   
@@ -33,9 +33,7 @@ export class SolutionsTableComponent implements OnInit {
       width: '70%',
       height: '80%',
       panelClass: 'custom-dialog-panel',
-      data:{
-        solution: solution
-      }
+      data:{solution: solution}
     });
   }
 

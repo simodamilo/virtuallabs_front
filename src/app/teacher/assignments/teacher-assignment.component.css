@@ -1,8 +1,10 @@
 mat-sidenav-container {
   height:100vh;
+  background-color: white;
 }
 
 mat-sidenav {
+  width: 30%;
   padding: 20px;
   background: none;
 }
@@ -19,3 +21,89 @@ mat-form-field {
   font-size: 16;
 }
 
+.studentColumn {
+  width: 30%;
+  color: rgba(0,0,0,.87);
+  background-color: rgba(63, 81, 181, 0.1);
+}
+
+.gradeColumn {
+  width: 10%;
+  color: rgba(0,0,0,.87);
+  background-color: rgba(63, 81, 181, 0.1);
+}
+
+
+.deliveryTsColumn {
+  width: 20%;
+  color: rgba(0,0,0,.87);
+  background-color: rgba(63, 81, 181, 0.1);
+}
+
+.stateColumn {
+  width: 20%;
+  color: rgba(0,0,0,.87);
+  background-color: rgba(63, 81, 181, 0.1);
+}
+
+.actionsColumn {
+  width: 30%;
+  color: rgba(0,0,0,.87);
+  background-color: rgba(63, 81, 181, 0.1);
+}
+
+.assignment-form{
+  margin-right: 4%;
+  width: 60%
+}
+
+.datapicker-form{
+  width: 36%;
+}
+
+.filename{
+  display: inline-block;
+  margin: auto;
+  vertical-align: middle;
+  width: 30%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.solution-filename{
+  vertical-align: middle;
+  display: inline-block;
+  width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 12px;
+}
+
+.student{
+  margin-bottom: 11.813px;
+}
+
+.top-button{
+  margin-top: 9px;
+}
+
+.inputfile + label{
+  margin: auto;
+}
+
+.add-assignment{
+  margin-bottom: 52px;
+  float: right;
+}
+
+.name{
+  margin:0px;
+}
+.review-button-div{
+  margin-bottom: 20px;
+}
+
+.review-component{
+  margin-right: 12px;
+}

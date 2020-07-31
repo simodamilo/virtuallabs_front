@@ -88,7 +88,7 @@ mat-error {
     margin-bottom: 10px;
 }
 
-button, .inputfile + label, .filename {
+button, .inputfile + label {
     margin-right: 12px;
 }
 
@@ -100,4 +100,19 @@ button, .inputfile + label, .filename {
 .form-width {
     width: 18%;
     min-width: 100px;
+}
+
+.filename{
+    vertical-align: middle;
+    display: inline-block;
+    width: 40%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 12px;
+}
+
+.add-modelVm-button{
+    margin-top: 8px;
+    float: right;
 }

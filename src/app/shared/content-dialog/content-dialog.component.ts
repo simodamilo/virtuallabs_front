@@ -2,7 +2,6 @@ import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SolutionService, AssignmentService, ModelVmService, VmService } from 'src/app/core';
 import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
-import { Url } from 'url';
 
 @Component({
   selector: 'app-content-dialog',
@@ -31,7 +30,10 @@ export class ContentDialogComponent implements OnInit, OnDestroy {
     } else if (this.data.solution != null) {
       this.solutionService
         .getContent(this.data.solution)
-        .subscribe((result) => this.createURL(result));
+        .subscribe((result) =>{ 
+          result.size==0 ? this.imageSafeURL="../../assets/polito_logo.png": this.createURL(result)},
+          
+        (err)=>this.imageSafeURL="../../assets/polito_logo.png" );
     } else if(this.data.modelVm != null) {
       this.modelVmService
         .getContent(this.data.modelVm)

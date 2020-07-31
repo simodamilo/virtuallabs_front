@@ -2,6 +2,8 @@
   [assignments]="assignments$ | async"
   [solutions]="solutions$ | async"
   [history]="history$ | async"
+  [assignmentErrorMsg] = "errorMsgAssignment"
+  [solutionErrorMsg] = "errorMsgSolution"
   (addAssignment)="addAssignment($event)"
   (selectedEmitter)="selectedAssignment($event)"
   (historyEmitter)="loadHistory($event)"

@@ -12,6 +12,7 @@ export class StudentAssignmentContComponent implements OnInit {
 
   assignments$: Observable<Assignment[]>;
   solutions$: Observable<Solution[]>;
+  errorMsg: string;
 
   constructor(
     private assignmentService: AssignmentService,
@@ -25,16 +26,24 @@ export class StudentAssignmentContComponent implements OnInit {
   }
 
   selectedAssignment(assignment: Assignment) {
+    this.errorMsg=""
     this.solutions$ = this.solutionService.getSolutionHistory(localStorage.getItem("serial"), assignment);
   }
 
   addSolution(event:{solution:Solution, assignment:Assignment}){
+    this.errorMsg=""
     event.solution.state == 1 
     ? this.solutionService
         .addReaded(event.solution, event.assignment, localStorage.getItem("serial"))
-        .subscribe(() => this.solutions$ = this.solutionService.getSolutionHistory(localStorage.getItem("serial"), event.assignment)) 
+        .subscribe(
+          () => this.solutions$ = this.solutionService.getSolutionHistory(localStorage.getItem("serial"), event.assignment),
+          (err) => this.errorMsg = err.error.message
+        ) 
     : this.solutionService
         .addDelivered(event.solution, event.assignment)
-        .subscribe(() => this.solutions$ = this.solutionService.getSolutionHistory(localStorage.getItem("serial"), event.assignment))
+        .subscribe(
+          () => this.solutions$ = this.solutionService.getSolutionHistory(localStorage.getItem("serial"), event.assignment),
+          (err) => this.errorMsg = err.error.message
+        )
   }
 }
