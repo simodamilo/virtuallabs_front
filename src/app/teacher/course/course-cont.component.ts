@@ -28,20 +28,20 @@ export class CourseContComponent implements OnInit {
       this.allStudents$ = this.studentService.getAllStudents(this.courseName);
       this.allTeachers$ = this.teacherService.getAllTeachers(this.courseName);
       this.course$ = this.courseService.getCourse(this.courseName);
-      this.enrolledStudents$ = this.studentService.getEnrolled(this.courseName);
+      this.enrolledStudents$ = this.studentService.getEnrolledStudents(this.courseName);
       this.ownerTeachers$ = this.teacherService.getCourseOwners(this.courseName);
     })
   }
 
   enroll(option: Student | Teacher) {
     option.serial.charAt(0) == "s"
-    ? this.studentService.enrollStudent(option, this.courseName).subscribe(
+    ? this.studentService.addStudentToCourse(option, this.courseName).subscribe(
         () => {
           this.resetErrors();
           this.updateStudents();
         },
         (err) => this.errorMsgStudent = err.error.message)
-    : this.teacherService.assignTeacher(option, this.courseName).subscribe(
+    : this.teacherService.addTeacherToCourse(option, this.courseName).subscribe(
         () => {
           this.resetErrors();
           this.updateTeachers();
@@ -50,7 +50,7 @@ export class CourseContComponent implements OnInit {
   }
 
   removeStudents(students: Student[]) {
-    this.studentService.remove(students, this.courseName).subscribe(
+    this.studentService.deleteStudentFromCourse(students, this.courseName).subscribe(
         () => {
           this.resetErrors();
           this.updateStudents();
@@ -59,7 +59,7 @@ export class CourseContComponent implements OnInit {
   }   
 
   removeTeachers(teachers: Teacher[]) {
-    this.teacherService.remove(teachers, this.courseName).subscribe(
+    this.teacherService.deleteTeacherFromCourse(teachers, this.courseName).subscribe(
       () => {
         this.resetErrors();
         this.updateTeachers();
@@ -72,7 +72,7 @@ export class CourseContComponent implements OnInit {
   }
 
   updateStudents() {
-    this.enrolledStudents$ = this.studentService.getEnrolled(this.courseName);
+    this.enrolledStudents$ = this.studentService.getEnrolledStudents(this.courseName);
     this.allStudents$ = this.studentService.getAllStudents(this.courseName);
   }
 

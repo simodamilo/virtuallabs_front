@@ -46,11 +46,11 @@ export class TeacherVmsContComponent implements OnInit {
 
   addModelVm(event) {
     this.modelVmService.addModelVm(event, this.courseName).subscribe(
-      modelVm => {
+      (modelVm) => {
         console.log(modelVm)
         this.modelVm$ = of(modelVm);
       },
-      err => {
+      (err) => {
         this.errorMsg = err.error.message;
       }
     );
@@ -69,7 +69,7 @@ export class TeacherVmsContComponent implements OnInit {
 
   modifyTeam(team: Team) {
     this.errorMsg = "";
-    this.teamService.modifyTeam(team).subscribe(
+    this.teamService.setTeamParams(team).subscribe(
       () => {
         this.getTeams();
       },

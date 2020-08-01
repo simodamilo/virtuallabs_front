@@ -41,13 +41,9 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSidenavModule,
     MatTabsModule,
     MatButtonModule,
-    MatInputModule,
-    MatFormFieldModule,
-    HttpClientModule,
     MatDialogModule,
-    MatSelectModule,
     MatListModule,
-    MatDividerModule
+    HttpClientModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent],

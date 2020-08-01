@@ -30,11 +30,11 @@ export class ProfileDialogComponent implements OnInit {
     this.role = localStorage.getItem("role")
     if(this.role === "student" ){
       this.studentService.getStudent().subscribe(result=> this.student = result)      
-      this.studentService.getImage().subscribe((result) => this.createURL(result));
+      this.studentService.getStudentImage().subscribe((result) => this.createURL(result));
     }
     else{
       this.teacherService.getTeacher().subscribe(result=> this.teacher = result)
-      this.teacherService.getImage().subscribe((result) => this.createURL(result));
+      this.teacherService.getTeacherImage().subscribe((result) => this.createURL(result));
     }
   }
 

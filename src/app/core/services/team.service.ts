@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Team } from '../models/team.model';
 import { Observable, forkJoin, of, from } from 'rxjs';
 import { mergeMap, map, catchError } from 'rxjs/operators';
-import { Student, Token } from '..';
+import { Student, Token, Course } from '..';
 
 @Injectable({
   providedIn: 'root'
@@ -14,33 +14,16 @@ export class TeamService {
 
   getStudentTeamByCourse(courseName: string): Observable<Team> {
     return this.http.get<Team>(`api/API/teams/${courseName}/student`).pipe(
-      mergeMap(team => this.http.get<Student[]>(`api/API/students/${team.id}/members`).pipe(
-        map((members: Student[]) => {
-          team.members = members;
-          return team;
-        })))
+      mergeMap(team => {
+        //console.log(team._links.members)
+        return this.http.get<Student[]>(`api/API/students/${team.id}/members`).pipe(
+          map((members: Student[]) => {
+            team.members = members;
+            return team;
+          })
+        )
+      })
     );
-  }
-
-  getCourseTeams(courseName: string): Observable<Team[]> {
-    return this.http.get<Team[]>(`api/API/teams/courses/${courseName}`).pipe(
-      mergeMap( teams =>
-        forkJoin( teams.map( team =>
-          this.http.get<Student[]>(`api/API/students/${team.id}/members`).pipe(
-            map((members: Student[]) => {
-              team.members = members;
-              return team;
-            }))
-      )))
-    );
-  }
-
-  modifyTeam(team: Team): Observable<Team> {
-    return this.http.put<Team>(`api/API/teams`, team);
-  }
-
-  proposeTeam(courseName: string, teamName: string, timeout: number, studentSerials: string[]): Observable<Team> {
-    return this.http.post<Team>(`api/API/teams/${courseName}`, {name: teamName, serials: studentSerials, timeout: timeout});
   }
 
   getPendingTeams(courseName: string): Observable<Team[]> {
@@ -59,6 +42,27 @@ export class TeamService {
         )
         )
     );
+  }
+
+  getCourseTeams(courseName: string): Observable<Team[]> {
+    return this.http.get<Team[]>(`api/API/teams/courses/${courseName}`).pipe(
+      mergeMap( teams =>
+        forkJoin( teams.map( team =>
+          this.http.get<Student[]>(`api/API/students/${team.id}/members`).pipe(
+            map((members: Student[]) => {
+              team.members = members;
+              return team;
+            }))
+      )))
+    );
+  }
+
+  proposeTeam(courseName: string, teamName: string, timeout: number, studentSerials: string[]): Observable<Team> {
+    return this.http.post<Team>(`api/API/teams/${courseName}`, {name: teamName, serials: studentSerials, timeout: timeout});
+  }
+
+  setTeamParams(team: Team): Observable<Team> {
+    return this.http.put<Team>(`api/API/teams`, team);
   }
 
   acceptTeam(token: Token): Observable<Team> {

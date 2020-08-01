@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Team, TeamService, StudentService, Student, Course, CourseService } from 'src/app/core';
+import { Team, TeamService, StudentService, Student, Course, CourseService, Token } from 'src/app/core';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -13,83 +13,52 @@ export class StudentTeamsContComponent implements OnInit {
   team$: Observable<Team>;
   pendingTeams$: Observable<Team[]>
   availableStudents$: Observable<Student[]>
-  course: Course;
   errorMsg: string;
   errorRequestMsg: string;
+  courseName: string;
 
   constructor(private route: ActivatedRoute,
     private teamService: TeamService,
-    private studentService: StudentService,
-    private courseService: CourseService) { }
+    private studentService: StudentService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.getCourse(params['courseName']);
-      this.getTeam(params['courseName']);
-      this.getAvailableStudents(params['courseName']);
-      this.getPendingTeams(params['courseName']);
+      this.courseName = params['courseName'];
+      this.team$ = this.teamService.getStudentTeamByCourse(this.courseName);
+      this.availableStudents$ = this.studentService.getAvailableStudents(this.courseName);
+      this.pendingTeams$ = this.teamService.getPendingTeams(this.courseName);
     });
   }
 
-  getCourse(courseName: string) {
-    this.courseService.getCourseById(courseName).subscribe(c => {
-      this.course = c;
-    });
-  }
-
-  getTeam(courseName: string) {
-    this.team$ = this.teamService.getStudentTeamByCourse(courseName);
-  }
-
-  getAvailableStudents(courseName: string) {
-    this.availableStudents$ = this.studentService.getAvailable(courseName);
-  }
-
-  getPendingTeams(courseName: string) {
-    this.pendingTeams$ = this.teamService.getPendingTeams(courseName);
-  }
-
-  proposeTeam(event) {
+  proposeTeam(event: any) {
+    this.errorMsg = "";
     let studentSerials = event.students.map((student: Student) => student.serial);
     studentSerials.push(localStorage.getItem("serial"));
-    if(studentSerials.length < this.course.min || studentSerials.length > this.course.max){
-      this.errorMsg = "Course constraints are not respected";
-    } else {
-      this.teamService.proposeTeam(this.course.name, event.name, event.timeout, studentSerials).subscribe(
-        team => {
-          this.errorMsg = "";
-          this.getAvailableStudents(this.course.name);
-          this.getPendingTeams(this.course.name);
-        },
-        err => {
-          this.errorMsg = "Some problems occur, please try again!"
-        }
-      );
-    }
-  }
-
-  acceptTeam(event) {
-    this.teamService.acceptTeam(event).subscribe(
+    this.teamService.proposeTeam(this.courseName, event.name, event.timeout, studentSerials).subscribe(
       () => {
-        this.getTeam(this.course.name);
-        this.getPendingTeams(this.course.name);
-        this.errorRequestMsg = "";
+        this.studentService.getAvailableStudents(this.courseName);
+        this.teamService.getPendingTeams(this.courseName);
       },
-      () => {
-        this.errorRequestMsg = "It is not possible to accept the request";
-      }
+      (err) => this.errorMsg = err.error.message
     );
   }
 
-  rejectTeam(event) {
-    this.teamService.rejectTeam(event).subscribe(
+  acceptTeam(event: Token) {
+    this.errorRequestMsg = "";
+    this.teamService.acceptTeam(event).subscribe(
       () => {
-        this.getPendingTeams(this.course.name);
-        this.errorRequestMsg = "";
+        this.team$ = this.teamService.getStudentTeamByCourse(this.courseName);
+        this.pendingTeams$ = this.teamService.getPendingTeams(this.courseName);
       },
-      () => {
-        this.errorRequestMsg = "It is not possible to reject the request";
-      }
+      (err) => this.errorRequestMsg = err.error.message
+    );
+  }
+
+  rejectTeam(event: Token) {
+    this.errorRequestMsg = "";
+    this.teamService.rejectTeam(event).subscribe(
+      () => this.pendingTeams$ = this.teamService.getPendingTeams(this.courseName),
+      (err) => this.errorRequestMsg = err.error.message
     );
   }
 }

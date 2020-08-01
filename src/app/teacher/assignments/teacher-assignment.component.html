@@ -25,7 +25,7 @@
     <input type="file" #assignmentInput id="assignmentFile" class="inputfile" (change)="addAssignmentContent($event.target.files[0])" accept="image/png, image/jpeg"/>
     <label mat-label for="assignmentFile">Upload content</label>
     <p *ngIf="assignmentFileName != ''" class="filename">{{assignmentFileName}}</p>
-    <button mat-stroked-button class="add-assignment" (click)="addAssignment()">Add assignment</button>
+    <button mat-stroked-button class="add-assignment" (click)="addAssignment()">Confirm</button>
 
     <app-assignments-table 
       [assignments]="assignments$" 

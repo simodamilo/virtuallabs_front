@@ -23,6 +23,7 @@ export class StudentVmsComponent {
   _team: Team;
   _teamStudents: Student[];
   _vms: VM[];
+  newOwners: Student[] = [];
   ram: number;
   vcpu: number;
   disk: number;
@@ -62,7 +63,11 @@ export class StudentVmsComponent {
 
   @Input()
   set teamStudents(students: Student[]){
-    this._teamStudents = students;
+    if(students != null) {
+      this.vm.id == null
+      ? this._teamStudents = students.filter(student => student.serial != localStorage.getItem('serial'))
+      : this._teamStudents = students.filter(student => !(this.vm.owners.filter(s1 => s1.serial == student.serial).length > 0));
+    }
   }
 
   @Output('add') add = new EventEmitter<VM>();
@@ -80,11 +85,11 @@ export class StudentVmsComponent {
 
   closeStepper() {
     this.showAddDiv = false;
-    this._errorMsg = "";
+    this.newOwners = [];
   }
 
   modifyOpenStepper(vm: VM) {
-    this.vm = {id: vm.id, name: vm.name, vcpu: vm.vcpu, disk: vm.disk, ram: vm.ram, owners: []};
+    this.vm = {id: vm.id, name: vm.name, vcpu: vm.vcpu, disk: vm.disk, ram: vm.ram, owners: vm.owners};
     this.open();
   }
 
@@ -99,7 +104,6 @@ export class StudentVmsComponent {
         this.disk -= vm.disk;
       }
     });
-    this._errorMsg = "";
     this.getStudents.emit(this._team.id);
     this.showAddDiv = true;
     if(this.stepper !== undefined)
@@ -107,13 +111,15 @@ export class StudentVmsComponent {
   }
 
 
-  /* Used to perform operation of buttons in view */
+  /* Used to perform operation of buttons in table */
   confirmVm() {
+    this.vm.owners = this.newOwners;
     if(this.vm.id === null)
       this.add.emit(this.vm);
     else
       this.modify.emit(this.vm);
     this.showAddDiv = false;
+    this.newOwners = [];
   }
 
   onOffVm(vm: VM) {
@@ -130,13 +136,13 @@ export class StudentVmsComponent {
 
   /* Used to manage the list of new owners */
   addStudent(event: MatSelectChange) {
-    if(!this.vm.owners.includes(event.value))
-      this.vm.owners.push(event.value);
+    if(!this.newOwners.includes(event.value))
+      this.newOwners.push(event.value);
     this.select.value = "";
   }
 
   removeStudent(removedStudent: Student) {
-    if(this.vm.owners.includes(removedStudent))
-      this.vm.owners.splice(this.vm.owners.indexOf(removedStudent), 1);
+    if(this.newOwners.includes(removedStudent))
+      this.newOwners.splice(this.vm.owners.indexOf(removedStudent), 1);
   }
 }

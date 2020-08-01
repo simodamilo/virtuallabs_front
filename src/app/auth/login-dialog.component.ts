@@ -40,9 +40,9 @@ export class LoginDialogComponent {
       return 'You must enter a value';
     }
 
-    return this.loginForm.get('password').hasError('pattern')
-      ? 'Password must contains at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number'
-      : '';
+    return this.loginForm.get('password').hasError('pattern') 
+    ? 'At least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number'
+    : '';
   }
 
   login() {

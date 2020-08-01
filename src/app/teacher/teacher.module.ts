@@ -53,7 +53,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatNativeDateModule,
     MatCheckboxModule,
     MatOptionModule,
-    MatAutocompleteModule,
     MatListModule,
     MatStepperModule,
     MatSelectModule,

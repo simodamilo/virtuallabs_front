@@ -1,45 +1,43 @@
 <div class="container">
 
     <h2>Virtual Machine Model</h2>
-    <div class="mat-elevation-z1 insert-vm" *ngIf="showModelView">
-        <h3>The Virtual Machine model "{{_modelVm.name}}" is available, the {{_modelVm.type}} type is setted.</h3>
-    </div>
+    <div *ngIf="showModelView">
+        <p class="model-description">The Virtual Machine model "{{_modelVm.name}}" is available, the {{_modelVm.type}} type is setted.</p>
+    </div><br/>
 
-    <br>
-    <h2>Virtual Machines</h2>
-    <div class="fabButton" *ngIf="showAddButton && showModelView">
-        <button mat-mini-fab color="primary" aria-label="Add a new Virtual Machine" (click)="addOpenStepper()">
+    <div>
+        <h2>Virtual Machines</h2>
+        <button mat-mini-fab class="fabButton" *ngIf="showAddButton && showModelView" color="primary" aria-label="Add a new Virtual Machine" (click)="addOpenStepper()">
             <mat-icon>add</mat-icon>
         </button>
     </div>
-    <br>
-    <p class="errorMsg">{{_errorMsg}}</p>
+    <mat-error class="error">{{_errorMsg}}</mat-error>
     
     <!-- It is used to add or modify a Virtual Machine -->
-    <div class="mat-elevation-z1 insert-vm" *ngIf="showAddDiv">
+    <div class="mat-elevation-z2 insert-vm" *ngIf="showAddDiv">
         <mat-horizontal-stepper linear #stepper>
             <mat-step label="Name">
                 <mat-form-field class="name">
                     <mat-label>Name</mat-label>
                     <input matInput [(ngModel)]="vm.name">
                 </mat-form-field>
-                <div class="stepperButton">
-                    <button mat-button (click)="closeStepper()">Close</button>
-                    <button mat-button matStepperNext>Next</button>
+                <div>
+                    <button mat-stroked-button class="stepperButton" (click)="closeStepper()">Close</button>
+                    <button mat-flat-button color="primary" matStepperNext>Next</button>
                 </div>
             </mat-step>
 
-            <mat-step label="Config">
+            <mat-step label="Configuration">
                 <div>
-                    <mat-slider [max]="ram" [(ngModel)]="vm.ram"></mat-slider>
+                    <mat-slider class="slider" color="primary" [max]="ram" [(ngModel)]="vm.ram"></mat-slider>
                     <mat-form-field>
-                        <mat-label>Ram</mat-label>
+                        <mat-label>Ram (GB)</mat-label>
                         <input matInput type="number" [max]="ram" [(ngModel)]="vm.ram">
                     </mat-form-field>
-                    <p>Max available ram: {{ram}}</p>
+                    <p>Max available ram: {{ram}} GB</p>
                 </div>
                 <div>
-                    <mat-slider [max]="vcpu" [(ngModel)]="vm.vcpu"></mat-slider>
+                    <mat-slider class="slider" color="primary" [max]="vcpu" [(ngModel)]="vm.vcpu"></mat-slider>
                     <mat-form-field>
                         <mat-label>VCpu</mat-label>
                         <input matInput type="number" [max]="vcpu" [(ngModel)]="vm.vcpu">
@@ -47,54 +45,53 @@
                     <p>Max available vcpu: {{vcpu}}</p>
                 </div>
                 <div>
-                    <mat-slider [max]="disk" [(ngModel)]="vm.disk"></mat-slider>
+                    <mat-slider class="slider" color="primary" [max]="disk" [(ngModel)]="vm.disk"></mat-slider>
                     <mat-form-field>
-                        <mat-label>Disk</mat-label>
+                        <mat-label>Disk (GB)</mat-label>
                         <input matInput type="number" [max]="disk" [(ngModel)]="vm.disk">
                     </mat-form-field>
-                    <p>Max available disk: {{disk}}</p>
+                    <p>Max available disk: {{disk}} GB</p>
                 </div>
-                <div class="stepperButton">
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button matStepperNext>Next</button>
+                <div>
+                    <button mat-stroked-button class="stepperButton" matStepperPrevious>Back</button>
+                    <button mat-flat-button color="primary" matStepperNext>Next</button>
                 </div>
             </mat-step>
 
             <mat-step label="Other owners">
                 <h3>Add other owners to the virtual machine</h3>
-                <mat-form-field class="name">
+                <mat-form-field class="select">
                     <mat-label>Select</mat-label>
                     <mat-select #matSelect (selectionChange)="addStudent($event)">
                         <mat-option *ngFor="let option of _teamStudents" [value]="option">{{option.name + " " + option.surname}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-                <div *ngFor="let option of vm.owners" value="option">
-                    <button mat-icon-button color="primary" aria-label="Delete student" (click)="removeStudent(option)">
+                <div *ngFor="let option of newOwners" value="option">
+                    <button mat-icon-button class="icon" color="primary" aria-label="Delete student" (click)="removeStudent(option)">
                         <mat-icon>delete</mat-icon>
                     </button>
                     <p>{{option.name + " " + option.surname}}</p>
                 </div>
-                <div class="stepperButton">
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button matStepperNext>Next</button>
+                <div>
+                    <button mat-stroked-button class="stepperButton" matStepperPrevious>Back</button>
+                    <button mat-flat-button color="primary" matStepperNext>Next</button>
                 </div>
             </mat-step>
 
             <mat-step label="Summary">
-                <h3>Summary configuration</h3>
+                <p class="summary">Ram: {{vm.ram}} GB</p>
+                <p class="summary">VCpu: {{vm.vcpu}}</p>
+                <p class="summary">Disk: {{vm.disk}} GB</p>
+               
+                <h3 *ngIf="newOwners.length > 0" class="other-owners">Other owners</h3>
+                <div *ngFor="let option of newOwners" value="option">
+                    <p class="summary">{{option.name + " " + option.surname}}</p>
+                </div>
+                
                 <div>
-                    <p>Ram: {{vm.ram}}</p>
-                    <p>VCpu: {{vm.vcpu}}</p>
-                    <p>Disk: {{vm.disk}}</p>
-                </div>
-                <h3 *ngIf="vm.owners.length">Other owners</h3>
-                <div *ngFor="let option of vm.owners" value="option">
-                    <p>{{option.name + " " + option.surname}}</p>
-                </div>
-                <!-- <p class="error">{{_errorMsg}}</p> -->
-                <div class="stepperButton">
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button (click)="confirmVm()">Confirm</button>
+                    <button mat-stroked-button class="stepperButton" matStepperPrevious>Back</button>
+                    <button mat-stroked-button class="stepperButton" (click)="closeStepper()">Close</button>
+                    <button mat-flat-button color="primary" (click)="confirmVm()">Confirm</button>
                 </div>
             </mat-step> 
           </mat-horizontal-stepper>
@@ -106,4 +103,4 @@
                 (modify)="modifyOpenStepper($event)"
                 (delete)="deleteVm($event)">
     </app-vms-table>
-  </div>
+</div>

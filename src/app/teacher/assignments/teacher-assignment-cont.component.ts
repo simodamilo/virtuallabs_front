@@ -30,16 +30,16 @@ export class TeacherAssignmentContComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((url) => {
       this.courseName = url['courseName'];
-      this.assignments$ = this.assignmentService.getAssignments(this.courseName);
+      this.assignments$ = this.assignmentService.getCourseAssignments(this.courseName);
     });
   }
 
   addAssignment(assignment: Assignment) {
     this.resetErrors();
     this.assignmentService
-      .add(assignment, this.courseName)
+      .addAssignment(assignment, this.courseName)
       .subscribe(
-        () =>this.assignments$ = this.assignmentService.getAssignments(this.courseName),
+        () =>this.assignments$ = this.assignmentService.getCourseAssignments(this.courseName),
         (err) => this.errorMsgAssignment = err.error.message
       );
   }
@@ -48,21 +48,21 @@ export class TeacherAssignmentContComponent implements OnInit {
     this.resetErrors();
 
     this.solutionService
-      .addReview(event.solution, event.assignment)
+      .addSolutionReview(event.solution, event.assignment)
       .subscribe(
-        () => this.solutions$ = this.solutionService.getSolutions(event.assignment.id),
+        () => this.solutions$ = this.solutionService.getAssignmentSolutions(event.assignment.id),
         (err) => this.errorMsgSolution = err.error.message
       );
   }
 
   selectedAssignment(assignment: Assignment) {
     this.resetErrors();
-    this.solutions$ = this.solutionService.getSolutions(assignment.id);
+    this.solutions$ = this.solutionService.getAssignmentSolutions(assignment.id);
   }
 
   loadHistory(event: { solution: Solution; assignment: Assignment; }) {
     this.resetErrors();
-    this.history$ = this.solutionService.getSolutionHistory(
+    this.history$ = this.solutionService.getStudentSolutions(
       event.solution.student.serial,
       event.assignment
     );

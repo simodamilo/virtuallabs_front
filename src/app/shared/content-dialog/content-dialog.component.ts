@@ -5,8 +5,8 @@ import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-content-dialog',
-  templateUrl: './content-dialog.component.html',
-  styles: ['img { height:100%; width: 100%; margin: 0;}'],
+  template: '<img class="images" [src]="imageSafeURL"/>',
+  styles: ['img { height:auto; width: 100%; margin: 0;}'],
 })
 export class ContentDialogComponent implements OnInit, OnDestroy {
   imageURL: string;
@@ -25,23 +25,28 @@ export class ContentDialogComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.data.assignment != null) {
       this.assignmentService
-        .getContent(this.data.assignment)
-        .subscribe((result) => this.createURL(result));
+        .getAssignmentContent(this.data.assignment)
+        .subscribe(
+          (result) => this.createURL(result),
+          () => this.imageSafeURL = "../../assets/image_error.png" );
     } else if (this.data.solution != null) {
       this.solutionService
-        .getContent(this.data.solution)
-        .subscribe((result) =>{ 
-          result.size==0 ? this.imageSafeURL="../../assets/polito_logo.png": this.createURL(result)},
-          
-        (err)=>this.imageSafeURL="../../assets/polito_logo.png" );
+        .getSolutionContent(this.data.solution)
+        .subscribe(
+          (result) => result.size==0 ? this.imageSafeURL="../../assets/image_error.png" : this.createURL(result),
+          () => this.imageSafeURL = "../../assets/image_error.png" );
     } else if(this.data.modelVm != null) {
       this.modelVmService
-        .getContent(this.data.modelVm)
-        .subscribe((result) => this.createURL(result));
+        .getModelVmContent(this.data.modelVm)
+        .subscribe(
+          (result) => this.createURL(result),
+          () => this.imageSafeURL = "../../assets/image_error.png" );
     } else if(this.data.vm) {
       this.vmService
         .getContent(this.data.courseName)
-        .subscribe((result) => this.createURL(result));
+        .subscribe(
+          (result) => this.createURL(result),
+          () => this.imageSafeURL = "../../assets/image_error.png" );
     }
   }
 

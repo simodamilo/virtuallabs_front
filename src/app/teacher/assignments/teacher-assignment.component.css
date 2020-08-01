@@ -90,6 +90,8 @@ mat-form-field {
 
 .inputfile + label{
   margin: auto;
+  margin-right: 12px;
+  margin-bottom: 12px;
 }
 
 .add-assignment{

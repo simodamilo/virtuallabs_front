@@ -1,4 +1,4 @@
-h2 {
+.container {
     margin: 20px;
 }
 
@@ -7,43 +7,36 @@ mat-list-item-content {
 }
 
 table {
-    width: 90%;
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-bottom: 20px;
-}
-
-.nameColumn {
-    width: 33%;
-}
-
-.surnameColumn {
-    width: 33%;
-}
-
-.serialColumn {
-    width: 33%;
+    width: 100%;
 }
 
 mat-form-field {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    margin-right: 12px;
     width: 20%;
-    margin-left: 5%;
 }
 
 button {
-    margin-bottom: 30px;
-    margin-left: 5%;
+    margin-bottom: 20px;
 }
 
-.errorMsg {
-    margin-top: 0px;
-    margin-left: 20px;
-    margin-bottom: 30px;
-    font-size: large;
-    color: red;
-}
-
-.membersHeader {
+.membersColumn {
+    width: 40%;
     padding-left: 16px;
+    color: rgba(0,0,0,.87);
+    background-color: rgba(63, 81, 181, 0.1);
+}
+
+.teamNameColumn, .actionsColumn {
+    width: 30%;
+    color: rgba(0,0,0,.87);
+    background-color: rgba(63, 81, 181, 0.1);
+}
+
+.request-header {
+    margin-top: 20px;
+}
+
+.list-item {
+    height: 36px;
 }

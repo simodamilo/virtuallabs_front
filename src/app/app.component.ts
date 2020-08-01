@@ -70,8 +70,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   loadImage(){
     this.role === 'student'
-    ? this.studentService.getImage().subscribe((result) => this.createURL(result))
-    : this.teacherService.getImage().subscribe((result) => this.createURL(result))
+    ? this.studentService.getStudentImage().subscribe((result) => this.createURL(result))
+    : this.teacherService.getTeacherImage().subscribe((result) => this.createURL(result))
   }
 
   createURL(blob: Blob){
@@ -111,7 +111,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.urlSub = this.route.queryParams.subscribe((params) => {
       if (params['doLogin'] === 'true') {
         const dialogRef = this.loginDialog.open(LoginDialogComponent, {
-          width: '300px',
+          width: '320px',
         });
         
         dialogRef.afterClosed().subscribe(
@@ -125,7 +125,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   openProfileDialog() {
-    console.log(this.routerLinkActive);
     const dialogRef = this.profileDialog.open(ProfileDialogComponent, {
       width: '300px',
       position: { top: '64px', right: '10px' },

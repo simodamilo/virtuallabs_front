@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, from, forkJoin } from 'rxjs';
-import { VM, Team, Student, ModelVM } from '../models';
-import { mergeMap, toArray, map } from 'rxjs/operators';
-import { CdkMonitorFocus } from '@angular/cdk/a11y';
+import { Observable, from, forkJoin, of } from 'rxjs';
+import { VM, Student, ModelVM } from '../models';
+import { mergeMap, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -29,32 +28,36 @@ export class VmService {
     return this.http.get<VM[]>(`api/API/vms/courses/${courseName}`);
   }
 
-  addVmService(vm: VM, teamId: number): Observable<VM> {
-    return this.http.post<VM>(`api/API/vms/${teamId}`, vm);
-    /* const studentsSerial = vm.owners.map(student => student.serial);
-    vm.owners = null;
-    this.http.post<VM>(`api/API/vms/${teamId}`, vm).subscribe( vm => {
-      from(studentsSerial).pipe(
-        mergeMap(serial => this.http.put<VM>(`/api/API/vms/${vm.id}/addOwner/${serial}`, null)),
-        toArray()
-      );
-    }) */
+  addVm(vm: VM, teamId: number): Observable<VM> {
+    return this.http.post<VM>(`api/API/vms/${teamId}`, vm).pipe(
+      mergeMap((vm1): Observable<VM> => {
+        if(vm.owners.length > 0) {
+          return from(vm.owners).pipe(
+            mergeMap(student => this.http.put<VM>(`/api/API/vms/${vm1.id}/addOwner/${student.serial}`, null))
+          )
+        } else {
+          return of(vm1);
+        }
+      })
+    );
   }
 
-  addOwner(students: Student[], vmId: number): Observable<VM[]> {
-    const studentsSerial = students.map(student => student.serial);
-    return from(studentsSerial).pipe(
-      mergeMap(serial => this.http.put<VM>(`/api/API/vms/${vmId}/addOwner/${serial}`, null)),
-      toArray()
+  modifyVm(vm: VM): Observable<VM> {
+    return this.http.put<VM>(`api/API/vms/`, vm).pipe(
+      mergeMap((vm1): Observable<VM> => {
+        if(vm.owners.length > 0) {
+          return from(vm.owners).pipe(
+            mergeMap(student => this.http.put<VM>(`/api/API/vms/${vm1.id}/addOwner/${student.serial}`, null))
+          )
+        } else {
+          return of(vm1);
+        }
+      })
     );
   }
 
   onOffVm(vmId: number): Observable<VM> {
     return this.http.put<VM>(`api/API/vms/${vmId}/onOff`, null);
-  }
-
-  modifyVm(vm: VM): Observable<VM> {
-    return this.http.put<VM>('api/API/vms', vm);
   }
   
   deleteVm(vmId: number): Observable<void> {

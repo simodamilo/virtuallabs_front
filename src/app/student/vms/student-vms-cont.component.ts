@@ -36,51 +36,44 @@ export class StudentVmsContComponent implements OnInit {
 
   getModelVm() {
     this.modelVmService.getModelVm(this.courseName).subscribe(
-    model => {
-      this.modelVm = model
-    }, 
-    err => {
-      this.errorMsg = "No model available, it is not possible to add a new Virtual Machine";
-    })
+      (model) => this.modelVm = model, 
+      (err) => this.errorMsg = err.error.message
+    )
   }
 
   getVms() {
     this.teamService.getStudentTeamByCourse(this.courseName).subscribe(
-      team => {
+      (team) => {
         this.team = team;
         this.vms$ = this.vmService.getTeamVms(team.id);
       },
-      () => {
+      (err) => {
         this.team = null;
-        this.errorMsg = "No team available, you must be part of a team to add a new virtual machine"
+        this.errorMsg = err.error.message;
       }
     );
   }
 
   addVm(vm: VM) {
     this.errorMsg = "";
-    this.vmService.addVmService(vm, this.team.id).subscribe(
-      res => {
-        this.vmService.addOwner(vm.owners, res.id).subscribe(
-          vms => {
-            this.errorMsg = "";
-          }, 
-          err => {
-            this.errorMsg = "It is not possible to add all students as owners, but a new virtual machine is created";
-          }
-        )
-        this.getVms();
-      },
-      err => {
-        this.errorMsg = "It is not possible to add the virtual machine";
-      }
+    this.vmService.addVm(vm, this.team.id).subscribe(
+      () => this.vms$ = this.vmService.getTeamVms(this.team.id),
+      (err) => this.errorMsg = err.error.message
+    );
+  }
+
+  modifyVm(vm: VM) {
+    this.errorMsg = "";
+    this.vmService.modifyVm(vm).subscribe(
+      () => this.getVms(),
+      (err) => this.errorMsg = err.error.message
     );
   }
 
   onOffVm(vm: VM) {
     this.errorMsg = "";
     this.vmService.onOffVm(vm.id).subscribe(
-      vm => {
+      (vm) => {
         this.getVms();
         if(vm.active) {
           const dialogRef = this.dialog.open(ContentDialogComponent, {
@@ -90,49 +83,25 @@ export class StudentVmsContComponent implements OnInit {
             data: {vm: vm, courseName: this.courseName}
           });
 
-          //devo mettere la close per farlo spegnere in automatico o deve premere lo studente?
+          dialogRef.afterClosed().subscribe(
+            () => this.vmService.onOffVm(vm.id).subscribe(vm => this.getVms())
+          );
         }
       },
-      err => {
-        this.errorMsg = "It is not possible to turn on the Virtual Machine"
-      }
-    );
-  }
-
-  modifyVm(vm: VM) {
-    this.errorMsg = "";
-    this.vmService.modifyVm(vm).subscribe(
-      res => {
-        this.vmService.addOwner(vm.owners, res.id).subscribe(
-          vms => {
-            this.errorMsg = "";
-          }, 
-          err => {
-            this.errorMsg = "It is not possible to add all students, they could be already owners of the vm";
-          }
-        )
-        this.getVms();
-      },
-      err => {
-        this.errorMsg = "You cannot modify this virtual machine";
-      }
+      (err) => this.errorMsg = err.error.message
     );
   }
 
   deleteVm(vmId: number) {
     this.errorMsg = "";
     this.vmService.deleteVm(vmId).subscribe(
-      () => {
-        this.getVms();
-      }, 
-      err => {
-        this.errorMsg = "It is not possible to delete this virtual machine";
-      }
+      () => this.getVms(), 
+      (err) => this.errorMsg = err.error.message
     );
   }
 
   getTeamStudents(teamId: number) {
+    this.errorMsg = "";
     this.teamStudents$ = this.studentService.getTeamStudents(teamId);
   }
-
 }

@@ -102,7 +102,7 @@ export class StudentTeamsComponent {
 
   /* Propose team button */
   proposeTeam() {
-    console.log("Name: " + this.proposeTeamForm.get('name').value + " Timeout: " + this.proposeTeamForm.get('timeout').value + " Selected: " + this.proposedStudents);
+    console.log("Name: " + this.proposeTeamForm.get('name').value + " Timeout: " + this.proposeTeamForm.get('timeout').value + " Selected: " + this.proposedStudents[0]);
     if (this.proposeTeamForm.get('name').valid && this.proposeTeamForm.get('timeout').valid) {
       this.proposeTeamEmitter.emit({name: this.proposeTeamForm.get('name').value, timeout: this.proposeTeamForm.get('timeout').value, students: this.proposedStudents});
     }
