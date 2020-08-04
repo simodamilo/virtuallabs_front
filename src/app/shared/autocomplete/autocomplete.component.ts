@@ -4,8 +4,17 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-autocomplete',
-  templateUrl: './autocomplete.component.html',
-  styleUrls: ['./autocomplete.component.css']
+  template:`<mat-form-field>
+              <input matInput #search type="search" [placeholder]="_type" [matAutocomplete]="auto"
+                (keyup)="customFilter(search.value)" />
+              <mat-autocomplete #auto [displayWith]="displayFn" (optionSelected)="selectedOption($event)">
+                <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                 {{ option.name }} {{ option.surname }} ({{ option.serial }})
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <button mat-stroked-button (click)="sendOption(); search.value = ''">Add {{_type}}</button>`,
+  styles: ['mat-form-field{width: 30%; margin-right: 12px;}']
 })
 export class AutocompleteComponent {
 

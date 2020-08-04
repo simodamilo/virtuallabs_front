@@ -69,7 +69,6 @@ export class SolutionService {
     } else {
       const formData = new FormData()
       formData.append('imageFile', solution.content);
-      console.log("wwwwww")
       solution.content = null;
       return this.http.post<Solution>(`/api/API/solutions/${assignment.id}/${solution.student.serial}`, solution)
         .pipe(

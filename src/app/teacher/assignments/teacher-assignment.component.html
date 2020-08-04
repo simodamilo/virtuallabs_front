@@ -1,6 +1,5 @@
-<mat-sidenav-container>
-
-  <mat-sidenav mode="side" position="start" opened>
+<div class="container">
+  <div class="side">
     <h2>Assignment</h2>
     <mat-error>{{_assignmentErrorMsg}}</mat-error>
     <form [formGroup]="assignmentForm">
@@ -28,13 +27,13 @@
     <button mat-stroked-button class="add-assignment" (click)="addAssignment()">Confirm</button>
 
     <app-assignments-table 
-      [assignments]="assignments$" 
+      [assignments]="_assignments" 
       (assignmentSelected)="assignmentSelected($event)">
     </app-assignments-table>
 
-  </mat-sidenav>
+  </div>
 
-  <mat-sidenav-content>
+  <div class="content">
     <h2>Solution</h2>
     <mat-error>{{_solutionErrorMsg}}</mat-error>
     <div *ngIf="showRevision">
@@ -57,9 +56,7 @@
         <button mat-flat-button color="primary" (click)="addReview()">Add review</button>
       </div>
     </div>
-
-
-
+    
     <mat-form-field>
       <mat-label>State filter</mat-label>
       <mat-select #matSelect (selectionChange)="applyFilter($event.value)" [(value)]="selectedValue">
@@ -114,9 +111,8 @@
     <div *ngIf="isHistoryVisible">
       <h2>{{ currentSolutions.student.name }} {{ currentSolutions.student.surname }} {{ currentSolutions.student.serial }} </h2>
       <app-solutions-table 
-      [solutions]="history$"> 
+      [solutions]="_history"> 
       </app-solutions-table>
     </div>
-
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </div>
+</div>

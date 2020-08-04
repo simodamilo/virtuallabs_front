@@ -7,11 +7,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { VmsTableComponent } from './vms-table/vms-table.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatStepperModule } from '@angular/material/stepper';
-import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSliderModule } from '@angular/material/slider';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { ContentDialogComponent } from './content-dialog/content-dialog.component';
@@ -23,7 +20,6 @@ import { StudentsTableComponent } from './students-table/students-table.componen
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { HttpClientModule } from '@angular/common/http';
 import { CourseDialogComponent } from './course-dialog/course-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component'

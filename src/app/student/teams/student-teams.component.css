@@ -1,13 +1,5 @@
-.container {
-    margin: 20px;
-}
-
 mat-list-item-content {
     width: 500px !important;
-}
-
-table {
-    width: 100%;
 }
 
 mat-form-field {
@@ -35,8 +27,4 @@ button {
 
 .request-header {
     margin-top: 20px;
-}
-
-.list-item {
-    height: 36px;
 }

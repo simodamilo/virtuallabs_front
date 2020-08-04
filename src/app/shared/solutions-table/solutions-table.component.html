@@ -28,4 +28,8 @@
     <tr mat-header-row *matHeaderRowDef="solutionsCols"></tr>
     <tr mat-row *matRowDef="let row; columns: solutionsCols"></tr>
   </table>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+  ></mat-paginator>
 </div>

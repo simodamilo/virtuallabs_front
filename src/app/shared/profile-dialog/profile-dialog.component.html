@@ -3,8 +3,8 @@
 			<div class="container">
         <img [src]="imageSafeURL" class="image">
         <div class="bottom-right">
-            <input type="file" id="file" class="inputimage" (change)="onChangeEvent($event.target.files[0])" accept="image/png, image/jpeg"/>
-            <label mat-label for="file" class="mat-elevation-z2"><mat-icon class="add-photo-icon material-icons-outlined">photo_camera</mat-icon></label>
+            <input type="file" id="imagefile" class="inputimage" (change)="onChangeEvent($event.target.files[0])" accept="image/png, image/jpeg"/>
+            <label mat-label for="imagefile" class="mat-elevation-z2"><mat-icon class="add-photo-icon">photo_camera</mat-icon></label>
 				</div>
 			</div>
         <h2>{{role === "student" ? student.name+" "+student.surname : teacher.name+" "+teacher.surname}}</h2>

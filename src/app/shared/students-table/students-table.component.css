@@ -1,31 +1,4 @@
-table { 
-    width: 100%;
-}
-
-.checkboxColumn {
-    width: 20%;
-    background-color: rgba(63, 81, 181, 0.1);
-}
-
-.nameColumn {
-    width: 20%;
-    color: rgba(0,0,0,.87);
-    background-color: rgba(63, 81, 181, 0.1);
-}
-
-.surnameColumn {
-    width: 20%;
-    color: rgba(0,0,0,.87);
-    background-color: rgba(63, 81, 181, 0.1);
-}
-
-.serialColumn {
-    width: 20%;
-    color: rgba(0,0,0,.87);
-    background-color: rgba(63, 81, 181, 0.1);
-}
-
-.groupColumn {
+.nameColumn, .surnameColumn, .serialColumn, .groupColumn, .checkboxColumn {
     width: 20%;
     color: rgba(0,0,0,.87);
     background-color: rgba(63, 81, 181, 0.1);

@@ -57,8 +57,3 @@ h2{
 .add-photo-icon {
     margin: auto;
 }
-
-mat-error {
-    display: block;
-    margin-bottom: 12px;
-}

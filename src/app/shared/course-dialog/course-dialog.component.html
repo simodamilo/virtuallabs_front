@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>{{data== null ? "Add course" : "Modify course"}}</h2>
 <mat-dialog-content>
-  <mat-error class="error">{{ errorMsg }}</mat-error>
+  <mat-error>{{ errorMsg }}</mat-error>
   <form [formGroup]="courseForm">
     <mat-form-field>
       <mat-label>Course Name</mat-label>

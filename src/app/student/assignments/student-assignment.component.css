@@ -1,12 +1,7 @@
-mat-sidenav-container {
-  height:100vh;
-  background-color: white;
-}
-
 mat-sidenav {
   width: 30%;
   padding: 20px;
-  background: none;
+  background: white;
 }
 
 mat-sidenav-content {
@@ -14,8 +9,26 @@ mat-sidenav-content {
 
 }
 
-table {
-  width: 100%;
+mat-sidenav-container{
+  height: calc( 100% - 50px);
+}
+
+.side{
+  width: 30%;
+  vertical-align: top;
+  padding-right: 20px;
+  display: inline-block;
+  min-height: calc(100vh - 222px);
+  height: fit-content;
+  border-right: 1px solid rgba(0,0,0,.12);
+}
+
+.content{
+  width: calc(70% - 42px);
+  padding-left: 20px;
+  display: inline-block;
+  vertical-align: top;
+
 }
 
 .class{
@@ -44,9 +57,3 @@ mat-form-field {
 .inputfile + label{
   margin-bottom: 20px;
 }
-
-.mat-error{
-  margin-bottom: 20px;
-}
-
-

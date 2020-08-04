@@ -4,8 +4,15 @@ import { CourseService, StudentService } from 'src/app/core';
 
 @Component({
   selector: 'app-confirm-dialog',
-  templateUrl: './confirm-dialog.component.html',
-  styleUrls: ['./confirm-dialog.component.css']
+  template:  `<h2 mat-dialog-title>{{title}}</h2>
+              <mat-dialog-content>
+                <h3>{{message}}</h3>
+              </mat-dialog-content>
+              <mat-dialog-actions>
+                <button mat-stroked-button color="primary" (click)="closeDialog()">Cancel</button>
+                <button mat-flat-button color="primary" (click)="confirm()">Confirm</button>
+              </mat-dialog-actions>`,
+  styles: []
 })
 export class ConfirmDialogComponent implements OnInit {
 

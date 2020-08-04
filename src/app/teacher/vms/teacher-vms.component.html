@@ -9,7 +9,6 @@
         <mat-icon>delete</mat-icon>
       </button>
     </div><br/>
-
     <p *ngIf="showModelDiv">
       Model '{{_modelVm.name}}' is ready for the course, the type is {{_modelVm.type}}.
     </p>
@@ -120,7 +119,7 @@
 
       <!-- Students Column -->
       <ng-container matColumnDef="students">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="studentHeader studentColumn"> Students </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="studentColumn"> Students </th>
         <td mat-cell *matCellDef="let team">
           <mat-list>
             <mat-list-item *ngFor="let member of team.members" class="list-item">

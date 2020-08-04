@@ -36,8 +36,8 @@ export class StudentTeamsContComponent implements OnInit {
     studentSerials.push(localStorage.getItem("serial"));
     this.teamService.proposeTeam(this.courseName, event.name, event.timeout, studentSerials).subscribe(
       () => {
-        this.studentService.getAvailableStudents(this.courseName);
-        this.teamService.getPendingTeams(this.courseName);
+        this.availableStudents$ = this.studentService.getAvailableStudents(this.courseName);
+        this.pendingTeams$ = this.teamService.getPendingTeams(this.courseName);
       },
       (err) => this.errorMsg = err.error.message
     );

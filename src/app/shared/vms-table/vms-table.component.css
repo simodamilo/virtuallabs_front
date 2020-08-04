@@ -1,35 +1,18 @@
-table {
-    width: 100%;
+.nameColumn{
+    width: 30%;
+    color: rgba(0,0,0,.87);
+    background-color: rgba(63, 81, 181, 0.1);
 }
 
-.nameColumn {
-    width: 30%;
+.stateColumn, .actionsColumn {
+    width: 20%;
     color: rgba(0,0,0,.87);
     background-color: rgba(63, 81, 181, 0.1);
 }
 
 .studentColumn {
+    padding-left: 16px;
     width: 30%;
     color: rgba(0,0,0,.87);
     background-color: rgba(63, 81, 181, 0.1);
-}
-
-.stateColumn {
-    width: 20%;
-    color: rgba(0,0,0,.87);
-    background-color: rgba(63, 81, 181, 0.1);
-}
-
-.actionsColumn {
-    width: 20%;
-    color: rgba(0,0,0,.87);
-    background-color: rgba(63, 81, 181, 0.1);
-}
-
-.studentHeader {
-    padding-left: 16px;
-}
-
-.list-item {
-    height: 36px;
 }

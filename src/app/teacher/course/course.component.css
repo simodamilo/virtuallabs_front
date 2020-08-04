@@ -1,12 +1,6 @@
-.container{ margin: 20px; }
-
 h2, h3 {
     display:inline-block; 
     margin-right:12px;
-}
-
-table { 
-    width: 100%;
 }
 
 button {
@@ -48,5 +42,9 @@ button {
     width: 20%;
     color: rgba(0,0,0,.87);
     background-color: rgba(63, 81, 181, 0.1);
+}
+
+.inputfile + label{
+    margin-left: 12px;
 }
 

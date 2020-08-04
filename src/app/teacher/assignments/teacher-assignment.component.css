@@ -1,6 +1,24 @@
 mat-sidenav-container {
-  height:100vh;
   background-color: white;
+  height: 100%;
+}
+
+.side{
+  width: 30%;
+  vertical-align: top;
+  padding-right: 20px;
+  display: inline-block;
+  min-height: calc(100vh - 222px);
+  height: fit-content;
+  border-right: 1px solid rgba(0,0,0,.12);
+}
+
+.content{
+  width: calc(70% - 42px);
+  padding-left: 20px;
+  display: inline-block;
+  vertical-align: top;
+
 }
 
 mat-sidenav {
@@ -11,14 +29,6 @@ mat-sidenav {
 
 mat-sidenav-content {
   padding: 20px;
-}
-
-table {
-  width: 100%;
-}
-
-mat-form-field {
-  font-size: 16;
 }
 
 .studentColumn {
@@ -33,21 +43,8 @@ mat-form-field {
   background-color: rgba(63, 81, 181, 0.1);
 }
 
-
-.deliveryTsColumn {
+.stateColumn, .actionsColumn, .deliveryTsColumn {
   width: 20%;
-  color: rgba(0,0,0,.87);
-  background-color: rgba(63, 81, 181, 0.1);
-}
-
-.stateColumn {
-  width: 20%;
-  color: rgba(0,0,0,.87);
-  background-color: rgba(63, 81, 181, 0.1);
-}
-
-.actionsColumn {
-  width: 30%;
   color: rgba(0,0,0,.87);
   background-color: rgba(63, 81, 181, 0.1);
 }

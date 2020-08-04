@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Assignment } from '../models';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError, forkJoin } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 @Injectable({
@@ -34,5 +34,4 @@ export class AssignmentService {
         );
     }  
   }
-  
 }

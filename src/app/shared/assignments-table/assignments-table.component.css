@@ -1,5 +1,4 @@
 table {
-  width: 100%;
   background: none;
 }
 
@@ -9,18 +8,13 @@ table {
 
 .mat-row.highlighted {
   background: rgba(63, 81, 181, 0.1);
-  ;
 }
 
 .name-column{
   width: 40%;
 }
 
-.release-date-column{
-  width: 25%;
-}
-
-.deadline-column{
+.release-date-column, .deadline-column{
   width: 25%;
 }
 

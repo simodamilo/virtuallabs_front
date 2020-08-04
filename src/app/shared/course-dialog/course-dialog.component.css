@@ -7,11 +7,6 @@ mat-slide-toggle{
     float: right;
 }
 
-.error{
-    margin-top: 0px;
-    margin-bottom: 10px;
-}
-
 mat-form-field{
     width: 100%;
 }

@@ -8,6 +8,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     padding: 0;
 }
 
+/*simone*/
+table{
+    width: 100%;
+}
+
+.container{
+    margin: 20px;
+}
+
+.list-item {
+    height: 36px;
+}
+
+mat-error{
+    margin-bottom: 12px;
+}
+
+
 /* width */
 ::-webkit-scrollbar {
     width: 10px;

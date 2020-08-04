@@ -16,7 +16,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { ContentDialogComponent } from 'src/app/shared/content-dialog/content-dialog.component';
-import { empty } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -28,8 +27,8 @@ export class TeacherAssignmentComponent implements AfterViewInit {
   solutionsDataSource = new MatTableDataSource<Solution>();
   solutionsCols = ['student', 'deliveryTs', 'state', 'grade', 'actions'];
   state = ['ALL', 'NULL','READ','DELIVERED','REVIEWED'];
-  assignments$: Assignment[];
-  history$: Solution[];
+  _assignments: Assignment[];
+  _history: Solution[];
 
   showRevision: boolean = false;
   modifiable: boolean = false;
@@ -57,10 +56,12 @@ export class TeacherAssignmentComponent implements AfterViewInit {
   }
   @Input('assignments') 
   set assignments(assignments: Assignment[]) {
-    if (assignments != null) this.assignments$ = assignments;
+    if (assignments != null) 
+      this._assignments = assignments;
   }
   @Input('history') set history(history: Solution[]) {
-    if (history != null) this.history$ = history;
+    if (history != null) 
+    this._history = history;
   }
   @Input("assignmentErrorMsg") set assignmentErrorMsg(error: string){
     this._assignmentErrorMsg = error;
@@ -206,6 +207,6 @@ export class TeacherAssignmentComponent implements AfterViewInit {
 
   getErrorDeadlineMessage() {
     if (this.assignmentForm.get('deadline').hasError('required'))
-      return 'You must enter a value';
+      return 'Enter a valid value'
   }
 }

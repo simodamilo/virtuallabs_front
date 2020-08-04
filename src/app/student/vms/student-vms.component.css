@@ -1,13 +1,8 @@
-.container {
-    margin: 20px;
-}
-
 h2 {
     display: inline-block;
 }
 
 .fabButton {
-    
     float: right;
 }
 
@@ -78,8 +73,4 @@ p {
 
 .icon {
     margin-bottom: 12px;
-}
-
-.error {
-    margin-bottom: 20px;
 }

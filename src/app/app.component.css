@@ -17,9 +17,6 @@ mat-form-field{
 
 mat-sidenav-container {
     height: calc(100% - 128px);
-}
-
-mat-sidenav-content {
     background-color: white;
 }
 

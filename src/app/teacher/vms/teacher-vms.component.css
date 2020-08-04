@@ -1,5 +1,3 @@
-.container{ margin: 20px; }
-
 h2 {
     display: inline-block; 
     margin-right:12px;
@@ -13,10 +11,6 @@ h2 {
     margin-bottom: 20px;
 }
 
-table {
-    width: 100%;
-}
-
 .nameColumn {
     width: 40%;
     color: rgba(0,0,0,.87);
@@ -24,23 +18,16 @@ table {
 }
 
 .studentColumn {
+    padding-left: 16px;
     width: 40%;
     color: rgba(0,0,0,.87);
     background-color: rgba(63, 81, 181, 0.1);
-}
-
-.studentHeader {
-    padding-left: 16px;
 }
 
 .actionsColumn {
     width: 20%;
     color: rgba(0,0,0,.87);
     background-color: rgba(63, 81, 181, 0.1);
-}
-
-.list-item {
-    height: 36px;
 }
 
 .modify-team {
@@ -82,10 +69,6 @@ mat-form-field {
 .resources-team {
     background-color: white;
     margin-bottom: 20px;
-}
-
-mat-error {
-    margin-bottom: 10px;
 }
 
 button, .inputfile + label {
