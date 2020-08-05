@@ -57,11 +57,19 @@ export class StudentAssignmentComponent {
   constructor(public dialog: MatDialog) {
   }
 
+  /**
+   * Used to get the file when the student upload it. 
+   * 
+   * @param file that the student upload.
+   */
   onSolutionSelected(file: File) {
     this.solutionContent = file
     file ? this.solutionFileName = file.name : this.solutionFileName = ""
   }
 
+  /**
+   * Used the update the solution table when the user click on an assignment.
+   */
   assignmentSelected(assignment: Assignment) {
     if (
       this.currentAssignment == null ||
@@ -76,6 +84,11 @@ export class StudentAssignmentComponent {
     }
   }
 
+  /**
+   * Used to add a solution with status READ when the student view the content of the assignment.
+   * 
+   * @param assignment selected by the student.
+   */
   assignmentReaded(assignment: Assignment) {
     const solution: Solution = {
       content: null,
@@ -86,6 +99,9 @@ export class StudentAssignmentComponent {
     this.solutionEmitter.emit({ solution: solution, assignment: assignment });
   }
 
+  /**
+   * Used to add a solution with status DELIVERED when the student add the solution.
+   */
   addSolution() {
     if (this.solutionContent != null) {
       const solution: Solution = {
@@ -99,6 +115,9 @@ export class StudentAssignmentComponent {
     }
   }
 
+  /**
+   * Used to check if the student can deliver his solution.
+   */
   checkDeliverable() {
     if (!this._history.some(solution => solution.grade != null
       && new Date(this.currentAssignment.deadline).getTime() > new Date().getTime())) {
@@ -109,6 +128,12 @@ export class StudentAssignmentComponent {
     }
   }
 
+  /**
+   * Used to handle the status of error or the div to add the solution.
+   * 
+   * @param deliverableState true show the div.
+   * @param errorState true show the error.
+   */
   setSolution(deliverableState: boolean, errorState: boolean) {
     this.input ? this.input.nativeElement.value = "" : null;
     this.solutionFileName = ""

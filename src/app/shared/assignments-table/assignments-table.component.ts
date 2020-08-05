@@ -37,10 +37,16 @@ export class AssignmentsTableComponent implements OnInit, AfterViewInit {
 
   constructor(public dialog: MatDialog) { }
 
+  /**
+   * Initialize the selection model.
+   */
   ngOnInit(): void {
     this.assignmentSelection = new SelectionModel<Assignment>(false, []);
   }
 
+  /**
+   * Initialize the sort once that the view is initiated.
+   */
   ngAfterViewInit() {
     this.assignmentsDataSource.sort = this.sort;
   }

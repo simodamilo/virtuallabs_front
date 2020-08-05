@@ -83,27 +83,46 @@ export class CourseComponent implements AfterViewInit {
     this.selection = new SelectionModel<Student>(true, []);
   }
 
+  /**
+   * Used to initialize sort and paginator once that the view is initilized
+   */
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
 
+  /**
+   * Used to create the list of students to remove.
+   */
   changeSelection(event: Student[]) {
     this.toRemove = [...event];
   }
 
+  /**
+   * Used to pass to the container the list of students.
+   */
   removeStudents() {
     this.removeStudentsEmitter.emit(this.toRemove);
   }
 
+  /**
+   * Used to pass to the container the list of teachers.
+   */
   removeTeachers() {
     this.removeTeachersEmitter.emit(this.selection.selected);
   }
 
+  /**
+   * Used to pass to the containet the student/teacher selected in the fields.
+   * @param option 
+   */
   selectedOption(option: Student | Teacher) {
     this.addEmitter.emit(option)
   }
 
+  /**
+   * Used to open the dialog to modify the course informatiom.
+   */
   openCourseDialog() {
     const dialogRef = this.courseDialog.open(CourseDialogComponent, {
       width: '300px',
@@ -116,6 +135,9 @@ export class CourseComponent implements AfterViewInit {
     });
   }
 
+  /**
+   * Used to open the confirm dialog when the teacher delete a course.
+   */
   deleteCourse() {
     this.confirmDialog.open(ConfirmDialogComponent, {
       width: '400px',
@@ -123,19 +145,34 @@ export class CourseComponent implements AfterViewInit {
     });
   }
 
-  toggleRowsTable(event: MatCheckboxChange, row: Student) {
+  /**
+   * Used to toggle the row of the table.
+   * 
+   * @param row selected.
+   */
+  toggleRowsTable(row: Student) {
     this.selection.toggle(row);
   }
 
+  /**
+   * Used to get the page selected.
+   */
   getPageData() {
     return this.dataSource._pageData(this.dataSource._orderData(this.dataSource.filteredData));
   }
 
+  /**
+   * Used to check if all the rows of the page are selected.
+   */
   isEntirePageSelected() {
     return this.getPageData().every((row) => this.selection.isSelected(row));
   }
 
-  masterToggle(checkboxChange: MatCheckboxChange) {
+  /**
+   * Used to toggle all the rows of the page and show the button to toggle all the table
+   * and pass its value to the container.
+   */
+  masterToggle() {
     if (this.isEntirePageSelected()) {
       this.selection.deselect(...this.getPageData());
       this.showButton = false;
@@ -145,10 +182,16 @@ export class CourseComponent implements AfterViewInit {
     }
   }
 
+  /**
+   * Select all the table rows.
+   */
   selectAll() {
     this.selection.select(...this.dataSource.data);
   }
 
+  /**
+   * Used to open the confirm dialog when the teacher upload a csv file to enroll the students.
+   */
   onChangeEvent(event) {
     const dialogRef = this.confirmDialog.open(ConfirmDialogComponent, {
       width: '400px',

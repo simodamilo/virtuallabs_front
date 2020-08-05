@@ -1,5 +1,7 @@
 <div class="container">
   <div class="side">
+
+    <!-- Div used by the teacher to add an assignment -->
     <h2>Assignment</h2>
     <mat-error>{{_assignmentErrorMsg}}</mat-error>
     <form [formGroup]="assignmentForm">
@@ -27,13 +29,18 @@
     <p *ngIf="assignmentFileName != ''" class="filename assignment-filename">{{assignmentFileName}}</p>
     <button mat-stroked-button class="add-assignment" (click)="addAssignment()">Confirm</button>
 
-    <app-assignments-table [assignments]="_assignments" (assignmentSelected)="assignmentSelected($event)">
+    <!-- Table with the assignments of the selected course -->
+    <app-assignments-table 
+      [assignments]="_assignments" 
+      (assignmentSelected)="assignmentSelected($event)">
     </app-assignments-table>
 
   </div>
 
   <div class="content">
     <h2>Solution</h2>
+
+    <!-- Div used by the teacher review to a solution -->
     <mat-error>{{_solutionErrorMsg}}</mat-error>
     <div *ngIf="showRevision">
       <p [ngClass]="{ 'student': newReview.modifiable, 'name': !newReview.modifiable }">
@@ -59,6 +66,8 @@
       </div>
     </div>
 
+
+    <!-- Table with the solutions of the selected assignment -->
     <mat-form-field>
       <mat-label>State filter</mat-label>
       <mat-select #matSelect (selectionChange)="applyFilter($event.value)" [(value)]="selectedValue">
@@ -112,11 +121,14 @@
       <mat-paginator #solutionPag [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div><br />
 
+    <!-- Table with the history of a solution selected -->
     <div *ngIf="isHistoryVisible">
       <h2>{{ currentSolutions.student.name }} {{ currentSolutions.student.surname }}
         {{ currentSolutions.student.serial }} </h2>
-      <app-solutions-table [solutions]="_history">
+      <app-solutions-table 
+        [solutions]="_history">
       </app-solutions-table>
+    
     </div>
   </div>
 </div>

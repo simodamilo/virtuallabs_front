@@ -10,7 +10,7 @@
         </mat-checkbox>
       </th>
       <td mat-cell *matCellDef="let s">
-        <mat-checkbox color="primary" (change)="toggleRowsTable($event, s)" [checked]="selection.isSelected(s)">
+        <mat-checkbox color="primary" (change)="toggleRowsTable( s)" [checked]="selection.isSelected(s)">
         </mat-checkbox>
       </td>
     </ng-container>

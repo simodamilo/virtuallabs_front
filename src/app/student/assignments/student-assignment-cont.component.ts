@@ -20,16 +20,29 @@ export class StudentAssignmentContComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
+  /**
+   * Used to initilize the assignments when the component starts.
+   */
   ngOnInit(): void {
     this.route.params.subscribe(url =>
       this.assignments$ = this.assignmentService.getCourseAssignments(url['courseName']));
   }
 
+  /**
+   * Used to get the solutions of an assignment when it's received.
+   * 
+   * @param assignment of the solutions searched.
+   */
   selectedAssignment(assignment: Assignment) {
     this.errorMsg = ""
     this.solutions$ = this.solutionService.getStudentSolutions(localStorage.getItem("serial"), assignment);
   }
 
+  /**
+   * Used from the student to add a new solution .
+   * 
+   * @param event contains the new solution and the assignment. 
+   */
   addSolution(event: { solution: Solution, assignment: Assignment }) {
     this.errorMsg = ""
     event.solution.state == 1
