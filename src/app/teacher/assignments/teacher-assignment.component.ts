@@ -1,13 +1,11 @@
 import {
   Component,
-  OnInit,
   AfterViewInit,
   ViewChild,
   Input,
   Output,
   EventEmitter,
-  ElementRef,
-  ViewChildren,
+  ElementRef
 } from '@angular/core';
 import { Assignment, Solution } from '../../core';
 import { MatTableDataSource } from '@angular/material/table';
@@ -26,22 +24,20 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class TeacherAssignmentComponent implements AfterViewInit {
   solutionsDataSource = new MatTableDataSource<Solution>();
   solutionsCols = ['student', 'deliveryTs', 'state', 'grade', 'actions'];
-  state = ['ALL', 'NULL','READ','DELIVERED','REVIEWED'];
+  state = ['ALL', 'NULL', 'READ', 'DELIVERED', 'REVIEWED'];
   _assignments: Assignment[];
   _history: Solution[];
-
   showRevision: boolean = false;
   modifiable: boolean = false;
   isHistoryVisible: boolean = false;
   assignmentContent: any;
-
   currentAssignment: Assignment;
   currentSolutions: Solution;
   newReview: Solution = {} as Solution;
   assignmentForm: FormGroup;
   assignmentFileName: string = "";
   solutionFileName: string = "";
-  selectedValue: string ="ALL";
+  selectedValue: string = "ALL";
   _solutionErrorMsg: string;
   _assignmentErrorMsg: string;
 
@@ -50,24 +46,24 @@ export class TeacherAssignmentComponent implements AfterViewInit {
   @ViewChild("assignmentInput") assignmentInput: ElementRef;
   @ViewChild("solutionInput") solutionInput: ElementRef;
 
-  @Input('solutions') 
+  @Input('solutions')
   set solutions(solutions: Solution[]) {
     if (solutions != null) this.solutionsDataSource.data = [...solutions];
   }
-  @Input('assignments') 
+  @Input('assignments')
   set assignments(assignments: Assignment[]) {
-    if (assignments != null) 
+    if (assignments != null)
       this._assignments = assignments;
   }
   @Input('history') set history(history: Solution[]) {
-    if (history != null) 
-    this._history = history;
+    if (history != null)
+      this._history = history;
   }
-  @Input("assignmentErrorMsg") set assignmentErrorMsg(error: string){
+  @Input("assignmentErrorMsg") set assignmentErrorMsg(error: string) {
     this._assignmentErrorMsg = error;
   }
-  @Input("solutionErrorMsg") set solutionErrorMsg(error: string){
-    this._solutionErrorMsg=error;
+  @Input("solutionErrorMsg") set solutionErrorMsg(error: string) {
+    this._solutionErrorMsg = error;
   }
 
   @Output('selectedEmitter') selectedEmitter = new EventEmitter<Assignment>();
@@ -81,7 +77,7 @@ export class TeacherAssignmentComponent implements AfterViewInit {
     assignment: Assignment;
   }>();
 
-  constructor(public dialog: MatDialog, private fb: FormBuilder) { 
+  constructor(public dialog: MatDialog, private fb: FormBuilder) {
     this.assignmentForm = this.fb.group({
       name: ['', Validators.required],
       deadline: ['', Validators.required],
@@ -91,8 +87,8 @@ export class TeacherAssignmentComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.solutionsDataSource.sort = this.sort;
     this.solutionsDataSource.paginator = this.solutionPaginator;
-    this.solutionsDataSource.filterPredicate = 
-    (data: Solution, filter: string) => data.state.toString().toLowerCase() == filter;
+    this.solutionsDataSource.filterPredicate =
+      (data: Solution, filter: string) => data.state.toString().toLowerCase() == filter;
   }
 
   viewContent(solution: Solution) {
@@ -100,7 +96,7 @@ export class TeacherAssignmentComponent implements AfterViewInit {
       width: '70%',
       height: '80%',
       panelClass: 'custom-dialog-panel',
-      data:{solution: solution}
+      data: { solution: solution }
     });
   }
 
@@ -114,8 +110,8 @@ export class TeacherAssignmentComponent implements AfterViewInit {
 
   applyFilter(state: string) {
     this.selectedValue = state
-    const filterValue = (this.selectedValue === 'ALL' ? '' :  state);
-  
+    const filterValue = (this.selectedValue === 'ALL' ? '' : state);
+
     this.solutionsDataSource.filter = filterValue.trim().toLowerCase();
 
     if (this.solutionsDataSource.paginator) {
@@ -123,17 +119,18 @@ export class TeacherAssignmentComponent implements AfterViewInit {
     }
   }
 
-  addAssignmentContent(file: File){
+  addAssignmentContent(file: File) {
     this.assignmentContent = file;
-    file ? this.assignmentFileName = file.name : this.assignmentFileName =""
+    file ? this.assignmentFileName = file.name : this.assignmentFileName = ""
   }
-  addSolutionContent(file: File){
+
+  addSolutionContent(file: File) {
     this.newReview.content = file
-    file ? this.solutionFileName = file.name : this.solutionFileName =""
+    file ? this.solutionFileName = file.name : this.solutionFileName = ""
   }
 
   assignmentSelected(assignment: Assignment) {
-    if(this.showRevision) this.toggleReview(false, null)
+    if (this.showRevision) this.toggleReview(false, null)
     if (
       this.currentAssignment == null ||
       this.currentAssignment.id != assignment.id
@@ -142,18 +139,18 @@ export class TeacherAssignmentComponent implements AfterViewInit {
       this.isHistoryVisible = false;
       this.currentAssignment = assignment;
     }
-    else{
-      this.isHistoryVisible= false;
+    else {
+      this.isHistoryVisible = false;
       this.solutionsDataSource.data = [];
-      this.currentAssignment=null;
+      this.currentAssignment = null;
     }
   }
 
   loadHistory(solution: Solution) {
-    if(this.currentSolutions === solution && this.isHistoryVisible === true){
+    if (this.currentSolutions === solution && this.isHistoryVisible === true) {
       this.isHistoryVisible = false;
       this.currentSolutions = null;
-    }else{
+    } else {
       this.toggleReview(false, solution);
       this.isHistoryVisible = true;
       this.historyEmitter.emit({
@@ -169,31 +166,30 @@ export class TeacherAssignmentComponent implements AfterViewInit {
         name: this.assignmentForm.get('name').value,
         deadline: this.assignmentForm.get('deadline').value,
         content: this.assignmentContent,
-        releaseDate: new Date(), 
-      }      
+        releaseDate: new Date(),
+      }
+
       this.assignmentEmitter.emit(assignment);
-      this.assignmentContent=null;
+      this.assignmentContent = null;
       this.assignmentInput.nativeElement.value = "";
       this.assignmentFileName = ""
       this.assignmentForm.reset();
-
     }
   }
 
   addReview() {
-    this.newReview.student= this.currentSolutions.student;
+    this.newReview.student = this.currentSolutions.student;
     this.newReview.deliveryTs = new Date();
     this.newReview.state = 3;
-    this.reviewEmitter.emit({solution: this.newReview, assignment: this.currentAssignment});
+    this.reviewEmitter.emit({ solution: this.newReview, assignment: this.currentAssignment });
     this.toggleReview(false, null);
-
   }
 
   toggleReview(state: boolean, solution: Solution) {
     this.isHistoryVisible = false;
     this.currentSolutions = solution;
-    if(this.showRevision){
-      this.newReview = {} as Solution 
+    if (this.showRevision) {
+      this.newReview = {} as Solution
       this.solutionInput.nativeElement.value = "";
       this.solutionFileName = ""
     }

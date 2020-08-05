@@ -8,4 +8,4 @@ export * from './student.model';
 export * from './teacher.model';
 export * from './team.model';
 export * from './vm.model';
-export * from './teamToken.model';
+export * from './token.model';

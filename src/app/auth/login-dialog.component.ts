@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { User } from './user.model';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { AuthService } from './auth.service';
-import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login-dialog',
   templateUrl: './login-dialog.component.html',
-  styleUrls: ['./login-dialog.component.css'],
+  styles: [],
 })
 export class LoginDialogComponent {
   loginForm: FormGroup;
@@ -26,40 +25,33 @@ export class LoginDialogComponent {
     });
   }
 
-  getErrorEmailMessage() {
-    if (this.loginForm.get('email').hasError('required'))
-      return 'You must enter a value';
-
-    return this.loginForm.get('email').hasError('email')
-      ? 'Not a valid email'
-      : '';
-  }
-
-  getErrorPasswordMessage() {
-    if (this.loginForm.get('password').hasError('required')) {
-      return 'You must enter a value';
-    }
-
-    return this.loginForm.get('password').hasError('pattern') 
-    ? 'At least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number'
-    : '';
-  }
-
   login() {
-    if (
-      this.loginForm.get('email').valid &&
-      this.loginForm.get('password').valid
-    ) {
-      console.log('login-dialog.login()' + this.loginForm.get('email').value);
-      var user: User = {
+    if (this.loginForm.valid) {
+      const user: User = {
         username: this.loginForm.get('email').value,
         password: this.loginForm.get('password').value,
       };
 
       this.authService.login(user).subscribe(
         () => this.dialogRef.close(),
-        () => this.errorMsg = 'Email or password is not correct!'
+        (err) => this.errorMsg = err.error.message
       );
     }
+  }
+
+  getErrorEmailMessage() {
+    if (this.loginForm.get('email').hasError('required'))
+      return 'You must enter a value';
+
+    return this.loginForm.get('email').hasError('email') ? 'Not a valid email' : '';
+  }
+
+  getErrorPasswordMessage() {
+    if (this.loginForm.get('password').hasError('required'))
+      return 'You must enter a value';
+
+    return this.loginForm.get('password').hasError('pattern')
+      ? 'At least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number'
+      : '';
   }
 }

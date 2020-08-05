@@ -4,7 +4,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-autocomplete',
-  template:`<mat-form-field>
+  template: `<mat-form-field>
               <input matInput #search type="search" [placeholder]="_type" [matAutocomplete]="auto"
                 (keyup)="customFilter(search.value)" />
               <mat-autocomplete #auto [displayWith]="displayFn" (optionSelected)="selectedOption($event)">
@@ -23,22 +23,22 @@ export class AutocompleteComponent {
   selectedAddOption: Student | Teacher;
   _type: string;
 
-  @Input('options')   
-  set options(options: Student[] | Teacher[] ) {
+  @Input('options')
+  set options(options: Student[] | Teacher[]) {
     if (options != null) {
       this.allOptions = [...options];
       this.filteredOptions = [...options];
     }
   }
 
-  @Input('type')   
+  @Input('type')
   set type(type: string) {
     this._type = type;
   }
 
   @Output('selectedOption') optionEmitter = new EventEmitter<Student | Teacher>();
 
-  constructor() {}
+  constructor() { }
 
   displayFn(s: Student | Teacher): string {
     return `${s.name} ${s.surname} (${s.serial})`;
@@ -49,8 +49,8 @@ export class AutocompleteComponent {
       value === ''
         ? true
         : `${s.name} ${s.surname} (${s.serial})`
-            .toLowerCase()
-            .includes(value.toLowerCase())
+          .toLowerCase()
+          .includes(value.toLowerCase())
     );
   }
 

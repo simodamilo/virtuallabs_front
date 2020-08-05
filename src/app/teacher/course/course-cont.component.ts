@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Student, StudentService, Teacher, TeacherService, Course, CourseService} from '../../core';
+import { Student, StudentService, Teacher, TeacherService, Course, CourseService } from '../../core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -18,12 +18,12 @@ export class CourseContComponent implements OnInit {
   errorMsgTeacher: string;
 
   constructor(private studentService: StudentService,
-    private teacherService: TeacherService, 
-    private courseService: CourseService , 
-    private route: ActivatedRoute) {}
+    private teacherService: TeacherService,
+    private courseService: CourseService,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(url =>{
+    this.route.params.subscribe(url => {
       this.courseName = url["courseName"];
       this.allStudents$ = this.studentService.getAllStudents(this.courseName);
       this.allTeachers$ = this.teacherService.getAllTeachers(this.courseName);
@@ -34,39 +34,30 @@ export class CourseContComponent implements OnInit {
   }
 
   enroll(option: Student | Teacher) {
+    this.resetErrors();
     option.serial.charAt(0) == "s"
     ? this.studentService.addStudentToCourse(option, this.courseName).subscribe(
-        () => {
-          this.resetErrors();
-          this.updateStudents();
-        },
-        (err) => this.errorMsgStudent = err.error.message)
+      () => this.updateStudents(),
+      (err) => this.errorMsgStudent = err.error.message)
     : this.teacherService.addTeacherToCourse(option, this.courseName).subscribe(
-        () => {
-          this.resetErrors();
-          this.updateTeachers();
-        },
-        (err) => this.errorMsgTeacher = err.error.message);
+      () => this.updateTeachers(),
+      (err) => this.errorMsgTeacher = err.error.message);
   }
 
   removeStudents(students: Student[]) {
+    this.resetErrors();
     this.studentService.deleteStudentFromCourse(students, this.courseName).subscribe(
-        () => {
-          this.resetErrors();
-          this.updateStudents();
-        },
-        (err) => this.errorMsgStudent = err.error.message);
-  }   
+      () => this.updateStudents(),
+      (err) => this.errorMsgStudent = err.error.message);
+  }
 
   removeTeachers(teachers: Teacher[]) {
+    this.resetErrors();
     this.teacherService.deleteTeacherFromCourse(teachers, this.courseName).subscribe(
       () => {
-        this.resetErrors();
         this.updateTeachers();
-        teachers.forEach(teacher => {
-          if(teacher.serial == localStorage.getItem('serial'))
-            this.courseService.changeCourse();
-        });
+        if(teachers.some(teacher => teacher.serial == localStorage.getItem('serial')))
+          this.courseService.changeCourse();
       },
       (err) => this.errorMsgTeacher = err.error.message);
   }

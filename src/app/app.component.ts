@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './auth/auth.service';
@@ -16,8 +16,6 @@ import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  @ViewChild(MatSidenav) sideNav: MatSidenav;
-  @ViewChild("rla") routerLinkActive: any;
 
   title = 'VirtualLabs';
 
@@ -33,6 +31,9 @@ export class AppComponent implements OnInit, OnDestroy {
   imageSafeURL: SafeUrl;
   selectedTab: string;
 
+  @ViewChild(MatSidenav) sideNav: MatSidenav;
+  @ViewChild("rla") routerLinkActive: any;
+
   constructor(
     private courseService: CourseService,
     public profileDialog: MatDialog,
@@ -44,7 +45,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     private router: Router,
-  ){}
+  ) { }
 
   ngOnInit() {
     this.authService.startUp();
@@ -63,32 +64,32 @@ export class AppComponent implements OnInit, OnDestroy {
 
   reloadCourses() {
     this.courseService.course.subscribe(course => {
-      if(course == null)
+      if (course == null)
         this.getCourses();
     });
   }
 
-  loadImage(){
+  loadImage() {
     this.role === 'student'
-    ? this.studentService.getStudentImage().subscribe((result) => this.createURL(result))
-    : this.teacherService.getTeacherImage().subscribe((result) => this.createURL(result))
+      ? this.studentService.getStudentImage().subscribe((result) => this.createURL(result))
+      : this.teacherService.getTeacherImage().subscribe((result) => this.createURL(result))
   }
 
-  createURL(blob: Blob){
-    if(blob.size === 0){
+  createURL(blob: Blob) {
+    if (blob.size === 0) {
       this.imageSafeURL = "../../assets/user_icon.svg"
-    }else{
-    this.imageURL = URL.createObjectURL(blob);
-    this.imageSafeURL = this.sanitizer.bypassSecurityTrustUrl(this.imageURL);
+    } else {
+      this.imageURL = URL.createObjectURL(blob);
+      this.imageSafeURL = this.sanitizer.bypassSecurityTrustUrl(this.imageURL);
     }
   }
 
   setTabs() {
-    if(this.role === 'student') {
+    if (this.role === 'student') {
       this.tabs = ['teams', 'vms', 'assignments'];
       this.selectedTab = 'teams';
     } else {
-      this.tabs = ['course', 'vms', 'assignments']; 
+      this.tabs = ['course', 'vms', 'assignments'];
       this.selectedTab = 'course';
     }
   }
@@ -98,7 +99,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.courses = courses;
       if (this.courses.length == 0) {
         this.router.navigate(['empty']);
-      } 
+      }
       else {
         this.router.navigate([this.role, 'courses', this.courses[0].name, this.tabs[0]]);
         this.selectedCourse = this.courses[0].name;
@@ -113,10 +114,10 @@ export class AppComponent implements OnInit, OnDestroy {
         const dialogRef = this.loginDialog.open(LoginDialogComponent, {
           width: '320px',
         });
-        
+
         dialogRef.afterClosed().subscribe(
-          ()=> {
-            if(!localStorage.getItem("jwt"))
+          () => {
+            if (!localStorage.getItem("jwt"))
               this.router.navigate(['home'])
           }
         )
@@ -132,7 +133,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(image => {
-      if(image != null)
+      if (image != null)
         this.createURL(image);
     });
   }

@@ -5,22 +5,23 @@ import { StudentAssignmentContComponent } from './assignments/student-assignment
 import { StudentTeamsContComponent } from './teams/student-teams-cont.component';
 
 const routes: Routes = [
-    {path: 'courses/:courseName', 
-        children: [
-            {
-            path: 'teams',
-            component: StudentTeamsContComponent
-            },
-            {
-            path: 'vms',
-            component: StudentVmsContComponent
-            },
-            {
-            path: 'assignments',
-            component: StudentAssignmentContComponent
-            }
-        ] 
-    }
+  {
+    path: 'courses/:courseName',
+    children: [
+      {
+        path: 'teams',
+        component: StudentTeamsContComponent
+      },
+      {
+        path: 'vms',
+        component: StudentVmsContComponent
+      },
+      {
+        path: 'assignments',
+        component: StudentAssignmentContComponent
+      }
+    ]
+  }
 ];
 
 @NgModule({

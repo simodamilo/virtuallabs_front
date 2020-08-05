@@ -10,4 +10,3 @@ export interface Solution {
     modifiable: boolean;
     student?: Student;
 }
-

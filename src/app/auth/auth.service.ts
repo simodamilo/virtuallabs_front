@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from './user.model';
 import { Registration } from './registration.model';
-import { tap, shareReplay, map } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import * as moment from 'moment';
-import { Observable, observable, of, ReplaySubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,17 +16,17 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  startUp(){
-    this.isLoggedIn() 
-    ? this.isAuthenticatedSubject.next(true)
-    : this.isAuthenticatedSubject.next(false)
-  } 
+  startUp() {
+    this.isLoggedIn()
+      ? this.isAuthenticatedSubject.next(true)
+      : this.isAuthenticatedSubject.next(false)
+  }
 
   public isLoggedIn() {
-    if(localStorage.getItem("jwt") && moment().isBefore(moment.unix(+localStorage.getItem("expires_at")))){
+    if (localStorage.getItem("jwt") && moment().isBefore(moment.unix(+localStorage.getItem("expires_at")))) {
       return true;
     }
-    else{
+    else {
       this.logout()
       return false;
     }
@@ -39,17 +39,16 @@ export class AuthService {
         localStorage.setItem("jwt", res.jwtToken);
         localStorage.setItem("expires_at", tkn.exp);
         localStorage.setItem("serial", tkn.sub.split("@")[0]);
-        if(tkn.sub.split("@")[1] === "studenti.polito.it")
+        if (tkn.sub.split("@")[1] === "studenti.polito.it")
           localStorage.setItem("role", "student");
         else
           localStorage.setItem("role", "teacher");
         this.isAuthenticatedSubject.next(true);
-      }),
-      shareReplay()
+      })
     );
   }
 
-  logout(){
+  logout() {
     localStorage.removeItem("jwt");
     localStorage.removeItem("expires_at");
     localStorage.removeItem("role");

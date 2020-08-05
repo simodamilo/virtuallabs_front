@@ -18,12 +18,6 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['name', 'students', 'actions'];
   dataSource: MatTableDataSource<Team> = new MatTableDataSource<Team>();
-
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild('stepper') stepper: MatStepper;
-  @ViewChild('modelInput') input: ElementRef;
-
   modelVmForm: FormGroup;
   showModifyDiv: Boolean = false;
   showVms: Boolean = false;
@@ -38,12 +32,10 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
   fileName: string = "";
   teamSelection: SelectionModel<Team>;
 
-  constructor(private fb: FormBuilder, public dialog: MatDialog) {
-    this.modelVmForm = this.fb.group({
-      name: ['', Validators.required],
-      type: ['', Validators.required]
-    });
-  }
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild('stepper') stepper: MatStepper;
+  @ViewChild('modelInput') input: ElementRef;
 
   @Input('modelVm')
   set modelVm(modelVm: ModelVM) {
@@ -69,7 +61,7 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
       this.dataSource.data = [];
 
     this.showVms = false;
-    this.closeDiv();
+    this.showModifyDiv = false;
   }
 
   @Input('vms')
@@ -92,6 +84,13 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
   @Output('addModelVm') addModel = new EventEmitter<ModelVM>();
   @Output('deleteModelVm') deleteModel = new EventEmitter<ModelVM>();
 
+  constructor(private fb: FormBuilder, public dialog: MatDialog) {
+    this.modelVmForm = this.fb.group({
+      name: ['', Validators.required],
+      type: ['', Validators.required]
+    });
+  }
+
   ngOnInit(): void {
     this.teamSelection = new SelectionModel<Team>(false, []);
   }
@@ -101,19 +100,6 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-
-  /* Error functions */
-  getErrorNameMessage() {
-    if (this.modelVmForm.get('name').hasError('required'))
-      return 'You must enter a value';
-  }
-
-  getErrorTypeMessage() {
-    if (this.modelVmForm.get('type').hasError('required'))
-      return 'You must enter a value';
-  }
-
-  /* Used to compute real time resources */
   computeResources() {
     this._vms.forEach(vm => {
       if (vm.active) {
@@ -125,13 +111,11 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     })
   }
 
-  /* Used to add an image to the modelVm */
-  onModelVmSelected(file:File) {
+  onModelVmSelected(file: File) {
     this._modelVm.content = file
     this.fileName = (file ? file.name : "");
   }
 
-  /* Button used to add the modelVm */
   addModelVm(name: string, type: string) {
     if (this.modelVmForm.get('name').valid && this.modelVmForm.get('type').valid) {
       this._modelVm.name = name;
@@ -142,7 +126,6 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  /* Used to open the content dialog for modelVm image */
   viewModelVm() {
     const dialogRef = this.dialog.open(ContentDialogComponent, {
       width: '70%',
@@ -152,13 +135,10 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  /* Used to delete the modelVm */
   deleteModelVm() {
     this.deleteModel.emit(this._modelVm);
   }
 
-
-  /* Edit button in team table */
   modifyTeam(team: Team) {
     this._errorMsg = "";
     this.modifiedTeam = team;
@@ -167,17 +147,10 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
       this.stepper.reset();
   }
 
-  /* Close button in modify div */
-  closeDiv() {
-    this.showModifyDiv = false;
-  }
-
-  /* Confirm button in modify div */
   confirmTeam() {
     this.modify.emit(this.modifiedTeam);
   }
 
-  /* Called when the user tap on one row */
   teamSelected(team: Team) {
     this.teamSelection.toggle(team);
     if (this.teamSelection.hasValue()) {
@@ -191,11 +164,19 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     this.resourcesTeam = { name: "", ram: 0, disk: 0, vcpu: 0, activeInstance: 0 };
   }
 
-
-  /* Turn on/off button in vms table */
   onOffVm(vm: VM) {
     this.onOff.emit({ vm: vm, team: this.actualTeam });
     this.resourcesTeam = { name: "", ram: 0, disk: 0, vcpu: 0, activeInstance: 0 };
+  }
+
+  getErrorNameMessage() {
+    if (this.modelVmForm.get('name').hasError('required'))
+      return 'You must enter a value';
+  }
+
+  getErrorTypeMessage() {
+    if (this.modelVmForm.get('type').hasError('required'))
+      return 'You must enter a value';
   }
 
 }

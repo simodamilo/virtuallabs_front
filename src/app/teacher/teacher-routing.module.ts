@@ -5,22 +5,23 @@ import { TeacherAssignmentContComponent } from './assignments/teacher-assignment
 import { CourseContComponent } from './course/course-cont.component';
 
 const routes: Routes = [
-    {path: 'courses/:courseName', 
-        children: [
-            {
-            path: 'course',
-            component: CourseContComponent
-            },
-            {
-            path: 'vms',
-            component: TeacherVmsContComponent
-            },
-            {
-            path: 'assignments',
-            component: TeacherAssignmentContComponent
-            }
-        ] 
-    }
+  {
+    path: 'courses/:courseName',
+    children: [
+      {
+        path: 'course',
+        component: CourseContComponent
+      },
+      {
+        path: 'vms',
+        component: TeacherVmsContComponent
+      },
+      {
+        path: 'assignments',
+        component: TeacherAssignmentContComponent
+      }
+    ]
+  }
 ];
 
 @NgModule({

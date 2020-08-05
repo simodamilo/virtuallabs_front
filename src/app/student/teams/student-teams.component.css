@@ -12,17 +12,8 @@ button {
     margin-bottom: 20px;
 }
 
-.membersColumn {
-    width: 40%;
+.members-column {
     padding-left: 16px;
-    color: rgba(0,0,0,.87);
-    background-color: rgba(63, 81, 181, 0.1);
-}
-
-.teamNameColumn, .actionsColumn {
-    width: 30%;
-    color: rgba(0,0,0,.87);
-    background-color: rgba(63, 81, 181, 0.1);
 }
 
 .request-header {

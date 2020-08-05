@@ -9,10 +9,10 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 @Component({
   selector: 'app-students-table',
   templateUrl: './students-table.component.html',
-  styleUrls: ['./students-table.component.css']
+  styles: []
 })
 export class StudentsTableComponent implements OnInit, AfterViewInit {
-  
+
   dataSource: MatTableDataSource<Student> = new MatTableDataSource();
   colsToDisplay: string[];
   selection: SelectionModel<Student>;
@@ -25,7 +25,7 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
 
   @Input()
   set students(students: Student[]) {
-    if(students != null) {
+    if (students != null) {
       this.dataSource.data = [...students];
       this.selection.clear();
     }
@@ -33,7 +33,7 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
 
   @Input()
   set course(course: Course) {
-    if(course != null) {
+    if (course != null) {
       this._course = course;
     }
   }
@@ -45,7 +45,7 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    if(localStorage.getItem("role") === "student") {
+    if (localStorage.getItem("role") === "student") {
       this.isStudent = true;
       this.colsToDisplay = ['select', 'serial', 'name', 'surname'];
     } else {
@@ -59,7 +59,6 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  /* Checkbox functions */
   toggleRowsTable(event: MatCheckboxChange, row: Student) {
     this.selection.toggle(row);
     this.selectedStudentsEmitter.emit(this.selection.selected);
@@ -73,8 +72,8 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
     return this.getPageData().every((row) => this.selection.isSelected(row));
   }
 
-  masterToggle(checkboxChange: MatCheckboxChange) {
-    if(this.isEntirePageSelected()) {
+  masterToggle() {
+    if (this.isEntirePageSelected()) {
       this.selection.deselect(...this.getPageData());
       this.showButton = false;
     } else {

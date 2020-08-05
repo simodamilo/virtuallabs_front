@@ -1,13 +1,13 @@
 <app-student-vms 
-        [vms]="vms$ | async"
-        [teamStudents]="teamStudents$ | async"
-        [errorMsg]="errorMsg"
-        [team]="team"
-        [modelVm]="modelVm"
-        (add)="addVm($event)"
-        (onOff)="onOffVm($event)"
-        (modify)="modifyVm($event)"
-        (delete)="deleteVm($event)"
-        (getStudents)="getTeamStudents($event)">
+  [vms]="vms$ | async"
+  [teamStudents]="teamStudents$ | async"
+  [errorMsg]="errorMsg"
+  [team]="team"
+  [modelVm]="modelVm"
+  (add)="addVm($event)"
+  (onOff)="onOffVm($event)"
+  (modify)="modifyVm($event)"
+  (delete)="deleteVm($event)"
+  (getStudents)="getTeamStudents($event)">
 </app-student-vms>
 

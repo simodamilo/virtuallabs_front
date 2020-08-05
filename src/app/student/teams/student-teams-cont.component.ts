@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Team, TeamService, StudentService, Student, Course, CourseService, Token } from 'src/app/core';
+import { Team, TeamService, StudentService, Student, Token } from 'src/app/core';
 import { Observable } from 'rxjs';
 
 @Component({

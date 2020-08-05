@@ -1,10 +1,10 @@
 <app-student-teams
-        [team]="team$ | async"
-        [availableStudents]="availableStudents$ | async"
-        [errorMsg]="errorMsg"
-        [errorRequestMsg]="errorRequestMsg"
-        [pendingTeams]="pendingTeams$ | async"
-        (proposeTeam)="proposeTeam($event)"
-        (acceptToken)="acceptTeam($event)"
-        (rejectToken)="rejectTeam($event)">
+  [team]="team$ | async"
+  [availableStudents]="availableStudents$ | async"
+  [errorMsg]="errorMsg"
+  [errorRequestMsg]="errorRequestMsg"
+  [pendingTeams]="pendingTeams$ | async"
+  (proposeTeam)="proposeTeam($event)"
+  (acceptToken)="acceptTeam($event)"
+  (rejectToken)="rejectTeam($event)">
 </app-student-teams>

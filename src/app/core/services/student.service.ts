@@ -13,20 +13,18 @@ export class StudentService {
   constructor(private http: HttpClient) { }
 
   getStudent(): Observable<Student> {
-    const studentSerial = localStorage.getItem("serial");
-    return this.http.get<Student>(`api/API/students/${studentSerial}/getOne`);
+    return this.http.get<Student>(`api/API/students/${localStorage.getItem("serial")}/getOne`);
   }
 
-  getStudentImage(): Observable<Blob>{
-    const studentSerial = localStorage.getItem("serial");
-    return this.http.get<Blob>(`/api/API/students/${studentSerial}/image`, { observe: 'body', responseType: 'blob' as 'json' })
+  getStudentImage(): Observable<Blob> {
+    return this.http.get<Blob>(`/api/API/students/${localStorage.getItem("serial")}/image`, { observe: 'body', responseType: 'blob' as 'json' })
   }
 
   getAllStudents(courseName: string): Observable<Student[]> {
     return this.http.get<Student[]>(`/api/API/students/${courseName}/getAll`);
   }
 
-  getEnrolledStudents(courseName: string):Observable<Student[]> {
+  getEnrolledStudents(courseName: string): Observable<Student[]> {
     return this.http.get<Student[]>(`/api/API/students/${courseName}/getEnrolled`);
   }
 
@@ -38,19 +36,19 @@ export class StudentService {
     return this.http.get<Student[]>(`api/API/students/${teamId}/members`);
   }
 
-  addStudentToCourse(student: Student, courseName: string): Observable<Student> {    
-    return this.http.post<Student>(`/api/API/students/${courseName}/enroll`, {serial:student.serial});
+  addStudentToCourse(student: Student, courseName: string): Observable<Student> {
+    return this.http.post<Student>(`/api/API/students/${courseName}/enroll`, { serial: student.serial });
   }
 
-  enrollCSV(file:File, courseName: string): Observable<Student[]>{
-    const formData = new FormData()
-    formData.append("file", file)
-    return this.http.post<Student[]>(`/api/API/students/${courseName}/enrollCsv`, formData)
+  enrollCSV(file: File, courseName: string): Observable<Student[]> {
+    const formData = new FormData();
+    formData.append("file", file);
+    return this.http.post<Student[]>(`/api/API/students/${courseName}/enrollCsv`, formData);
   }
 
-  uploadImage(file: File): Observable<Blob>{
-    if(file.type != "image/jpeg" && file.type != "image/png") {
-      return throwError({error: {message: 'File type not supported'}});
+  uploadImage(file: File): Observable<Blob> {
+    if (file.type != "image/jpeg" && file.type != "image/png") {
+      return throwError({ error: { message: 'File type not supported' } });
     } else {
       const formData = new FormData();
       formData.append("imageFile", file);
@@ -58,10 +56,10 @@ export class StudentService {
     }
   }
 
-  deleteStudentFromCourse(students: Student[], courseName: string){  
+  deleteStudentFromCourse(students: Student[], courseName: string) {
     return from(students).pipe(
       mergeMap(student => this.http.delete<Student>(`/api/API/students/${courseName}/deleteStudent/${student.serial}`)),
       toArray()
     );
-  } 
+  }
 }

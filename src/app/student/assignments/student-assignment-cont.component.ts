@@ -18,7 +18,7 @@ export class StudentAssignmentContComponent implements OnInit {
     private assignmentService: AssignmentService,
     private solutionService: SolutionService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(url =>
@@ -26,24 +26,24 @@ export class StudentAssignmentContComponent implements OnInit {
   }
 
   selectedAssignment(assignment: Assignment) {
-    this.errorMsg=""
+    this.errorMsg = ""
     this.solutions$ = this.solutionService.getStudentSolutions(localStorage.getItem("serial"), assignment);
   }
 
-  addSolution(event:{solution:Solution, assignment:Assignment}){
-    this.errorMsg=""
-    event.solution.state == 1 
+  addSolution(event: { solution: Solution, assignment: Assignment }) {
+    this.errorMsg = ""
+    event.solution.state == 1
     ? this.solutionService
-        .addReaded(event.solution, event.assignment, localStorage.getItem("serial"))
-        .subscribe(
-          () => this.solutions$ = this.solutionService.getStudentSolutions(localStorage.getItem("serial"), event.assignment),
-          (err) => this.errorMsg = err.error.message
-        ) 
+      .addReaded(event.solution, event.assignment, localStorage.getItem("serial"))
+      .subscribe(
+        () => this.solutions$ = this.solutionService.getStudentSolutions(localStorage.getItem("serial"), event.assignment),
+        (err) => this.errorMsg = err.error.message
+      )
     : this.solutionService
-        .addDelivered(event.solution, event.assignment)
-        .subscribe(
-          () => this.solutions$ = this.solutionService.getStudentSolutions(localStorage.getItem("serial"), event.assignment),
-          (err) => this.errorMsg = err.error.message
-        )
+      .addDelivered(event.solution, event.assignment)
+      .subscribe(
+        () => this.solutions$ = this.solutionService.getStudentSolutions(localStorage.getItem("serial"), event.assignment),
+        (err) => this.errorMsg = err.error.message
+      )
   }
 }

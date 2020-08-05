@@ -1,15 +1,18 @@
 <mat-dialog-content>
-    <div class="center">
-			<div class="container">
-        <img [src]="imageSafeURL" class="image">
-        <div class="bottom-right">
-            <input type="file" id="imagefile" class="inputimage" (change)="onChangeEvent($event.target.files[0])" accept="image/png, image/jpeg"/>
-            <label mat-label for="imagefile" class="mat-elevation-z2"><mat-icon class="add-photo-icon">photo_camera</mat-icon></label>
-				</div>
-			</div>
-        <h2>{{role === "student" ? student.name+" "+student.surname : teacher.name+" "+teacher.surname}}</h2>
-				<h3>{{role === "student" ? student.email : teacher.email}}</h3>
-				<mat-error>{{errorMsg}}</mat-error>
-        <button mat-stroked-button (click)="logout()">Logout</button>
+  <div class="center">
+    <div class="container">
+      <img [src]="imageSafeURL" class="image">
+      <div class="bottom-right">
+        <input type="file" id="imagefile" class="inputfile" (change)="onChangeEvent($event.target.files[0])"
+          accept="image/png, image/jpeg" />
+        <label mat-label for="imagefile" matTooltip="Upload your image" class="mat-elevation-z2">
+          <mat-icon class="add-photo-icon">photo_camera</mat-icon>
+        </label>
+      </div>
     </div>
+    <h2>{{role === "student" ? student.name+" "+student.surname : teacher.name+" "+teacher.surname}}</h2>
+    <h3>{{role === "student" ? student.email : teacher.email}}</h3>
+    <mat-error>{{errorMsg}}</mat-error>
+    <button mat-stroked-button (click)="logout()">Logout</button>
+  </div>
 </mat-dialog-content>

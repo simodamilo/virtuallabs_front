@@ -1,25 +1,26 @@
 <div class="mat-elevation-z2">
   <table mat-table matSort [dataSource]="solutionsDataSource" matSortActive="deliveryTs" matSortDirection="desc">
 
-    <ng-container  matColumnDef="deliveryTs">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="deliveryTsColumn">Delivered</th>
+    <ng-container matColumnDef="deliveryTs">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="column-header-w30">Delivered</th>
       <td mat-cell *matCellDef="let s">{{ formatDate(s.deliveryTs) }}</td>
     </ng-container>
 
     <ng-container matColumnDef="state">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="stateColumn">State</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="column-header-w30">State</th>
       <td mat-cell *matCellDef="let s">{{ s.state }}</td>
     </ng-container>
 
     <ng-container matColumnDef="grade">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="gradeColumn">Grade</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="column-header-w20">Grade</th>
       <td mat-cell *matCellDef="let s">{{ s.grade? s.grade: "-" }}</td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef class="actionsColumn"></th>
+      <th mat-header-cell *matHeaderCellDef class="column-header-w20"></th>
       <td mat-cell *matCellDef="let s">
-        <button mat-icon-button *ngIf="s.state == 'DELIVERED' ||s.state=='REVIEWED'" (click)="viewContent(s)">
+        <button mat-icon-button matTooltip="View the solution" *ngIf="s.state == 'DELIVERED' ||s.state=='REVIEWED'"
+          (click)="viewContent(s)">
           <mat-icon color="primary">visibility</mat-icon>
         </button>
       </td>
@@ -28,8 +29,5 @@
     <tr mat-header-row *matHeaderRowDef="solutionsCols"></tr>
     <tr mat-row *matRowDef="let row; columns: solutionsCols"></tr>
   </table>
-  <mat-paginator
-    [pageSizeOptions]="[5, 10, 20]"
-    showFirstLastButtons
-  ></mat-paginator>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>

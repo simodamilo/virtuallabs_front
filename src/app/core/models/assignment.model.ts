@@ -1,6 +1,6 @@
 export interface Assignment {
     id?: number;
-    name:string;
+    name: string;
     releaseDate: Date;
     deadline: Date;
     content?: File;

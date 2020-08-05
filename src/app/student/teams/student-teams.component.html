@@ -1,91 +1,86 @@
 <div class="container">
-    <div *ngIf="showTeamInfo">
-        <h2>{{_team.name}}</h2>
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
+  <div *ngIf="showTeamInfo">
+    <h2>{{_team.name}}</h2>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
 
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef class="nameColumn"> Name </th>
-                <td mat-cell *matCellDef="let student"> {{student.name}} </td>
-            </ng-container>
-        
-            <!-- Surname Column -->
-            <ng-container matColumnDef="surname">
-                <th mat-header-cell *matHeaderCellDef class="surnameColumn"> Surname </th>
-                <td mat-cell *matCellDef="let student"> {{student.surname}} </td>
-            </ng-container>
-        
-            <!-- Serial Column -->
-            <ng-container matColumnDef="serial">
-                <th mat-header-cell *matHeaderCellDef class="serialColumn"> Serial </th>
-                <td mat-cell *matCellDef="let student"> {{student.serial}} </td>
-            </ng-container>
-        
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-    </div>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="nameColumn"> Name </th>
+        <td mat-cell *matCellDef="let student"> {{student.name}} </td>
+      </ng-container>
 
-    <div *ngIf="showTeamProposals">
-        <h2>Teams</h2>
-        <mat-error>{{_errorMsg}}</mat-error>
-        <form [formGroup]="proposeTeamForm">
-            <mat-form-field>
-                <mat-label>Team name</mat-label>
-                <input matInput formControlName="name" type="text" placeholder="Name" #name required>
-                <mat-error *ngIf="proposeTeamForm.get('name').invalid">{{getErrorNameMessage()}}</mat-error>
-            </mat-form-field>
+      <ng-container matColumnDef="surname">
+        <th mat-header-cell *matHeaderCellDef class="surnameColumn"> Surname </th>
+        <td mat-cell *matCellDef="let student"> {{student.surname}} </td>
+      </ng-container>
 
-            <mat-form-field>
-                <mat-label>Timeout(hours)</mat-label>
-                <input matInput formControlName="timeout" type="number" placeholder="Timeout(hours)" #timeout required>
-                <mat-error *ngIf="proposeTeamForm.get('timeout').invalid">{{getErrorTimeoutMessage()}}</mat-error>
-            </mat-form-field>
-            <button mat-stroked-button (click)="proposeTeam()">Propose Team</button>
-        </form>
+      <ng-container matColumnDef="serial">
+        <th mat-header-cell *matHeaderCellDef class="serialColumn"> Serial </th>
+        <td mat-cell *matCellDef="let student"> {{student.serial}} </td>
+      </ng-container>
 
-        <app-students-table
-            [students]="_availableStudents"
-            (selectedStudents)="changeSelection($event)">
-        </app-students-table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
 
-        <h2 class="request-header">Your requests</h2>
-        <mat-error>{{_errorRequestMsg}}</mat-error>
-        <table mat-table [dataSource]="teamsDataSource" class="mat-elevation-z2">
+  <div *ngIf="showTeamProposals">
+    <h2>Teams</h2>
+    <mat-error>{{_errorMsg}}</mat-error>
+    <form [formGroup]="proposeTeamForm">
+      <mat-form-field>
+        <mat-label>Team name</mat-label>
+        <input matInput formControlName="name" type="text" placeholder="Name" #name required>
+        <mat-error *ngIf="proposeTeamForm.get('name').invalid">{{getErrorNameMessage()}}</mat-error>
+      </mat-form-field>
 
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef class="teamNameColumn"> Name </th>
-                <td mat-cell *matCellDef="let team"> {{team.name}} </td>
-            </ng-container>
-        
-            <!-- Serial Column -->
-            <ng-container matColumnDef="members">
-                <th mat-header-cell *matHeaderCellDef class="membersColumn"> Members </th>
-                <td mat-cell *matCellDef="let team">
-                    <mat-list>
-                        <mat-list-item *ngFor="let member of team.members" class="list-item"> 
-                            {{member.serial}} {{member.name}} {{member.surname}} ({{member.teamToken == null ? 'Creator' : (member.teamToken.status === 0 ? 'Not accepted' : 'Accepted')}})
-                        </mat-list-item>
-                    </mat-list>
-                </td>
-            </ng-container>
+      <mat-form-field>
+        <mat-label>Timeout(hours)</mat-label>
+        <input matInput formControlName="timeout" type="number" placeholder="Timeout(hours)" #timeout required>
+        <mat-error *ngIf="proposeTeamForm.get('timeout').invalid">{{getErrorTimeoutMessage()}}</mat-error>
+      </mat-form-field>
+      <button mat-stroked-button (click)="proposeTeam()">Propose Team</button>
+    </form>
 
-            <!-- Action -->
-            <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef class="actionsColumn"></th>
-                <td mat-cell *matCellDef="let team">
-                    <button mat-icon-button *ngIf="isNotAccepted(team)" color="primary" aria-label="Accept request" (click)="accept(team)">
-                        <mat-icon>done</mat-icon>
-                    </button>
-                    <button mat-icon-button *ngIf="isNotAccepted(team)" color="primary" aria-label="Reject request" (click)="reject(team)">
-                        <mat-icon>clear</mat-icon>
-                    </button>
-                </td>
-            </ng-container>
-        
-            <tr mat-header-row *matHeaderRowDef="teamsDisplayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: teamsDisplayedColumns;"></tr>
-        </table>
-    </div>
+    <app-students-table [students]="_availableStudents" (selectedStudents)="changeSelection($event)">
+    </app-students-table>
+
+    <h2 class="request-header">Your requests</h2>
+    <mat-error>{{_errorRequestMsg}}</mat-error>
+    <table mat-table [dataSource]="teamsDataSource" class="mat-elevation-z2">
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef class="column-header-w30"> Name </th>
+        <td mat-cell *matCellDef="let team"> {{team.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="members">
+        <th mat-header-cell *matHeaderCellDef class="members-column column-header-w40"> Members </th>
+        <td mat-cell *matCellDef="let team">
+          <mat-list>
+            <mat-list-item *ngFor="let member of team.members" class="list-item">
+              {{member.serial}} {{member.name}} {{member.surname}}
+              ({{member.teamToken == null ? 'Creator' : (member.teamToken.status === 0 ? 'Not accepted' : 'Accepted')}})
+            </mat-list-item>
+          </mat-list>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="column-header-w30"></th>
+        <td mat-cell *matCellDef="let team">
+          <button mat-icon-button matTooltip="Accept request" *ngIf="isNotAccepted(team)" color="primary"
+            aria-label="Accept request" (click)="accept(team)">
+            <mat-icon>done</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Reject request" *ngIf="isNotAccepted(team)" color="primary"
+            aria-label="Reject request" (click)="reject(team)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="teamsDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: teamsDisplayedColumns;"></tr>
+    </table>
+  </div>
 </div>

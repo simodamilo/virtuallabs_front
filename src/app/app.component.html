@@ -1,36 +1,39 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button (click)="logged ? sideNav.toggle() : null"><mat-icon >menu</mat-icon></button>
+  <button mat-icon-button (click)="logged ? sideNav.toggle() : null">
+    <mat-icon>menu</mat-icon>
+  </button>
   <h1>VirtualLabs</h1>
   <span class="example-fill-remaining-space"></span>
-  <button mat-icon-button *ngIf="!logged" [routerLink]="['home']" [queryParams]="{doLogin: true}"><mat-icon>login</mat-icon></button>
+  <button mat-icon-button *ngIf="!logged" [routerLink]="['home']" [queryParams]="{doLogin: true}">
+    <mat-icon>login</mat-icon>
+  </button>
   <button mat-icon-button *ngIf="logged" (click)="openProfileDialog()"><img [src]="imageSafeURL"></button>
 </mat-toolbar>
 
-<mat-toolbar><h2>{{logged ? (courses.length>0 ? selectedCourse : "Home") : "Home"}}</h2></mat-toolbar>
+<mat-toolbar>
+  <h2>{{logged ? (courses.length>0 ? selectedCourse : "Home") : "Home"}}</h2>
+</mat-toolbar>
 
 <mat-sidenav-container>
 
   <mat-sidenav mode="side" position="start" *ngIf="logged" closed>
     <mat-nav-list>
       <a mat-list-item *ngFor="let course of courses"
-      [ngClass]="{'side-link': selectedCourse === course.name, 'link': true}" 
-      [disableRipple]='true' 
-      [routerLink]="[role, 'courses', course.name, tabs[0]]"
-      (click)="selectedCourse = course.name; selectedTab = (role == 'student' ?  'teams' : 'course')">
+        [ngClass]="{'side-link': selectedCourse === course.name, 'link': true}" [disableRipple]='true'
+        [routerLink]="[role, 'courses', course.name, tabs[0]]"
+        (click)="selectedCourse = course.name; selectedTab = (role == 'student' ?  'teams' : 'course')">
         <p class="side-element">{{course.name}}</p>
       </a>
     </mat-nav-list>
-    <button mat-stroked-button class="course-button" *ngIf="logged && role == 'teacher'" (click)="openCourseDialog()">New</button>
+    <button mat-stroked-button class="course-button" *ngIf="logged && role == 'teacher'"
+      (click)="openCourseDialog()">New</button>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <nav mat-tab-nav-bar *ngIf="logged && courses.length>0">
-      <a mat-tab-link *ngFor="let tab of tabs"
-      [routerLink]="[role, 'courses', selectedCourse, tab]"  
-      [ngClass]="{'tab-style': selectedTab == tab}"
-      routerLinkActive #rla="routerLinkActive"
-      (click)="selectedTab = tab"
-      [active]="selectedTab == tab">{{tab}}</a>
+      <a mat-tab-link *ngFor="let tab of tabs" [routerLink]="[role, 'courses', selectedCourse, tab]"
+        [ngClass]="{'tab-style': selectedTab == tab}" routerLinkActive #rla="routerLinkActive"
+        (click)="selectedTab = tab" [active]="selectedTab == tab">{{tab}}</a>
     </nav>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

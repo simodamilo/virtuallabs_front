@@ -19,10 +19,10 @@ export class StudentVmsContComponent implements OnInit {
   modelVm: ModelVM;
   courseName: string;
 
-  constructor(private vmService: VmService, 
-    private modelVmService: ModelVmService, 
-    private teamService: TeamService, 
-    private studentService: StudentService, 
+  constructor(private vmService: VmService,
+    private modelVmService: ModelVmService,
+    private teamService: TeamService,
+    private studentService: StudentService,
     public dialog: MatDialog,
     private route: ActivatedRoute) { }
 
@@ -36,7 +36,7 @@ export class StudentVmsContComponent implements OnInit {
 
   getModelVm() {
     this.modelVmService.getModelVm(this.courseName).subscribe(
-      (model) => this.modelVm = model, 
+      (model) => this.modelVm = model,
       (err) => this.errorMsg = err.error.message
     )
   }
@@ -75,12 +75,12 @@ export class StudentVmsContComponent implements OnInit {
     this.vmService.onOffVm(vm.id).subscribe(
       (vm) => {
         this.getVms();
-        if(vm.active) {
+        if (vm.active) {
           const dialogRef = this.dialog.open(ContentDialogComponent, {
             width: '70%',
             height: '80%',
             panelClass: 'custom-dialog-panel',
-            data: {vm: vm, courseName: this.courseName}
+            data: { vm: vm, courseName: this.courseName }
           });
 
           dialogRef.afterClosed().subscribe(
@@ -95,7 +95,7 @@ export class StudentVmsContComponent implements OnInit {
   deleteVm(vmId: number) {
     this.errorMsg = "";
     this.vmService.deleteVm(vmId).subscribe(
-      () => this.getVms(), 
+      () => this.getVms(),
       (err) => this.errorMsg = err.error.message
     );
   }

@@ -2,13 +2,15 @@
   <div [ngClass]="{'modelVm-div': showModelDiv}">
     <h2>Model Virtual Machine</h2>
     <div *ngIf="showModelDiv" class="div-button">
-      <button mat-icon-button color="primary" aria-label="Visualize modelVm" (click)="viewModelVm()">
+      <button mat-icon-button matTooltip="View VM model" color="primary" aria-label="View VM model"
+        (click)="viewModelVm()">
         <mat-icon>visibility</mat-icon>
       </button>
-      <button mat-icon-button color="primary" aria-label="Delete modelVm" (click)="deleteModelVm()">
+      <button mat-icon-button matTooltip="Delete VM model" color="primary" aria-label="Delete VM model"
+        (click)="deleteModelVm()">
         <mat-icon>delete</mat-icon>
       </button>
-    </div><br/>
+    </div><br />
     <p *ngIf="showModelDiv">
       Model '{{_modelVm.name}}' is ready for the course, the type is {{_modelVm.type}}.
     </p>
@@ -27,11 +29,13 @@
       <mat-error *ngIf="modelVmForm.get('type').invalid">{{getErrorTypeMessage()}}</mat-error>
     </mat-form-field>
 
-    <input type="file" #modelInput id="file" class="inputfile" (change)="onModelVmSelected($event.target.files[0])" accept="image/png, image/jpeg"/>
+    <input type="file" #modelInput id="file" class="inputfile" (change)="onModelVmSelected($event.target.files[0])"
+      accept="image/png, image/jpeg" />
     <label mat-label for="file">Upload modelVM</label>
     <label mat-label *ngIf="fileName != ''" class="filename">{{fileName}}</label>
 
-    <button mat-stroked-button class="add-modelVm-button" (click)="addModelVm(name.value, type.value)">Add Model</button>
+    <button mat-stroked-button class="add-modelVm-button" (click)="addModelVm(name.value, type.value)">Add
+      Model</button>
   </form>
 
 
@@ -64,7 +68,7 @@
           </mat-form-field>
         </div>
         <div class="stepperButton">
-          <button mat-stroked-button (click)="closeDiv()">Close</button>
+          <button mat-stroked-button (click)="this.showModifyDiv = false">Close</button>
           <button mat-flat-button color="primary" matStepperNext>Next</button>
         </div>
       </mat-step>
@@ -100,7 +104,7 @@
         </div>
         <div class="stepperButton">
           <button mat-stroked-button matStepperPrevious>Previous</button>
-          <button mat-stroked-button (click)="closeDiv()">Close</button>
+          <button mat-stroked-button (click)="this.showModifyDiv = false">Close</button>
           <button mat-flat-button color="primary" (click)="confirmTeam()">Confirm</button>
         </div>
       </mat-step>
@@ -111,15 +115,13 @@
   <div class="mat-elevation-z2 table-container">
     <table mat-table matSortActive="name" matSortDirection="asc" [dataSource]="dataSource" matSort>
 
-      <!-- Name Column -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="nameColumn"> Name </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="column-header-w40"> Name </th>
         <td mat-cell *matCellDef="let team"> {{team.name}} </td>
       </ng-container>
 
-      <!-- Students Column -->
       <ng-container matColumnDef="students">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header class="studentColumn"> Students </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="column-header-w40 student-column"> Students </th>
         <td mat-cell *matCellDef="let team">
           <mat-list>
             <mat-list-item *ngFor="let member of team.members" class="list-item">
@@ -129,11 +131,10 @@
         </td>
       </ng-container>
 
-      <!-- Action -->
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef class="actionsColumn"></th>
+        <th mat-header-cell *matHeaderCellDef class="column-header-w20"></th>
         <td mat-cell *matCellDef="let team">
-          <button mat-icon-button color="primary" matTooltip="Modify team" aria-label="Edit the virtual machine"
+          <button mat-icon-button matTooltip="Edit team constraints" color="primary" aria-label="Edit team constraints"
             (click)="modifyTeam(team); $event.stopImmediatePropagation()">
             <mat-icon>edit</mat-icon>
           </button>
@@ -148,18 +149,20 @@
     </table>
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
     </mat-paginator>
-  </div><br/>
+  </div><br />
 
   <div *ngIf="showVms">
     <h2>Team Virtual Machines</h2>
     <div class="resources-team">
-      <p>Real time resources: 
+      <p>Real time resources:
         Ram ({{resourcesTeam.ram}}), Disk ({{resourcesTeam.disk}}), VCpu ({{resourcesTeam.vcpu}}), ActiveInstance
         ({{resourcesTeam.activeInstance}})
       </p>
     </div>
     <!-- It is used to display the virtual machine of the selected team -->
-    <app-vms-table [vms]="_vms" (onOff)="onOffVm($event)">
+    <app-vms-table 
+      [vms]="_vms" 
+      (onOff)="onOffVm($event)">
     </app-vms-table>
   </div>
 </div>

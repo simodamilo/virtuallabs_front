@@ -20,8 +20,8 @@ export class ModelVmService {
   }
 
   addModelVm(modelVm: ModelVM, courseName: string): Observable<ModelVM> {
-    if(modelVm.content.type != "image/jpeg" && modelVm.content.type != "image/png") {
-      return throwError({error: {message: 'File type not supported'}});
+    if (modelVm.content.type != "image/jpeg" && modelVm.content.type != "image/png") {
+      return throwError({ error: { message: 'File type not supported' } });
     } else {
       const formData = new FormData();
       formData.append('imageFile', modelVm.content);
@@ -32,7 +32,7 @@ export class ModelVmService {
     }
   }
 
-  deleteModelVm(modelVmId: number): Observable<any> {
-    return this.http.delete<any>(`api/API/modelVms/${modelVmId}`);
+  deleteModelVm(modelVmId: number) {
+    return this.http.delete(`api/API/modelVms/${modelVmId}`);
   }
 }

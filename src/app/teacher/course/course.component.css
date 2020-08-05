@@ -21,29 +21,6 @@ button {
     vertical-align: middle;
 }
 
-.checkboxColumn {
-    width: 20%;
-    background-color: rgba(63, 81, 181, 0.1);
-}
-
-.nameColumn {
-    width: 20%;
-    color: rgba(0,0,0,.87);
-    background-color: rgba(63, 81, 181, 0.1);
-}
-
-.surnameColumn {
-    width: 40%;
-    color: rgba(0,0,0,.87);
-    background-color: rgba(63, 81, 181, 0.1);
-}
-
-.serialColumn {
-    width: 20%;
-    color: rgba(0,0,0,.87);
-    background-color: rgba(63, 81, 181, 0.1);
-}
-
 .inputfile + label{
     margin-left: 12px;
 }

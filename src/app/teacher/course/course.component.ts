@@ -23,7 +23,7 @@ import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-di
   templateUrl: './course.component.html',
   styleUrls: ['./course.component.css'],
 })
-export class CourseComponent implements AfterViewInit{
+export class CourseComponent implements AfterViewInit {
   dataSource: MatTableDataSource<Teacher> = new MatTableDataSource();
   colsToDisplay = ['select', 'serial', 'name', 'surname'];
   selection: SelectionModel<Teacher>;
@@ -43,15 +43,6 @@ export class CourseComponent implements AfterViewInit{
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild("csvInput") csvInput: ElementRef;
 
-  constructor(public courseDialog: MatDialog, public confirmDialog: MatDialog) {
-    this.selection = new SelectionModel<Student>(true, []);
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-  }
-
   @Input('errorMsgStudent') set errorMsgStudent(err: string) {
     this._errorMsgStudent = err;
   }
@@ -65,7 +56,7 @@ export class CourseComponent implements AfterViewInit{
     this._allTeachers = teachers;
   }
   @Input('course') set courseStatus(course: Course) {
-    if(course != null){
+    if (course != null) {
       this._course = course
       this.isActive = course.enabled;
     }
@@ -88,6 +79,15 @@ export class CourseComponent implements AfterViewInit{
   @Output('removeTeachers') removeTeachersEmitter = new EventEmitter<Teacher[]>();
   @Output('updateEnrolled') updateEmitter = new EventEmitter<boolean>();
 
+  constructor(public courseDialog: MatDialog, public confirmDialog: MatDialog) {
+    this.selection = new SelectionModel<Student>(true, []);
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
   changeSelection(event: Student[]) {
     this.toRemove = [...event];
   }
@@ -100,8 +100,8 @@ export class CourseComponent implements AfterViewInit{
     this.removeTeachersEmitter.emit(this.selection.selected);
   }
 
-  selectedOption(option: Student | Teacher){
-      this.addEmitter.emit(option)
+  selectedOption(option: Student | Teacher) {
+    this.addEmitter.emit(option)
   }
 
   openCourseDialog() {
@@ -111,7 +111,7 @@ export class CourseComponent implements AfterViewInit{
     });
 
     dialogRef.afterClosed().subscribe(course => {
-      if(course != null)
+      if (course != null)
         this._course = course;
     });
   }
@@ -119,11 +119,10 @@ export class CourseComponent implements AfterViewInit{
   deleteCourse() {
     this.confirmDialog.open(ConfirmDialogComponent, {
       width: '400px',
-      data: {course: this._course},
+      data: { course: this._course },
     });
   }
 
-  
   toggleRowsTable(event: MatCheckboxChange, row: Student) {
     this.selection.toggle(row);
   }
@@ -137,7 +136,7 @@ export class CourseComponent implements AfterViewInit{
   }
 
   masterToggle(checkboxChange: MatCheckboxChange) {
-    if(this.isEntirePageSelected()) {
+    if (this.isEntirePageSelected()) {
       this.selection.deselect(...this.getPageData());
       this.showButton = false;
     } else {
@@ -153,12 +152,12 @@ export class CourseComponent implements AfterViewInit{
   onChangeEvent(event) {
     const dialogRef = this.confirmDialog.open(ConfirmDialogComponent, {
       width: '400px',
-      data: {csv: event.target.files[0], courseName: this._course.name},
+      data: { csv: event.target.files[0], courseName: this._course.name },
       disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(res => {
-      if(res)
+      if (res)
         this.updateEmitter.emit(true);
       this.csvInput.nativeElement.value = "";
     });

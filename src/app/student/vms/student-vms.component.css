@@ -6,16 +6,6 @@ h2 {
     float: right;
 }
 
-mat-slider {
-    margin-right: 16px;
-    margin-left: 16px;
-    margin-top: 16px;
-    margin-bottom: 8px;
-    padding-left: 0px;
-    width: 40%;
-    max-width: 250px;
-}
-
 mat-form-field {
     max-width: 80px;
     margin-right: 16px;
@@ -27,18 +17,13 @@ mat-form-field {
 }
 
 .summary {
-    margin: 0px;
+    margin: 0 0 12px 16px;
     display: list-item;
-    margin-bottom: 12px;
-    margin-left: 16px;
 }
 
 p {
     display: inline-block;
-    margin-left: 16px;
-    margin-right: 16px;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    margin: 8px 16px 8px 16px;
 }
 
 .name {
@@ -67,10 +52,6 @@ p {
     margin-left: 0px;
 }
 
-.other-owners {
-    margin-bottom: 12px;
-}
-
-.icon {
+.other-owners, .icon {
     margin-bottom: 12px;
 }

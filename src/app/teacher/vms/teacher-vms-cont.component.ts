@@ -27,17 +27,9 @@ export class TeacherVmsContComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.courseName = params['courseName'];
-      this.getTeams();
-      this.getModelVm();
+      this.teams$ = this.teamService.getCourseTeams(this.courseName);
+      this.modelVm$ = this.modelVmService.getModelVm(this.courseName);
     });
-  }
-
-  getModelVm() {
-    this.modelVm$ = this.modelVmService.getModelVm(this.courseName);
-  }
-
-  getTeams() {
-    this.teams$ = this.teamService.getCourseTeams(this.courseName);
   }
 
   getVms(team: Team) {
@@ -58,31 +50,23 @@ export class TeacherVmsContComponent implements OnInit {
 
   deleteModelVm(event) {
     this.modelVmService.deleteModelVm(event.id).subscribe(
-      () => {
-        this.getModelVm();
-      },
-      err => {
-        this.errorMsg = err.error.message;
-      }
+      () => this.modelVm$ = this.modelVmService.getModelVm(this.courseName),
+      (err) => this.errorMsg = err.error.message
     );
   }
 
   modifyTeam(team: Team) {
     this.errorMsg = "";
     this.teamService.setTeamParams(team).subscribe(
-      () => {
-        this.getTeams();
-      },
-      err => {
-        this.errorMsg = err.error.message;
-      }
+      () => this.teams$ = this.teamService.getCourseTeams(this.courseName),
+      (err) => this.errorMsg = err.error.message
     );
   }
 
   onOffVm(event) {
     this.errorMsg = "";
     this.vmService.onOffVm(event.vm.id).subscribe(
-      vm => {
+      (vm) => {
         this.getVms(event.team);
         if (vm.active) {
           const dialogRef = this.dialog.open(ContentDialogComponent, {
@@ -93,13 +77,11 @@ export class TeacherVmsContComponent implements OnInit {
           });
 
           dialogRef.afterClosed().subscribe(
-            () => this.vmService.onOffVm(event.vm.id).subscribe(vm => this.getVms(event.team))
+            () => this.vmService.onOffVm(event.vm.id).subscribe(() => this.getVms(event.team))
           );
         }
       },
-      err => {
-        this.errorMsg = err.error.message;
-      }
+      (err) => this.errorMsg = err.error.message
     );
   }
 

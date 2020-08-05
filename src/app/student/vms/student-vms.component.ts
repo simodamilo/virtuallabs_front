@@ -11,9 +11,6 @@ import { MatStepper } from '@angular/material/stepper';
 })
 export class StudentVmsComponent {
 
-  @ViewChild('matSelect') select: MatSelect; 
-  @ViewChild('stepper') stepper: MatStepper; 
-  
   vm: VM;
   showAddDiv: Boolean = false;
   showAddButton: Boolean = true;
@@ -28,32 +25,33 @@ export class StudentVmsComponent {
   vcpu: number;
   disk: number;
 
-  constructor() { }
+  @ViewChild('matSelect') select: MatSelect;
+  @ViewChild('stepper') stepper: MatStepper;
 
   @Input()
   set modelVm(modelVm: ModelVM) {
-    if(modelVm != null) {
+    if (modelVm != null) {
       this._modelVm = modelVm;
       this.showModelView = true;
     }
   }
 
   @Input()
-  set vms(vms: VM[]){
-    if(vms != null)
+  set vms(vms: VM[]) {
+    if (vms != null)
       this._vms = [...vms];
     else
       this._vms = [];
   }
 
   @Input()
-  set errorMsg(error: string){
+  set errorMsg(error: string) {
     this._errorMsg = error;
   }
 
   @Input()
-  set team(team: Team){
-    if(team != null) {
+  set team(team: Team) {
+    if (team != null) {
       this._team = team;
       this.showAddButton = true;
     } else {
@@ -62,11 +60,11 @@ export class StudentVmsComponent {
   }
 
   @Input()
-  set teamStudents(students: Student[]){
-    if(students != null) {
+  set teamStudents(students: Student[]) {
+    if (students != null) {
       this.vm.id == null
-      ? this._teamStudents = students.filter(student => student.serial != localStorage.getItem('serial'))
-      : this._teamStudents = students.filter(student => !(this.vm.owners.filter(s1 => s1.serial == student.serial).length > 0));
+        ? this._teamStudents = students.filter(student => student.serial != localStorage.getItem('serial'))
+        : this._teamStudents = students.filter(student => !(this.vm.owners.filter(s1 => s1.serial == student.serial).length > 0));
     }
   }
 
@@ -76,10 +74,10 @@ export class StudentVmsComponent {
   @Output('onOff') onOff = new EventEmitter<VM>();
   @Output('getStudents') getStudents = new EventEmitter<number>();
 
+  constructor() { }
 
-  /* It is used to show/close the stepper */
   addOpenStepper() {
-    this.vm = {id: null, name: "", vcpu: 0, disk: 0, ram: 0, active: false, owners: []};
+    this.vm = { id: null, name: "", vcpu: 0, disk: 0, ram: 0, active: false, owners: [] };
     this.open();
   }
 
@@ -89,7 +87,7 @@ export class StudentVmsComponent {
   }
 
   modifyOpenStepper(vm: VM) {
-    this.vm = {id: vm.id, name: vm.name, vcpu: vm.vcpu, disk: vm.disk, ram: vm.ram, owners: vm.owners};
+    this.vm = { id: vm.id, name: vm.name, vcpu: vm.vcpu, disk: vm.disk, ram: vm.ram, owners: vm.owners };
     this.open();
   }
 
@@ -98,7 +96,7 @@ export class StudentVmsComponent {
     this.vcpu = this._team.vcpu;
     this.disk = this._team.disk;
     this._vms.forEach(vm => {
-      if(this.vm.id !== vm.id) {
+      if (this.vm.id !== vm.id) {
         this.ram -= vm.ram;
         this.vcpu -= vm.vcpu;
         this.disk -= vm.disk;
@@ -106,18 +104,15 @@ export class StudentVmsComponent {
     });
     this.getStudents.emit(this._team.id);
     this.showAddDiv = true;
-    if(this.stepper !== undefined)
+    if (this.stepper !== undefined)
       this.stepper.reset();
   }
 
-
-  /* Used to perform operation of buttons in table */
   confirmVm() {
     this.vm.owners = this.newOwners;
-    if(this.vm.id === null)
-      this.add.emit(this.vm);
-    else
-      this.modify.emit(this.vm);
+    this.vm.id === null
+    ? this.add.emit(this.vm)
+    : this.modify.emit(this.vm);
     this.showAddDiv = false;
     this.newOwners = [];
   }
@@ -128,21 +123,18 @@ export class StudentVmsComponent {
   }
 
   deleteVm(vmId: number) {
-    console.log("vms");
     this.showAddDiv = false;
     this.delete.emit(vmId);
   }
 
-
-  /* Used to manage the list of new owners */
   addStudent(event: MatSelectChange) {
-    if(!this.newOwners.includes(event.value))
+    if (!this.newOwners.includes(event.value))
       this.newOwners.push(event.value);
     this.select.value = "";
   }
 
   removeStudent(removedStudent: Student) {
-    if(this.newOwners.includes(removedStudent))
+    if (this.newOwners.includes(removedStudent))
       this.newOwners.splice(this.vm.owners.indexOf(removedStudent), 1);
   }
 }

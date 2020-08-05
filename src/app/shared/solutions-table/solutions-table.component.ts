@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, Input, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ContentDialogComponent } from '../content-dialog/content-dialog.component';
 import { Solution } from 'src/app/core';
@@ -10,36 +10,33 @@ import { MatPaginator } from '@angular/material/paginator';
 @Component({
   selector: 'app-solutions-table',
   templateUrl: './solutions-table.component.html',
-  styleUrls: ['./solutions-table.component.css']
+  styles: []
 })
 export class SolutionsTableComponent implements AfterViewInit {
   solutionsDataSource = new MatTableDataSource<Solution>();
-  solutionsCols = [ 'deliveryTs', 'state', 'grade', 'actions'];
+  solutionsCols = ['deliveryTs', 'state', 'grade', 'actions'];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-  
   @Input('solutions') set solutions(solutions: Solution[]) {
-    if (solutions != null) 
+    if (solutions != null)
       this.solutionsDataSource.data = [...solutions];
   }
 
-  constructor(public dialog: MatDialog) {}
-
+  constructor(public dialog: MatDialog) { }
 
   ngAfterViewInit() {
     this.solutionsDataSource.sort = this.sort;
     this.solutionsDataSource.paginator = this.paginator;
   }
 
-
   viewContent(solution: Solution) {
     this.dialog.open(ContentDialogComponent, {
       width: '70%',
       height: '80%',
       panelClass: 'custom-dialog-panel',
-      data:{solution: solution}
+      data: { solution: solution }
     });
   }
 

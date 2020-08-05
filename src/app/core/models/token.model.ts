@@ -1,5 +1,5 @@
 export interface Token {
-    token: string;
+    id: string;
     teamId: number;
     studentSerial: string;
     expiryDate: Date;

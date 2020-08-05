@@ -5,6 +5,7 @@ import {
   Input,
   EventEmitter,
   Output,
+  AfterViewInit,
 } from '@angular/core';
 import * as moment from 'moment';
 import { MatTableDataSource } from '@angular/material/table';
@@ -19,22 +20,22 @@ import { ContentDialogComponent } from '../content-dialog/content-dialog.compone
   templateUrl: './assignments-table.component.html',
   styleUrls: ['./assignments-table.component.css'],
 })
-export class AssignmentsTableComponent implements OnInit {
+export class AssignmentsTableComponent implements OnInit, AfterViewInit {
 
   assignmentsDataSource = new MatTableDataSource<Assignment>();
   assignmentCols = ['name', 'releaseDate', 'deadline', 'view'];
   assignmentSelection: SelectionModel<Assignment>;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @Input('assignments') 
+  @Input('assignments')
   set assignments(assignments: Assignment[]) {
-    if (assignments != null) 
-    this.assignmentsDataSource.data = [...assignments]
+    if (assignments != null)
+      this.assignmentsDataSource.data = [...assignments]
   }
   @Output('assignmentSelected') selectionEmitter = new EventEmitter<Assignment>();
   @Output('assignmentReaded') readEmitter = new EventEmitter<Assignment>();
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.assignmentSelection = new SelectionModel<Assignment>(false, []);
@@ -44,20 +45,35 @@ export class AssignmentsTableComponent implements OnInit {
     this.assignmentsDataSource.sort = this.sort;
   }
 
-  viewContent( assignment:Assignment) {
-    if(localStorage.getItem('role')== "student"){this.readEmitter.emit(assignment)}
+  /**
+   * Used to display the assignment image.
+   * 
+   * @param assignment of which image must be displayed.
+   */
+  viewContent(assignment: Assignment) {
+    if (localStorage.getItem('role') == "student") { this.readEmitter.emit(assignment) }
     this.dialog.open(ContentDialogComponent, {
       width: '70%',
       height: '80%',
       panelClass: 'custom-dialog-panel',
-      data:{ assignment: assignment }
+      data: { assignment: assignment }
     });
   }
 
+  /**
+   * Used to change the format of the selected date.
+   * 
+   * @param date that is printed.
+   */
   formatDate(date: Date) {
     return moment(date).format('DD-MM-yyyy');
   }
 
+  /**
+   * Used to pass the selected assignment to the component that use the table.
+   * 
+   * @param row of the selected assignment.
+   */
   assignmentSelected(row: Assignment) {
     this.selectionEmitter.emit(row);
     this.assignmentSelection.toggle(row);

@@ -25,7 +25,7 @@ export class TeacherAssignmentContComponent implements OnInit {
     private assignmentService: AssignmentService,
     private solutionService: SolutionService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((url) => {
@@ -39,14 +39,13 @@ export class TeacherAssignmentContComponent implements OnInit {
     this.assignmentService
       .addAssignment(assignment, this.courseName)
       .subscribe(
-        () =>this.assignments$ = this.assignmentService.getCourseAssignments(this.courseName),
+        () => this.assignments$ = this.assignmentService.getCourseAssignments(this.courseName),
         (err) => this.errorMsgAssignment = err.error.message
       );
   }
 
   addReview(event: { solution: Solution; assignment: Assignment; }) {
     this.resetErrors();
-
     this.solutionService
       .addSolutionReview(event.solution, event.assignment)
       .subscribe(

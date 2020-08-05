@@ -22,9 +22,9 @@ export class CourseService {
   }
 
   getCourses(): Observable<Course[]> {
-    return localStorage.getItem("role") === "student" 
-    ? this.http.get<Course[]>(`/api/API/courses/students`)
-    : this.http.get<Course[]>(`/api/API/courses/teachers`);
+    return localStorage.getItem("role") === "student"
+      ? this.http.get<Course[]>(`/api/API/courses/students`)
+      : this.http.get<Course[]>(`/api/API/courses/teachers`);
   }
 
   addCourse(course: Course): Observable<Course> {

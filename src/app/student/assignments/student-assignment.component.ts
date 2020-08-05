@@ -21,8 +21,8 @@ export class StudentAssignmentComponent {
   _assignments: Assignment[];
   _history: Solution[] = [];
   _errorMsg: string;
-  solutionFileName : string;
-  showReadError : boolean = false;
+  solutionFileName: string;
+  showReadError: boolean = false;
   showSolutionDeliverable: boolean;
   solutionContent: File;
   currentAssignment: Assignment = {} as Assignment;
@@ -33,21 +33,20 @@ export class StudentAssignmentComponent {
 
   @Input('assignments')
   set assignments(assignments: Assignment[]) {
-    if (assignments != null) 
+    if (assignments != null)
       this._assignments = assignments;
   }
   @Input('history')
   set history(history: Solution[]) {
-    if (history != null && this.currentAssignment!= null) {
+    if (history != null && this.currentAssignment != null) {
       this._history = history;
       this.checkDeliverable();
     }
   }
-  @Input('errorMsg') 
-  set errorMsg(error: string){
+  @Input('errorMsg')
+  set errorMsg(error: string) {
     this._errorMsg = error;
   }
-  
 
   @Output('selectedEmitter') selectedEmitter = new EventEmitter<Assignment>();
   @Output('addSolution') solutionEmitter = new EventEmitter<{
@@ -60,7 +59,7 @@ export class StudentAssignmentComponent {
 
   onSolutionSelected(file: File) {
     this.solutionContent = file
-    file ? this.solutionFileName = file.name : this.solutionFileName =""
+    file ? this.solutionFileName = file.name : this.solutionFileName = ""
   }
 
   assignmentSelected(assignment: Assignment) {
@@ -71,52 +70,51 @@ export class StudentAssignmentComponent {
       this.selectedEmitter.emit(assignment);
       this.currentAssignment = assignment;
     } else {
-      this._history =[];
+      this._history = [];
       this.currentAssignment = null;
       this.setSolution(false, false);
     }
   }
 
   assignmentReaded(assignment: Assignment) {
-      const solution: Solution = {
-        content:  null,
-        state: State.READ,
-        deliveryTs: new Date(),
-        modifiable: true
-      }
-      this.solutionEmitter.emit({ solution:solution, assignment: assignment});
+    const solution: Solution = {
+      content: null,
+      state: State.READ,
+      deliveryTs: new Date(),
+      modifiable: true
+    }
+    this.solutionEmitter.emit({ solution: solution, assignment: assignment });
   }
 
   addSolution() {
-    if(this.solutionContent != null){
+    if (this.solutionContent != null) {
       const solution: Solution = {
-        content:  this.solutionContent,
+        content: this.solutionContent,
         state: State.DELIVERED,
         deliveryTs: new Date(),
         modifiable: true
       }
-      this.solutionEmitter.emit({ solution: solution, assignment: this.currentAssignment});
+      this.solutionEmitter.emit({ solution: solution, assignment: this.currentAssignment });
       this.setSolution(true, false);
     }
   }
 
-  checkDeliverable(){
-    if( !this._history.some(solution => solution.grade!= null 
-      && new Date(this.currentAssignment.deadline).getTime() > new Date().getTime() ))
-    {
-      this._history.length > 1? this.setSolution(true, false): this.setSolution(false, true);
+  checkDeliverable() {
+    if (!this._history.some(solution => solution.grade != null
+      && new Date(this.currentAssignment.deadline).getTime() > new Date().getTime())) {
+      this._history.length > 1 ? this.setSolution(true, false) : this.setSolution(false, true);
     }
-    else{
+    else {
       this.setSolution(false, false);
     }
   }
 
-  setSolution(deliverableState: boolean, errorState:boolean){
-    this.input ? this.input.nativeElement.value="": null;
+  setSolution(deliverableState: boolean, errorState: boolean) {
+    this.input ? this.input.nativeElement.value = "" : null;
     this.solutionFileName = ""
-    this.solutionContent= null;
-    this.showSolutionDeliverable= deliverableState;
-    this.showReadError= errorState;
+    this.solutionContent = null;
+    this.showSolutionDeliverable = deliverableState;
+    this.showReadError = errorState;
   }
-  
+
 }

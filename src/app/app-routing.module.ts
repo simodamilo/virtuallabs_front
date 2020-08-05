@@ -6,17 +6,19 @@ import { RegistrationComponent } from './auth/registration.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'teacher', 
-    loadChildren: './teacher/teacher.module#TeacherModule', 
+  {
+    path: 'teacher',
+    loadChildren: './teacher/teacher.module#TeacherModule',
     canActivate: [AuthGuard]
   },
-  { path: 'student', 
-    loadChildren: './student/student.module#StudentModule', 
+  {
+    path: 'student',
+    loadChildren: './student/student.module#StudentModule',
     canActivate: [AuthGuard]
   },
-  { path: 'home', component: RegistrationComponent},
-  { path: 'empty', component: StartComponent},
-  { path: '**', redirectTo: 'home'}
+  { path: 'home', component: RegistrationComponent },
+  { path: 'empty', component: StartComponent },
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({

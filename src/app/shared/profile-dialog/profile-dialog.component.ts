@@ -24,43 +24,43 @@ export class ProfileDialogComponent implements OnInit {
     private teacherService: TeacherService,
     private studentService: StudentService,
     private sanitizer: DomSanitizer,
-    private router: Router) {}
+    private router: Router) { }
 
   ngOnInit(): void {
     this.role = localStorage.getItem("role")
-    if(this.role === "student" ){
-      this.studentService.getStudent().subscribe(result=> this.student = result)      
+    if (this.role === "student") {
+      this.studentService.getStudent().subscribe(result => this.student = result)
       this.studentService.getStudentImage().subscribe((result) => this.createURL(result));
     }
-    else{
-      this.teacherService.getTeacher().subscribe(result=> this.teacher = result)
+    else {
+      this.teacherService.getTeacher().subscribe(result => this.teacher = result)
       this.teacherService.getTeacherImage().subscribe((result) => this.createURL(result));
     }
   }
 
-  createURL(blob: Blob){
-    if(blob.size === 0){
+  createURL(blob: Blob) {
+    if (blob.size === 0) {
       this.imageSafeURL = "../../assets/user_icon_black.svg"
-    }else{
+    } else {
       this.imageURL = URL.createObjectURL(blob);
       this.imageSafeURL = this.sanitizer.bypassSecurityTrustUrl(this.imageURL);
     }
   }
 
-  onChangeEvent(file: File){
+  onChangeEvent(file: File) {
     this.role === "student"
-    ? this.studentService.uploadImage(file).subscribe( 
+    ? this.studentService.uploadImage(file).subscribe(
       (image) => {
         this.createURL(image);
         this.dialogRef.close(image);
-      }, 
+      },
       (err) => this.errorMsg = err.error.message
     )
-    : this.teacherService.uploadImage(file).subscribe( 
+    : this.teacherService.uploadImage(file).subscribe(
       (image) => {
         this.createURL(image);
         this.dialogRef.close(image);
-      }, 
+      },
       (err) => this.errorMsg = err.error.message
     )
   }

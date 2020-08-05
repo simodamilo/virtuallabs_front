@@ -1,4 +1,4 @@
-export enum State{
+export enum State {
     NULL,
     READ,
     DELIVERED,

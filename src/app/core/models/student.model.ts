@@ -1,4 +1,4 @@
-import { Token } from './teamToken.model';
+import { Token } from './token.model';
 
 export interface Student {
     serial: string;

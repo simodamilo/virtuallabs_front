@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Registration } from './registration.model';
 import { AbstractControl, ValidatorFn, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from './auth.service';
@@ -15,7 +15,7 @@ export class RegistrationComponent {
   errorMsg = '';
   hide: boolean = true;
 
-  constructor( private authService: AuthService, private fb: FormBuilder) {
+  constructor(private authService: AuthService, private fb: FormBuilder) {
     this.registrationForm = this.fb.group({
       name: ['', Validators.required],
       surname: ['', Validators.required],
@@ -26,30 +26,41 @@ export class RegistrationComponent {
     });
   }
 
-  domainValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
-      if(this.registrationForm === undefined)
-        return null;
-      return this.check() ? {'domain': {value: control.value}} : null;
-    };
+  registration() {
+    if (this.registrationForm.valid) {
+      const registration: Registration = {
+        name: this.registrationForm.get('name').value,
+        surname: this.registrationForm.get('surname').value,
+        serial: this.registrationForm.get('serial').value,
+        email: this.registrationForm.get('email').value,
+        password: this.registrationForm.get('password').value
+      };
+
+      this.authService.registration(registration).subscribe(
+        () => {
+          this.registrationForm.reset()
+          this.errorMsg = "";
+        },
+        (err) => this.errorMsg = err.error.message
+      );
+    }
   }
 
-  private check() {
-    let domain = String(this.registrationForm.get('email').value).split('@')[1];
-    if(domain === "studenti.polito.it" || domain === "polito.it")
-      return false;
-
-    return true;
+  domainValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (this.registrationForm === undefined)
+        return null;
+      return this.check() ? { 'domain': { value: control.value } } : null;
+    };
   }
 
   passwordValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
-      if(this.registrationForm === undefined)
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (this.registrationForm === undefined)
         return null;
-      return control.value !== this.registrationForm.get('password').value ? {'pswConfirm': {value: control.value}} : null;
+      return control.value !== this.registrationForm.get('password').value ? { 'pswConfirm': { value: control.value } } : null;
     };
   }
-
 
   getErrorNameMessage() {
     if (this.registrationForm.get('name').hasError('required')) {
@@ -68,14 +79,14 @@ export class RegistrationComponent {
       return 'You must enter a value';
     }
   }
-   
+
   getErrorEmailMessage() {
     if (this.registrationForm.get('email').hasError('required'))
       return 'You must enter a value';
 
-    if(this.registrationForm.get('email').hasError('domain'))
+    if (this.registrationForm.get('email').hasError('domain'))
       return 'Not valid domain';
-  
+
     return this.registrationForm.get('email').hasError('email') ? 'Not a valid email' : '';
   }
 
@@ -83,7 +94,7 @@ export class RegistrationComponent {
     if (this.registrationForm.get('password').hasError('required')) {
       return 'You must enter a value';
     }
-  
+
     return this.registrationForm.get('password').hasError('pattern') ? 'At least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number' : '';
   }
 
@@ -91,24 +102,16 @@ export class RegistrationComponent {
     if (this.registrationForm.get('password').hasError('required')) {
       return 'You must enter a value';
     }
-  
+
     return this.registrationForm.get('confirmPassword').hasError('pswConfirm') ? 'Password are not equal' : '';
   }
 
+  private check() {
+    const domain = String(this.registrationForm.get('email').value).split('@')[1];
+    if (domain === "studenti.polito.it" || domain === "polito.it")
+      return false;
 
-  registration() {
-    if (this.registrationForm.status !== 'INVALID') {
-      var registration: Registration = {
-        name: this.registrationForm.get('name').value,
-        surname: this.registrationForm.get('surname').value,
-        serial: this.registrationForm.get('serial').value,
-        email: this.registrationForm.get('email').value, 
-        password: this.registrationForm.get('password').value};
-      
-      this.authService.registration(registration).subscribe(
-        () => this.registrationForm.reset(),
-        () => this.errorMsg = 'Registration failed!'
-      );
-    }
+    return true;
   }
+
 }
