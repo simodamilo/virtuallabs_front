@@ -1,4 +1,7 @@
 <div class="container">
+
+  <!-- This div is only shown when the authenticated user has a team for the current course.
+      Inside it a table with all members of the team is shown. -->
   <div *ngIf="showTeamInfo">
     <h2>{{_team.name}}</h2>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
@@ -23,7 +26,12 @@
     </table>
   </div>
 
+  <!-- This div is shown when the authenticated user has not a team for the current course.
+      Inside it there are two sections: the first one to send a request and the second one to 
+      get all your pending requests. -->
   <div *ngIf="showTeamProposals">
+
+    <!-- Here, the user can propose a new team -->
     <h2>Teams</h2>
     <mat-error>{{_errorMsg}}</mat-error>
     <form [formGroup]="proposeTeamForm">
@@ -41,9 +49,12 @@
       <button mat-stroked-button (click)="proposeTeam()">Propose Team</button>
     </form>
 
-    <app-students-table [students]="_availableStudents" (selectedStudents)="changeSelection($event)">
+    <app-students-table 
+      [students]="_availableStudents" 
+      (selectedStudents)="changeSelection($event)">
     </app-students-table>
 
+    <!-- Here, the user gets all the pending requests. -->
     <h2 class="request-header">Your requests</h2>
     <mat-error>{{_errorRequestMsg}}</mat-error>
     <table mat-table [dataSource]="teamsDataSource" class="mat-elevation-z2">
@@ -83,4 +94,5 @@
       <tr mat-row *matRowDef="let row; columns: teamsDisplayedColumns;"></tr>
     </table>
   </div>
+
 </div>

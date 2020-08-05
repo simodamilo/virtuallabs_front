@@ -1,11 +1,14 @@
 <div class="container">
 
+  <!-- This section is used to show the information about the vm model if available -->
   <h2>Virtual Machine Model</h2>
   <div *ngIf="showModelView">
     <p class="model-description">The Virtual Machine model "{{_modelVm.name}}" is available, the {{_modelVm.type}}
       type is setted.</p>
   </div><br/>
 
+  <!-- It is used to add or modify a Virtual Machine, in the first case the stepper is opened by pressing a 'plus' button,
+      while in the second case by pressing the 'edit' button inside the vms table. -->
   <div>
     <h2>Virtual Machines</h2>
     <button mat-mini-fab matTooltip="Add a new virtual machine" class="fabButton" *ngIf="showAddButton && showModelView"
@@ -15,9 +18,9 @@
   </div>
   <mat-error>{{_errorMsg}}</mat-error>
 
-  <!-- It is used to add or modify a Virtual Machine -->
   <div class="mat-elevation-z2 insert-vm" *ngIf="showAddDiv">
     <mat-horizontal-stepper linear #stepper>
+
       <mat-step label="Name">
         <mat-form-field class="name">
           <mat-label>Name</mat-label>
@@ -98,13 +101,16 @@
           <button mat-flat-button color="primary" (click)="confirmVm()">Confirm</button>
         </div>
       </mat-step>
+
     </mat-horizontal-stepper>
   </div>
 
+  <!-- It is a shared component used to display a list of vms. -->
   <app-vms-table *ngIf="showAddButton && showModelView" 
     [vms]="_vms" 
     (onOff)="onOffVm($event)"
     (modify)="modifyOpenStepper($event)" 
     (delete)="deleteVm($event)">
   </app-vms-table>
+  
 </div>

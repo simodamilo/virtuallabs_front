@@ -31,6 +31,11 @@ export class SolutionsTableComponent implements AfterViewInit {
     this.solutionsDataSource.paginator = this.paginator;
   }
 
+  /**
+   * Used to open the ContentDialog to display the solution image.
+   * 
+   * @param solution of which the image is displayed.
+   */
   viewContent(solution: Solution) {
     this.dialog.open(ContentDialogComponent, {
       width: '70%',
@@ -40,6 +45,11 @@ export class SolutionsTableComponent implements AfterViewInit {
     });
   }
 
+  /**
+   * Used to change the format of the selected date.
+   * 
+   * @param date that is printed.
+   */
   formatDate(date: Date) {
     return moment(date).format('DD-MM-YYYY, HH:mm:ss');
   }

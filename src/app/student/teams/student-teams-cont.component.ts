@@ -21,6 +21,9 @@ export class StudentTeamsContComponent implements OnInit {
     private teamService: TeamService,
     private studentService: StudentService) { }
 
+  /**
+   * Used to initialize some values when the component starts.
+   */
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.courseName = params['courseName'];
@@ -30,6 +33,11 @@ export class StudentTeamsContComponent implements OnInit {
     });
   }
 
+  /**
+   * Used to propose a team by adding the authenticated user to the list of members.
+   *  
+   * @param event contains the name, the timeout and the students of the team. 
+   */
   proposeTeam(event: any) {
     this.errorMsg = "";
     let studentSerials = event.students.map((student: Student) => student.serial);
@@ -43,6 +51,11 @@ export class StudentTeamsContComponent implements OnInit {
     );
   }
 
+  /**
+   * Used to accept the request of a team.
+   * 
+   * @param event is the token for the specific team.
+   */
   acceptTeam(event: Token) {
     this.errorRequestMsg = "";
     this.teamService.acceptTeam(event).subscribe(
@@ -54,6 +67,11 @@ export class StudentTeamsContComponent implements OnInit {
     );
   }
 
+  /**
+   * Used to reject the request of a team.
+   * 
+   * @param event is the token for the specific team.
+   */
   rejectTeam(event: Token) {
     this.errorRequestMsg = "";
     this.teamService.rejectTeam(event).subscribe(

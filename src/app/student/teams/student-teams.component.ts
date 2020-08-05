@@ -81,20 +81,38 @@ export class StudentTeamsComponent {
     });
   }
 
+  /**
+   * Used to get all selected students inside the shared component StudentsTable.
+   * 
+   * @param event is the array of selected students.
+   */
   changeSelection(event: Student[]) {
     this.proposedStudents = [...event];
   }
 
+  /**
+   * Used to propose a team by getting values from the form and the selected students.
+   */
   proposeTeam() {
     if (this.proposeTeamForm.get('name').valid && this.proposeTeamForm.get('timeout').valid)
       this.proposeTeamEmitter.emit({ name: this.proposeTeamForm.get('name').value, timeout: this.proposeTeamForm.get('timeout').value, students: this.proposedStudents });
   }
 
+  /**
+   * Used to check if the authenticated user can see the 'accept' and 'reject' buttons.
+   * 
+   * @param team for which the check is performed.
+   */
   isNotAccepted(team: Team): Boolean {
     const student = team.members.find(student => student.serial == localStorage.getItem("serial"));
     return (student.teamToken == null || student.teamToken.status === 1) ? false : true;
   }
 
+  /**
+   * Used to accept a request inside the pending teams table.
+   * 
+   * @param team of which the request is accepted.
+   */
   accept(team: Team) {
     team.members.forEach(student => {
       if (student.serial === localStorage.getItem("serial"))
@@ -102,6 +120,11 @@ export class StudentTeamsComponent {
     });
   }
 
+  /**
+   * Used to reject a request inside the pending teams table.
+   * 
+   * @param team of which the request is rejected.
+   */
   reject(team: Team) {
     team.members.forEach(student => {
       if (student.serial === localStorage.getItem("serial"))

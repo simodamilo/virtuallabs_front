@@ -100,6 +100,9 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  /**
+   * Used to compute the minimum resourses that must be assigned to the selected team.
+   */
   computeResources() {
     this._vms.forEach(vm => {
       if (vm.active) {
@@ -111,11 +114,22 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     })
   }
 
+  /**
+   * Used to get the image of the modelVm when it is added.
+   * 
+   * @param file that contains the image.
+   */
   onModelVmSelected(file: File) {
     this._modelVm.content = file
     this.fileName = (file ? file.name : "");
   }
 
+  /**
+   * Used to add a modelVm.
+   * 
+   * @param name of the modelVm.
+   * @param type of the modelVm.
+   */
   addModelVm(name: string, type: string) {
     if (this.modelVmForm.get('name').valid && this.modelVmForm.get('type').valid) {
       this._modelVm.name = name;
@@ -126,6 +140,9 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Used to open the ContentDialog to display the modelVm image.
+   */
   viewModelVm() {
     const dialogRef = this.dialog.open(ContentDialogComponent, {
       width: '70%',
@@ -135,10 +152,18 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * Used to delete a modelVm.
+   */
   deleteModelVm() {
     this.deleteModel.emit(this._modelVm);
   }
 
+  /**
+   * Used to show the div the a team can be modfied.
+   * 
+   * @param team that is selected to be modified.
+   */
   modifyTeam(team: Team) {
     this._errorMsg = "";
     this.modifiedTeam = team;
@@ -147,10 +172,18 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
       this.stepper.reset();
   }
 
+  /**
+   * Used to modify the selected team.
+   */
   confirmTeam() {
     this.modify.emit(this.modifiedTeam);
   }
 
+  /**
+   * Used to select a team to show its vms.
+   * 
+   * @param team selected.
+   */
   teamSelected(team: Team) {
     this.teamSelection.toggle(team);
     if (this.teamSelection.hasValue()) {
@@ -164,6 +197,11 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     this.resourcesTeam = { name: "", ram: 0, disk: 0, vcpu: 0, activeInstance: 0 };
   }
 
+  /**
+   * Used to turn on the selected vm. 
+   * 
+   * @param vm that is turned on.
+   */
   onOffVm(vm: VM) {
     this.onOff.emit({ vm: vm, team: this.actualTeam });
     this.resourcesTeam = { name: "", ram: 0, disk: 0, vcpu: 0, activeInstance: 0 };

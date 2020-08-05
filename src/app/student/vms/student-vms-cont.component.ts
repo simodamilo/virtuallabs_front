@@ -26,6 +26,9 @@ export class StudentVmsContComponent implements OnInit {
     public dialog: MatDialog,
     private route: ActivatedRoute) { }
 
+  /**
+   * Used to initialize some values when the component starts.
+   */
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.courseName = params['courseName'];
@@ -34,6 +37,9 @@ export class StudentVmsContComponent implements OnInit {
     });
   }
 
+  /**
+   * Used to get the modelVm of the current course. 
+   */
   getModelVm() {
     this.modelVmService.getModelVm(this.courseName).subscribe(
       (model) => this.modelVm = model,
@@ -41,6 +47,9 @@ export class StudentVmsContComponent implements OnInit {
     )
   }
 
+  /**
+   * Used to get the vms of the team of the authenticated user.
+   */
   getVms() {
     this.teamService.getStudentTeamByCourse(this.courseName).subscribe(
       (team) => {
@@ -54,6 +63,11 @@ export class StudentVmsContComponent implements OnInit {
     );
   }
 
+  /**
+   * Used to add a vm inside the team of the authenticated user.
+   * 
+   * @param vm that is added.
+   */
   addVm(vm: VM) {
     this.errorMsg = "";
     this.vmService.addVm(vm, this.team.id).subscribe(
@@ -62,6 +76,11 @@ export class StudentVmsContComponent implements OnInit {
     );
   }
 
+  /**
+   * Used to modify the passed vm.
+   * 
+   * @param vm that is modified.
+   */
   modifyVm(vm: VM) {
     this.errorMsg = "";
     this.vmService.modifyVm(vm).subscribe(
@@ -70,6 +89,11 @@ export class StudentVmsContComponent implements OnInit {
     );
   }
 
+  /**
+   * Used to turn on the passed vm, it opens a dialog with the image of the vm.
+   * 
+   * @param vm that is turned on.
+   */
   onOffVm(vm: VM) {
     this.errorMsg = "";
     this.vmService.onOffVm(vm.id).subscribe(
@@ -92,6 +116,11 @@ export class StudentVmsContComponent implements OnInit {
     );
   }
 
+  /**
+   * Used to delete the passed vm from the team of the authenticated user. 
+   * 
+   * @param vmId of the vm that is deleted.
+   */
   deleteVm(vmId: number) {
     this.errorMsg = "";
     this.vmService.deleteVm(vmId).subscribe(
@@ -100,6 +129,11 @@ export class StudentVmsContComponent implements OnInit {
     );
   }
 
+  /**
+   * Used to get all members of a team.
+   * 
+   * @param teamId of which members are got.
+   */
   getTeamStudents(teamId: number) {
     this.errorMsg = "";
     this.teamStudents$ = this.studentService.getTeamStudents(teamId);

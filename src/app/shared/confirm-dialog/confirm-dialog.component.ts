@@ -24,6 +24,9 @@ export class ConfirmDialogComponent implements OnInit {
     private courseService: CourseService,
     private studentService: StudentService) { }
 
+  /**
+   * Used to set the title and the message of the dialog depending on the passed parameter.
+   */
   ngOnInit(): void {
     if (this.data.course != null) {
       this.title = "Delete course";
@@ -34,6 +37,10 @@ export class ConfirmDialogComponent implements OnInit {
     }
   }
 
+  /**
+   * Used to confirm the deletion of the course or to confirm the insertion of 
+   * many students inside a course by using a CSV file.
+   */
   confirm() {
     if (this.data.course != null) {
       this.courseService.deleteCourse(this.data.course).subscribe(
@@ -49,6 +56,9 @@ export class ConfirmDialogComponent implements OnInit {
     }
   }
 
+  /**
+   * Used to close the dialog by passing false.
+   */
   closeDialog() {
     this.dialogRef.close(false);
   }

@@ -24,6 +24,9 @@ export class TeacherVmsContComponent implements OnInit {
     private modelVmService: ModelVmService,
     public dialog: MatDialog) { }
 
+  /**
+   * Used to initialize some values when the component starts.
+   */
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.courseName = params['courseName'];
@@ -32,10 +35,20 @@ export class TeacherVmsContComponent implements OnInit {
     });
   }
 
+  /**
+   * Used to get the vms of a team.
+   * 
+   * @param team of which vms are taken.
+   */
   getVms(team: Team) {
     this.vms$ = this.vmService.getTeamVms(team.id);
   }
 
+  /**
+   * Used to add a modelVm.
+   * 
+   * @param event is the modelVm that is added.
+   */
   addModelVm(event) {
     this.modelVmService.addModelVm(event, this.courseName).subscribe(
       (modelVm) => {
@@ -48,6 +61,11 @@ export class TeacherVmsContComponent implements OnInit {
     );
   }
 
+  /**
+   * Used to delete a modelVm.
+   * 
+   * @param event is the modelVm that is deleted.
+   */
   deleteModelVm(event) {
     this.modelVmService.deleteModelVm(event.id).subscribe(
       () => this.modelVm$ = this.modelVmService.getModelVm(this.courseName),
@@ -55,6 +73,11 @@ export class TeacherVmsContComponent implements OnInit {
     );
   }
 
+  /**
+   * Used to modify a modelVm.
+   * 
+   * @param event is the modelVm that is modified.
+   */
   modifyTeam(team: Team) {
     this.errorMsg = "";
     this.teamService.setTeamParams(team).subscribe(
@@ -63,6 +86,11 @@ export class TeacherVmsContComponent implements OnInit {
     );
   }
 
+  /**
+   * Used to turn on the passed vm, it opens a dialog with the image of the vm.
+   * 
+   * @param event contains the vm that is turned on and the corresponding team.
+   */
   onOffVm(event) {
     this.errorMsg = "";
     this.vmService.onOffVm(event.vm.id).subscribe(

@@ -1,4 +1,6 @@
 <div class="container">
+
+  <!-- It is used to show the modelVm and the buttons to show and delete it. -->
   <div [ngClass]="{'modelVm-div': showModelDiv}">
     <h2>Model Virtual Machine</h2>
     <div *ngIf="showModelDiv" class="div-button">
@@ -16,6 +18,7 @@
     </p>
   </div>
 
+  <!-- It is used to add a new modelVm -->
   <form [formGroup]="modelVmForm" *ngIf="showModelForm">
     <mat-form-field class="form form-width">
       <mat-label>Model name</mat-label>
@@ -38,13 +41,14 @@
       Model</button>
   </form>
 
-
+  <!-- This is the section where all teams are shown and managed. -->
   <h2>Course Teams</h2>
   <mat-error>{{_errorMsg}}</mat-error>
 
   <!-- It is used to add or modify a Team -->
   <div class="mat-elevation-z2 modify-team" *ngIf="showModifyDiv">
     <mat-horizontal-stepper linear #stepper>
+
       <mat-step label="Resources">
         <div>
           <mat-slider color="primary" [(ngModel)]="modifiedTeam.ram"></mat-slider>
@@ -108,6 +112,7 @@
           <button mat-flat-button color="primary" (click)="confirmTeam()">Confirm</button>
         </div>
       </mat-step>
+
     </mat-horizontal-stepper>
   </div>
 
@@ -151,18 +156,20 @@
     </mat-paginator>
   </div><br />
 
+  <!-- It is used to display the virtual machine of the selected team -->
   <div *ngIf="showVms">
     <h2>Team Virtual Machines</h2>
+    
     <div class="resources-team">
       <p>Real time resources:
         Ram ({{resourcesTeam.ram}}), Disk ({{resourcesTeam.disk}}), VCpu ({{resourcesTeam.vcpu}}), ActiveInstance
         ({{resourcesTeam.activeInstance}})
       </p>
     </div>
-    <!-- It is used to display the virtual machine of the selected team -->
     <app-vms-table 
       [vms]="_vms" 
       (onOff)="onOffVm($event)">
     </app-vms-table>
+    
   </div>
 </div>

@@ -1,3 +1,4 @@
+<!-- Toolab with the menu icon, the name of the app and the login/profile button -->
 <mat-toolbar color="primary">
   <button mat-icon-button (click)="logged ? sideNav.toggle() : null">
     <mat-icon>menu</mat-icon>
@@ -10,12 +11,14 @@
   <button mat-icon-button *ngIf="logged" (click)="openProfileDialog()"><img [src]="imageSafeURL"></button>
 </mat-toolbar>
 
+<!-- Second toolbar with the 'title' of the current view. -->
 <mat-toolbar>
   <h2>{{logged ? (courses.length>0 ? selectedCourse : "Home") : "Home"}}</h2>
 </mat-toolbar>
 
 <mat-sidenav-container>
 
+  <!-- It is used to display the sidenav with the courses of the authenticated user. -->
   <mat-sidenav mode="side" position="start" *ngIf="logged" closed>
     <mat-nav-list>
       <a mat-list-item *ngFor="let course of courses"
@@ -29,6 +32,7 @@
       (click)="openCourseDialog()">New</button>
   </mat-sidenav>
 
+  <!-- It is used to diplay the current view of the application. -->
   <mat-sidenav-content>
     <nav mat-tab-nav-bar *ngIf="logged && courses.length>0">
       <a mat-tab-link *ngFor="let tab of tabs" [routerLink]="[role, 'courses', selectedCourse, tab]"

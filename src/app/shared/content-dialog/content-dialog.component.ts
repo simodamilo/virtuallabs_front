@@ -22,6 +22,10 @@ export class ContentDialogComponent implements OnInit {
     private sanitizer: DomSanitizer
   ) { }
 
+  /**
+   * Used to get the image of the passed parameter.
+   * It could be an assignment, a solution, a VM model or a vm.
+   */
   ngOnInit(): void {
     if (this.data.assignment != null) {
       this.assignmentService
@@ -50,6 +54,11 @@ export class ContentDialogComponent implements OnInit {
     }
   }
 
+  /**
+   * Used to create the url and sanitize it.
+   * 
+   * @param blob of the image selected.
+   */
   createURL(blob: Blob) {
     this.imageURL = URL.createObjectURL(blob);
     this.imageSafeURL = this.sanitizer.bypassSecurityTrustUrl(this.imageURL);

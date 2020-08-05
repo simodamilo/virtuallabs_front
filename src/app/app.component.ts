@@ -47,6 +47,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
   ) { }
 
+  /**
+   * Used to initialize image, courses and tabs of the authenticated user.
+   */
   ngOnInit() {
     this.authService.startUp();
     this.authSub = this.authService.isAuthenticated.subscribe((authenticated) => {
@@ -62,6 +65,9 @@ export class AppComponent implements OnInit, OnDestroy {
     this.openLoginDialog();
   }
 
+  /**
+   * Used to reload the courses of the authenticated user when a new one is added or a course is deleted.
+   */
   reloadCourses() {
     this.courseService.course.subscribe(course => {
       if (course == null)
@@ -69,12 +75,20 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Used to load the image of the authenticated user.
+   */
   loadImage() {
     this.role === 'student'
       ? this.studentService.getStudentImage().subscribe((result) => this.createURL(result))
       : this.teacherService.getTeacherImage().subscribe((result) => this.createURL(result))
   }
 
+  /**
+   * Used to create the url and sanitize it.
+   * 
+   * @param blob of the image selected.
+   */
   createURL(blob: Blob) {
     if (blob.size === 0) {
       this.imageSafeURL = "../../assets/user_icon.svg"
@@ -84,6 +98,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Used to set the tabs of the authenticated user.
+   */
   setTabs() {
     if (this.role === 'student') {
       this.tabs = ['teams', 'vms', 'assignments'];
@@ -94,6 +111,9 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Used to get the courses of the authenticated user.
+   */
   getCourses() {
     this.courseService.getCourses().subscribe((courses) => {
       this.courses = courses;
@@ -108,6 +128,10 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Used to subscribe the url parameters in order to get the 'doLogin' parameter and open 
+   * the LoginDialog if its value is true.
+   */
   openLoginDialog() {
     this.urlSub = this.route.queryParams.subscribe((params) => {
       if (params['doLogin'] === 'true') {
@@ -125,6 +149,9 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Used to open the ProfileDialog.
+   */
   openProfileDialog() {
     const dialogRef = this.profileDialog.open(ProfileDialogComponent, {
       width: '300px',
@@ -138,6 +165,9 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Used to open the CourseDialog from the sidenav.
+   */
   openCourseDialog() {
     this.courseDialog.open(CourseDialogComponent, {
       width: '300px'

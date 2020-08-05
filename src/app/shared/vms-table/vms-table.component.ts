@@ -40,18 +40,38 @@ export class VmsTableComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  /**
+   * Used to pass the selected vm to the component that use the table.
+   * 
+   * @param vm that can be modifed.
+   */
   modifyVm(vm: VM) {
     this.modify.emit(vm);
   }
 
+  /**
+   * Used to pass the selected vm to the component that use the table.
+   * 
+   * @param vm that is turned on.
+   */
   onOffVm(vm: VM) {
     this.onOff.emit(vm);
   }
 
+  /**
+   * Used to pass the selected vm id to the component that use the table.
+   * 
+   * @param vmId of the vm that is deleted.
+   */
   deleteVm(vmId: number) {
     this.delete.emit(vmId);
   }
 
+  /**
+   * USed to check if the current user is owner of the vm.
+   * 
+   * @param vm of which the check is performed.
+   */
   isOwner(vm: VM) {
     return vm.owners.some(owner => owner.serial === localStorage.getItem("serial"));
   }

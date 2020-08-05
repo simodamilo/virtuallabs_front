@@ -37,6 +37,11 @@ export class CourseDialogComponent {
       })
   }
 
+  /**
+   * Used to take values from the form and send the request to the service.
+   * If the passed parameter is null, it means that a new course must be added,
+   * otherwise the passed one is modified.
+   */
   setCourse() {
     if (this.courseForm.valid) {
       const course: Course = {
@@ -64,6 +69,9 @@ export class CourseDialogComponent {
     }
   }
 
+  /**
+   * Used to close the dialog by passing back the parameter.
+   */
   closeDialog() {
     this.dialogRef.close(this.data);
   }
