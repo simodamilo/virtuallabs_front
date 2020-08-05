@@ -1,11 +1,16 @@
 <div class="container">
+
+  <!-- Show the table with the assignments of the selected course -->
   <div class="side">
     <h2>Assignment</h2>
-    <app-assignments-table [assignments]="_assignments" (assignmentSelected)="assignmentSelected($event)"
+    <app-assignments-table 
+      [assignments]="_assignments" 
+      (assignmentSelected)="assignmentSelected($event)"
       (assignmentReaded)="assignmentReaded($event)">
     </app-assignments-table>
   </div>
 
+  <!-- Show the div used by the student to deliver the solution -->
   <div class="content">
     <h2>Solution</h2>
     <mat-error>{{_errorMsg}}</mat-error>
@@ -18,7 +23,9 @@
       <button mat-stroked-button class="add-solution" (click)="addSolution()">Add Solution</button>
     </div>
 
-    <app-solutions-table [solutions]="_history"></app-solutions-table>
-
+    <!-- Show the table with the solutions of the student for a specific assignment -->
+    <app-solutions-table 
+      [solutions]="_history">
+    </app-solutions-table>
   </div>
 </div>

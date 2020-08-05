@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Student, StudentService, Teacher, TeacherService, Course, CourseService } from '../../core';
 import { Observable } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-course-cont',
@@ -22,6 +22,9 @@ export class CourseContComponent implements OnInit {
     private courseService: CourseService,
     private route: ActivatedRoute) { }
 
+  /**
+   * Used to initilize some values when the component starts.
+   */
   ngOnInit(): void {
     this.route.params.subscribe(url => {
       this.courseName = url["courseName"];
@@ -33,6 +36,11 @@ export class CourseContComponent implements OnInit {
     })
   }
 
+  /**
+   * Used to enroll a new student or a new teacher to the course.
+   * 
+   * @param option student or teacher received.
+   */
   enroll(option: Student | Teacher) {
     this.resetErrors();
     option.serial.charAt(0) == "s"
@@ -44,6 +52,11 @@ export class CourseContComponent implements OnInit {
       (err) => this.errorMsgTeacher = err.error.message);
   }
 
+  /**
+   * Used to remove a student or more from the course.
+   * 
+   * @param students list of the students removed.
+   */
   removeStudents(students: Student[]) {
     this.resetErrors();
     this.studentService.deleteStudentFromCourse(students, this.courseName).subscribe(
@@ -51,6 +64,11 @@ export class CourseContComponent implements OnInit {
       (err) => this.errorMsgStudent = err.error.message);
   }
 
+  /**
+   * Used to remove a teacher or more from the course.
+   * 
+   * @param teachers list of the teachers removed.
+   */
   removeTeachers(teachers: Teacher[]) {
     this.resetErrors();
     this.teacherService.deleteTeacherFromCourse(teachers, this.courseName).subscribe(
@@ -62,16 +80,25 @@ export class CourseContComponent implements OnInit {
       (err) => this.errorMsgTeacher = err.error.message);
   }
 
+  /**
+   * Used to update the list of all and enrolled students.
+   */
   updateStudents() {
     this.enrolledStudents$ = this.studentService.getEnrolledStudents(this.courseName);
     this.allStudents$ = this.studentService.getAllStudents(this.courseName);
   }
 
+  /**
+   * Used to update the list of all and enrolled teachers.
+   */
   updateTeachers() {
     this.ownerTeachers$ = this.teacherService.getCourseOwners(this.courseName);
     this.allTeachers$ = this.teacherService.getAllTeachers(this.courseName);
   }
 
+  /**
+   * Used to clear all the error field when an operations is executed.
+   */
   resetErrors() {
     this.errorMsgStudent = "";
     this.errorMsgTeacher = "";

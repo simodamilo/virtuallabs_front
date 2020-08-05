@@ -26,6 +26,9 @@ export class ProfileDialogComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private router: Router) { }
 
+  /**
+   * Used to Initialize the view depending on the role of the user.
+   */
   ngOnInit(): void {
     this.role = localStorage.getItem("role")
     if (this.role === "student") {
@@ -38,6 +41,11 @@ export class ProfileDialogComponent implements OnInit {
     }
   }
 
+  /**
+   * Used to create the url and sanitize it, if correctly received.
+   * 
+   * @param blob of the image selected.
+   */
   createURL(blob: Blob) {
     if (blob.size === 0) {
       this.imageSafeURL = "../../assets/user_icon_black.svg"
@@ -47,6 +55,11 @@ export class ProfileDialogComponent implements OnInit {
     }
   }
 
+  /**
+   * Used to check the role of the user and correctly upload the image.
+   * 
+   * @param file image uploaded by the user.
+   */
   onChangeEvent(file: File) {
     this.role === "student"
     ? this.studentService.uploadImage(file).subscribe(
@@ -65,6 +78,9 @@ export class ProfileDialogComponent implements OnInit {
     )
   }
 
+  /**
+   * Used to sign out.
+   */
   logout() {
     this.authService.logout();
     this.dialogRef.close();

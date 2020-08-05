@@ -1,5 +1,7 @@
 <div class="container">
-  <div>
+
+  <!-- Icons to edit or delete the course -->
+  <div>  
     <h2>{{_course.name}} ({{_course.tag}})</h2>
     <div [matTooltip]="_course.enabled ? 'Course is currently enabled' : 'Course is currently disabled'"
       class="div-active">
@@ -12,6 +14,8 @@
       <mat-icon color="primary">delete</mat-icon>
     </button>
   </div>
+
+  <!-- Div with the autocomplete field to enrolla student to the course or upload a csv -->
   <mat-error *ngIf="_errorMsgStudent">{{_errorMsgTeacher}}</mat-error>
   <div>
     <app-autocomplete [options]="_allTeachers" type="teacher" (selectedOption)="selectedOption($event)">
@@ -21,18 +25,20 @@
       teachers</button>
     <button mat-stroked-button *ngIf="showButton" (click)="selectAll()">Select All</button>
 
+
+    <!--Table with all the teachers of the course -->
     <div class="mat-elevation-z2 table-container">
       <table mat-table matSort [dataSource]="dataSource">
 
         <ng-container matColumnDef="select">
           <th mat-header-cell *matHeaderCellDef class="column-header-w20">
-            <mat-checkbox color="primary" (change)="$event ? masterToggle($event) : null"
+            <mat-checkbox color="primary" (change)="$event ? masterToggle() : null"
               [checked]="selection.hasValue() && isEntirePageSelected()"
               [indeterminate]="selection.hasValue() && !isEntirePageSelected()">
             </mat-checkbox>
           </th>
           <td mat-cell *matCellDef="let teacher">
-            <mat-checkbox color="primary" (change)="toggleRowsTable($event, teacher)"
+            <mat-checkbox color="primary" (change)="toggleRowsTable( teacher)"
               [checked]="selection.isSelected(teacher)">
             </mat-checkbox>
           </td>
@@ -60,6 +66,7 @@
     </div>
   </div><br />
 
+  <!-- Div with the autocomplete field to enroll student to the course or upload a csv -->
   <h2>Students</h2>
   <mat-error *ngIf="_errorMsgStudent">{{_errorMsgStudent}}</mat-error>
   <div>
@@ -68,9 +75,13 @@
     <input type="file" #csvInput id="file" class="inputfile" (change)="onChangeEvent($event)" />
     <label mat-label for="file">Upload CSV</label>
   </div>
-
   <button mat-stroked-button (click)="removeStudents()" *ngIf="!(toRemove.length == 0)">Delete students</button>
 
-  <app-students-table [students]="_enrolledStudents" [course]="_course" (selectedStudents)="changeSelection($event)">
+  <!-- Table with the students enrolled in the course-->
+  <app-students-table 
+    [students]="_enrolledStudents" 
+    [course]="_course" 
+    (selectedStudents)="changeSelection($event)">
   </app-students-table>
+
 </div>
