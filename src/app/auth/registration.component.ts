@@ -13,6 +13,7 @@ export class RegistrationComponent {
   registrationForm: FormGroup;
   regEx = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9].{7,}');
   errorMsg = '';
+  emailMsg = '';
   hide: boolean = true;
 
   constructor(private authService: AuthService, private fb: FormBuilder) {
@@ -39,9 +40,16 @@ export class RegistrationComponent {
       this.authService.registration(registration).subscribe(
         () => {
           this.registrationForm.reset()
+          Object.keys(this.registrationForm.controls).forEach(key => {
+            this.registrationForm.get(key).setErrors(null);
+          });
           this.errorMsg = "";
+          this.emailMsg = "You will receive an email, accept it to continue";
         },
-        (err) => this.errorMsg = err.error.message
+        (err) => {
+          this.errorMsg = err.error.message;
+          this.emailMsg = "";
+        }
       );
     }
   }

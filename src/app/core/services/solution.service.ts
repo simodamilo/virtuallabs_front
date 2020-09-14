@@ -3,7 +3,6 @@ import { Observable, forkJoin, observable, of, throwError } from 'rxjs';
 import { Solution, Student, Assignment } from '../models';
 import { HttpClient } from '@angular/common/http';
 import { mergeMap, map } from 'rxjs/operators';
-import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root',

@@ -72,7 +72,7 @@
   <div>
     <app-autocomplete [options]="_allStudents" type="student" (selectedOption)="selectedOption($event)">
     </app-autocomplete>
-    <input type="file" #csvInput id="file" class="inputfile" (change)="onChangeEvent($event)" />
+    <input type="file" #csvInput id="file" class="inputfile" (change)="onChangeEvent($event)" accept=".csv" />
     <label mat-label for="file">Upload CSV</label>
   </div>
   <button mat-stroked-button (click)="removeStudents()" *ngIf="!(toRemove.length == 0)">Delete students</button>

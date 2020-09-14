@@ -55,21 +55,15 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
 
   @Input('teams')
   set teams(teams: Team[]) {
-    if (teams !== null)
-      this.dataSource.data = [...teams];
-    else
-      this.dataSource.data = [];
-
+    teams !== null ? this.dataSource.data = [...teams] : this.dataSource.data = [];
     this.showVms = false;
     this.showModifyDiv = false;
   }
 
   @Input('vms')
   set vms(vms: VM[]) {
-    if (vms != null)
-      this._vms = [...vms];
-    else
-      this._vms = [];
+    this.resourcesTeam = { name: "", ram: 0, disk: 0, vcpu: 0, activeInstance: 0 };
+    vms != null ? this._vms = [...vms] : this._vms = [];
     this.computeResources();
   }
 
@@ -78,8 +72,9 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     this._errorMsg = error;
   }
 
-  @Output('modify') modify = new EventEmitter<Team>();
   @Output('team') team = new EventEmitter<Team>();
+  @Output('modify') modify = new EventEmitter<Team>();
+  @Output('delete') delete = new EventEmitter<number>();
   @Output('onOff') onOff = new EventEmitter<{ vm: VM, team: Team }>();
   @Output('addModelVm') addModel = new EventEmitter<ModelVM>();
   @Output('deleteModelVm') deleteModel = new EventEmitter<ModelVM>();
@@ -166,10 +161,26 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
    */
   modifyTeam(team: Team) {
     this._errorMsg = "";
-    this.modifiedTeam = team;
+    this.modifiedTeam = { name: team.name, 
+      id: team.id,
+      vcpu: team.vcpu,
+      disk: team.disk,
+      ram: team.ram,
+      activeInstance: team.activeInstance,
+      maxInstance: team.maxInstance };
+
     this.showModifyDiv = true;
     if (this.stepper !== undefined)
       this.stepper.reset();
+  }
+
+  /**
+   * 
+   * @param team that is selected to be deleted.
+   */
+  deleteTeam(team: Team){
+    this._errorMsg = "";
+    this.delete.emit(team.id);
   }
 
   /**
@@ -194,7 +205,6 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     } else {
       this.showVms = false;
     }
-    this.resourcesTeam = { name: "", ram: 0, disk: 0, vcpu: 0, activeInstance: 0 };
   }
 
   /**
@@ -204,7 +214,6 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
    */
   onOffVm(vm: VM) {
     this.onOff.emit({ vm: vm, team: this.actualTeam });
-    this.resourcesTeam = { name: "", ram: 0, disk: 0, vcpu: 0, activeInstance: 0 };
   }
 
   getErrorNameMessage() {

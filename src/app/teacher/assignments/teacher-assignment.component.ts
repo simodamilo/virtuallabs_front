@@ -141,6 +141,7 @@ export class TeacherAssignmentComponent implements AfterViewInit {
    * @param file that the student upload.
    */
   addAssignmentContent(file: File) {
+    this._assignmentErrorMsg = "";
     this.assignmentContent = file;
     file ? this.assignmentFileName = file.name : this.assignmentFileName = ""
   }
@@ -151,6 +152,7 @@ export class TeacherAssignmentComponent implements AfterViewInit {
   * @param file that the student upload.
   */
   addSolutionContent(file: File) {
+    this._solutionErrorMsg = "";
     this.newReview.content = file
     file ? this.solutionFileName = file.name : this.solutionFileName = ""
   }
@@ -206,12 +208,14 @@ export class TeacherAssignmentComponent implements AfterViewInit {
         content: this.assignmentContent,
         releaseDate: new Date(),
       }
-
       this.assignmentEmitter.emit(assignment);
       this.assignmentContent = null;
       this.assignmentInput.nativeElement.value = "";
       this.assignmentFileName = ""
       this.assignmentForm.reset();
+    }
+    else{
+        this._assignmentErrorMsg = "Select a content";
     }
   }
 
@@ -219,11 +223,16 @@ export class TeacherAssignmentComponent implements AfterViewInit {
    * Used to create a new solution with status REVIEWED and pass its value to the container.
    */
   addReview() {
-    this.newReview.student = this.currentSolutions.student;
-    this.newReview.deliveryTs = new Date();
-    this.newReview.state = 3;
-    this.reviewEmitter.emit({ solution: this.newReview, assignment: this.currentAssignment });
-    this.toggleReview(false, null);
+    if(this.newReview.content != null){
+      this.newReview.student = this.currentSolutions.student;
+      this.newReview.deliveryTs = new Date();
+      this.newReview.state = 3;
+      this.reviewEmitter.emit({ solution: this.newReview, assignment: this.currentAssignment });
+      this.toggleReview(false, null);
+    }
+    else{
+      this._solutionErrorMsg = "Select a content";
+    }
   }
 
   /**

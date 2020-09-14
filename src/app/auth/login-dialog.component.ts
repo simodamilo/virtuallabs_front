@@ -7,7 +7,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-login-dialog',
   templateUrl: './login-dialog.component.html',
-  styles: [],
+  styles: ['mat-dialog-content{height: 180px}']
 })
 export class LoginDialogComponent {
   loginForm: FormGroup;

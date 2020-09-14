@@ -80,7 +80,7 @@ export class CourseComponent implements AfterViewInit {
   @Output('updateEnrolled') updateEmitter = new EventEmitter<boolean>();
 
   constructor(public courseDialog: MatDialog, public confirmDialog: MatDialog) {
-    this.selection = new SelectionModel<Student>(true, []);
+    this.selection = new SelectionModel<Student | Teacher>(true, []);
   }
 
   /**
@@ -89,35 +89,6 @@ export class CourseComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-  }
-
-  /**
-   * Used to create the list of students to remove.
-   */
-  changeSelection(event: Student[]) {
-    this.toRemove = [...event];
-  }
-
-  /**
-   * Used to pass to the container the list of students.
-   */
-  removeStudents() {
-    this.removeStudentsEmitter.emit(this.toRemove);
-  }
-
-  /**
-   * Used to pass to the container the list of teachers.
-   */
-  removeTeachers() {
-    this.removeTeachersEmitter.emit(this.selection.selected);
-  }
-
-  /**
-   * Used to pass to the containet the student/teacher selected in the fields.
-   * @param option 
-   */
-  selectedOption(option: Student | Teacher) {
-    this.addEmitter.emit(option)
   }
 
   /**
@@ -146,11 +117,60 @@ export class CourseComponent implements AfterViewInit {
   }
 
   /**
+   * Used to pass to the containet the student/teacher selected in the fields.
+   * @param option 
+   */
+  selectedOption(option: Student | Teacher) {
+    this._errorMsgStudent="";
+    this.addEmitter.emit(option)
+  }
+
+  /**
+   * Used to pass to the container the list of teachers.
+   */
+  removeTeachers() {
+    this.removeTeachersEmitter.emit(this.selection.selected);
+  }
+
+  /**
+   * Used to pass to the container the list of students.
+   */
+  removeStudents() {
+    this._errorMsgStudent="";
+    this.removeStudentsEmitter.emit(this.toRemove);
+  }
+
+  /**
+   * Used to open the confirm dialog when the teacher upload a csv file to enroll the students.
+   */
+  onChangeEvent(event) {
+    this._errorMsgStudent="";
+    const dialogRef = this.confirmDialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: { csv: event.target.files[0], courseName: this._course.name },
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(res => {
+      res ? this.updateEmitter.emit(true) : this._errorMsgStudent="There is a conflict in the csv"
+      this.csvInput.nativeElement.value = "";
+    });
+  }
+
+  /**
+   * Used to create the list of students to remove.
+   */
+  changeSelection(event: Student[]) {
+    this.toRemove = [...event];
+  }
+
+  /**
    * Used to toggle the row of the table.
    * 
    * @param row selected.
    */
-  toggleRowsTable(row: Student) {
+  toggleRowsTable(row: Student | Teacher) {
+    this._errorMsgStudent="";
     this.selection.toggle(row);
   }
 
@@ -189,20 +209,4 @@ export class CourseComponent implements AfterViewInit {
     this.selection.select(...this.dataSource.data);
   }
 
-  /**
-   * Used to open the confirm dialog when the teacher upload a csv file to enroll the students.
-   */
-  onChangeEvent(event) {
-    const dialogRef = this.confirmDialog.open(ConfirmDialogComponent, {
-      width: '400px',
-      data: { csv: event.target.files[0], courseName: this._course.name },
-      disableClose: true
-    });
-
-    dialogRef.afterClosed().subscribe(res => {
-      if (res)
-        this.updateEmitter.emit(true);
-      this.csvInput.nativeElement.value = "";
-    });
-  }
 }

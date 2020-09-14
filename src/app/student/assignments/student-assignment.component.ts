@@ -63,6 +63,7 @@ export class StudentAssignmentComponent {
    * @param file that the student upload.
    */
   onSolutionSelected(file: File) {
+    this._errorMsg = "";
     this.solutionContent = file
     file ? this.solutionFileName = file.name : this.solutionFileName = ""
   }
@@ -112,6 +113,9 @@ export class StudentAssignmentComponent {
       }
       this.solutionEmitter.emit({ solution: solution, assignment: this.currentAssignment });
       this.setSolution(true, false);
+    }
+    else{
+      this._errorMsg = "Select a content";
     }
   }
 

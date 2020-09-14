@@ -3,8 +3,9 @@
   [modelVm]="modelVm$ | async"
   [vms]="vms$ | async"
   [errorMsg]="errorMsg"
-  (modify)="modifyTeam($event)"
   (team)="getVms($event)"
+  (modify)="modifyTeam($event)"
+  (delete)="deleteTeam($event)"
   (onOff)="onOffVm($event)"
   (addModelVm)="addModelVm($event)"
   (deleteModelVm)="deleteModelVm($event)">

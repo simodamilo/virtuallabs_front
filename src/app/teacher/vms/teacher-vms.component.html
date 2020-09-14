@@ -143,6 +143,10 @@
             (click)="modifyTeam(team); $event.stopImmediatePropagation()">
             <mat-icon>edit</mat-icon>
           </button>
+          <button mat-icon-button matTooltip="Delete team" color="primary" aria-label="Delete team"
+            (click)="deleteTeam(team); $event.stopImmediatePropagation()">
+          <mat-icon>delete</mat-icon>
+        </button>
         </td>
       </ng-container>
 

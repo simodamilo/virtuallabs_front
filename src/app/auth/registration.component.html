@@ -1,8 +1,9 @@
 <div class="container">
   <img src="../../assets/polito_logo.png">
 
-  <div class="mat-elevation-z4 content">
+  <div class="mat-elevation-z4 registration-form">
     <h2 mat-dialog-title>Sign up</h2>
+    <mat-label>{{ emailMsg }}</mat-label>
     <mat-error>{{ errorMsg }}</mat-error>
     
     <form [formGroup]="registrationForm">

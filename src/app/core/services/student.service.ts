@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Student } from '..';
-import { Observable, from, throwError } from 'rxjs';
-import { mergeMap, toArray } from 'rxjs/operators';
+import { Student, Team } from '..';
+import { Observable, from, throwError, forkJoin } from 'rxjs';
+import { mergeMap, toArray, map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -25,7 +25,21 @@ export class StudentService {
   }
 
   getEnrolledStudents(courseName: string): Observable<Student[]> {
-    return this.http.get<Student[]>(`/api/API/students/${courseName}/getEnrolled`);
+    return this.http
+      .get<Student[]>(`/api/API/students/${courseName}/getEnrolled`).pipe(
+        mergeMap((students) =>
+          forkJoin(
+            students.map((student) =>
+              this.http.get<Team>(`/api/API/teams/${courseName}/${student.serial}`).pipe(
+                map((team: Team) => {
+                  student.team = team;
+                  return student;
+                })
+              )
+            )
+          )
+        )
+      );
   }
 
   getAvailableStudents(courseName: string): Observable<Student[]> {

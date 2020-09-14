@@ -87,6 +87,17 @@ export class TeacherVmsContComponent implements OnInit {
   }
 
   /**
+   * 
+   * @param teamId 
+   */
+  deleteTeam(teamId: number){
+    this.teamService.deleteTeam(teamId).subscribe(
+      ()=> this.teams$ = this.teamService.getCourseTeams(this.courseName),
+      (err) => this.errorMsg = err.error.message
+    )
+  }
+
+  /**
    * Used to turn on the passed vm, it opens a dialog with the image of the vm.
    * 
    * @param event contains the vm that is turned on and the corresponding team.

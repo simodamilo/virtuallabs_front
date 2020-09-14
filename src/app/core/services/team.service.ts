@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Team } from '../models/team.model';
-import { Observable, forkJoin, of, from } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
 import { Student, Token } from '..';
 
@@ -73,4 +73,9 @@ export class TeamService {
   rejectTeam(token: Token): Observable<Team> {
     return this.http.put<Team>(`api/API/teams/reject`, token);
   }
+
+  deleteTeam(teamId: number) {
+    return this.http.delete(`api/API/teams/${teamId}/delete`);
+  }
+
 }
