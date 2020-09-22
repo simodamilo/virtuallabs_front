@@ -9,6 +9,7 @@ import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
   styles: ['img { height:auto; width: 100%; margin: 0;}'],
 })
 export class ContentDialogComponent implements OnInit {
+
   imageURL: string;
   imageSafeURL: SafeUrl;
 
@@ -37,7 +38,7 @@ export class ContentDialogComponent implements OnInit {
       this.solutionService
         .getSolutionContent(this.data.solution)
         .subscribe(
-          (result) => result.size == 0 ? this.imageSafeURL = "../../assets/image_error.png" : this.createURL(result),
+          (result) => result.size == 0 ? this.imageSafeURL = "../../assets/not_solution.png" : this.createURL(result),
           () => this.imageSafeURL = "../../assets/image_error.png");
     } else if (this.data.modelVm != null) {
       this.modelVmService

@@ -18,7 +18,6 @@ import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 export class AppComponent implements OnInit, OnDestroy {
 
   title = 'VirtualLabs';
-
   logged: boolean;
   urlSub: Subscription;
   authSub: Subscription;
@@ -66,36 +65,12 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Used to reload the courses of the authenticated user when a new one is added or a course is deleted.
-   */
-  reloadCourses() {
-    this.courseService.course.subscribe(course => {
-      if (course == null)
-        this.getCourses();
-    });
-  }
-
-  /**
    * Used to load the image of the authenticated user.
    */
   loadImage() {
     this.role === 'student'
       ? this.studentService.getStudentImage().subscribe((result) => this.createURL(result))
       : this.teacherService.getTeacherImage().subscribe((result) => this.createURL(result))
-  }
-
-  /**
-   * Used to create the url and sanitize it.
-   * 
-   * @param blob of the image selected.
-   */
-  createURL(blob: Blob) {
-    if (blob.size === 0) {
-      this.imageSafeURL = "../../assets/user_icon.svg"
-    } else {
-      this.imageURL = URL.createObjectURL(blob);
-      this.imageSafeURL = this.sanitizer.bypassSecurityTrustUrl(this.imageURL);
-    }
   }
 
   /**
@@ -125,6 +100,16 @@ export class AppComponent implements OnInit, OnDestroy {
         this.selectedCourse = this.courses[0].name;
       }
       this.sideNav.open();
+    });
+  }
+
+  /**
+   * Used to reload the courses of the authenticated user when a new one is added or a course is deleted.
+   */
+  reloadCourses() {
+    this.courseService.course.subscribe(course => {
+      if (course == null)
+        this.getCourses();
     });
   }
 
@@ -172,6 +157,20 @@ export class AppComponent implements OnInit, OnDestroy {
     this.courseDialog.open(CourseDialogComponent, {
       width: '300px'
     });
+  }
+
+  /**
+   * Used to create the url and sanitize it.
+   * 
+   * @param blob of the image selected.
+   */
+  createURL(blob: Blob) {
+    if (blob.size === 0) {
+      this.imageSafeURL = "../../assets/user_icon.svg"
+    } else {
+      this.imageURL = URL.createObjectURL(blob);
+      this.imageSafeURL = this.sanitizer.bypassSecurityTrustUrl(this.imageURL);
+    }
   }
 
   ngOnDestroy() {

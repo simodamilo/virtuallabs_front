@@ -40,7 +40,7 @@
   <div class="content">
     <h2>Solution</h2>
 
-    <!-- Div used by the teacher review to a solution -->
+    <!-- Div used by the teacher to review a solution -->
     <mat-error>{{_solutionErrorMsg}}</mat-error>
     <div *ngIf="showRevision">
       <p [ngClass]="{ 'student': newReview.modifiable, 'name': !newReview.modifiable }">

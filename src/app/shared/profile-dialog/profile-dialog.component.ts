@@ -11,6 +11,7 @@ import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./profile-dialog.component.css']
 })
 export class ProfileDialogComponent implements OnInit {
+
   selectedFile: File;
   role: string;
   student: Student = {} as Student;
@@ -27,7 +28,7 @@ export class ProfileDialogComponent implements OnInit {
     private router: Router) { }
 
   /**
-   * Used to Initialize the view depending on the role of the user.
+   * Used to initialize the view depending on the role of the user.
    */
   ngOnInit(): void {
     this.role = localStorage.getItem("role")
@@ -62,20 +63,20 @@ export class ProfileDialogComponent implements OnInit {
    */
   onChangeEvent(file: File) {
     this.role === "student"
-    ? this.studentService.uploadImage(file).subscribe(
-      (image) => {
-        this.createURL(image);
-        this.dialogRef.close(image);
-      },
-      (err) => this.errorMsg = err.error.message
-    )
-    : this.teacherService.uploadImage(file).subscribe(
-      (image) => {
-        this.createURL(image);
-        this.dialogRef.close(image);
-      },
-      (err) => this.errorMsg = err.error.message
-    )
+      ? this.studentService.uploadImage(file).subscribe(
+        (image) => {
+          this.createURL(image);
+          this.dialogRef.close(image);
+        },
+        (err) => this.errorMsg = err.error.message
+      )
+      : this.teacherService.uploadImage(file).subscribe(
+        (image) => {
+          this.createURL(image);
+          this.dialogRef.close(image);
+        },
+        (err) => this.errorMsg = err.error.message
+      )
   }
 
   /**

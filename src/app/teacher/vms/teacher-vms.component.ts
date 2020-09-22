@@ -26,11 +26,12 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
   modifiedTeam: Team;
   actualTeam: Team;
   resourcesTeam: Team;
-  _modelVm: ModelVM = {} as ModelVM;
-  _errorMsg: string;
-  _vms: VM[];
   fileName: string = "";
   teamSelection: SelectionModel<Team>;
+  _modelVm: ModelVM = {} as ModelVM;
+  _vms: VM[];
+  _modelVmErrorMsg: string = "";
+  _teamsErrorMsg: string = "";
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -67,9 +68,14 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     this.computeResources();
   }
 
-  @Input('errorMsg')
-  set errorMsg(error: string) {
-    this._errorMsg = error;
+  @Input('modelVmErrorMsg')
+  set modelVmErrorMsg(error: string) {
+    this._modelVmErrorMsg = error;
+  }
+
+  @Input('teamsErrorMsg')
+  set teamsErrorMsg(error: string) {
+    this._teamsErrorMsg = error;
   }
 
   @Output('team') team = new EventEmitter<Team>();
@@ -90,6 +96,9 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
     this.teamSelection = new SelectionModel<Team>(false, []);
   }
 
+  /**
+   * Used to initialize sort and paginator once that the view is initilized.
+   */
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -116,6 +125,7 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
    */
   onModelVmSelected(file: File) {
     this._modelVm.content = file
+    this.modelVmErrorMsg = "";
     this.fileName = (file ? file.name : "");
   }
 
@@ -126,12 +136,14 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
    * @param type of the modelVm.
    */
   addModelVm(name: string, type: string) {
-    if (this.modelVmForm.get('name').valid && this.modelVmForm.get('type').valid) {
+    if (this.modelVmForm.valid && this._modelVm.content != null) {
       this._modelVm.name = name;
       this._modelVm.type = type;
       this.addModel.emit(this._modelVm);
       this.input.nativeElement.value = "";
       this.fileName = "";
+    } else {
+      this.modelVmErrorMsg = "Complete every field";
     }
   }
 
@@ -155,19 +167,28 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
   }
 
   /**
+   * Used to modify the selected team.
+   */
+  confirmTeam() {
+    this.modify.emit(this.modifiedTeam);
+  }
+
+  /**
    * Used to show the div the a team can be modfied.
    * 
    * @param team that is selected to be modified.
    */
   modifyTeam(team: Team) {
-    this._errorMsg = "";
-    this.modifiedTeam = { name: team.name, 
+    this._teamsErrorMsg = "";
+    this.modifiedTeam = {
+      name: team.name,
       id: team.id,
       vcpu: team.vcpu,
       disk: team.disk,
       ram: team.ram,
       activeInstance: team.activeInstance,
-      maxInstance: team.maxInstance };
+      maxInstance: team.maxInstance
+    };
 
     this.showModifyDiv = true;
     if (this.stepper !== undefined)
@@ -178,16 +199,9 @@ export class TeacherVmsComponent implements OnInit, AfterViewInit {
    * 
    * @param team that is selected to be deleted.
    */
-  deleteTeam(team: Team){
-    this._errorMsg = "";
+  deleteTeam(team: Team) {
+    this._teamsErrorMsg = "";
     this.delete.emit(team.id);
-  }
-
-  /**
-   * Used to modify the selected team.
-   */
-  confirmTeam() {
-    this.modify.emit(this.modifiedTeam);
   }
 
   /**

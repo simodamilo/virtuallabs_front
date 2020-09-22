@@ -132,7 +132,7 @@ export class StudentVmsContComponent implements OnInit {
   /**
    * Used to get all members of a team.
    * 
-   * @param teamId of which members are got.
+   * @param teamId of the team in which member are searched.
    */
   getTeamStudents(teamId: number) {
     this.errorMsg = "";

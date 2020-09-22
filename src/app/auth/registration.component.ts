@@ -23,7 +23,7 @@ export class RegistrationComponent {
       serial: ['', Validators.required],
       email: ['', [Validators.required, Validators.email, this.domainValidator()]],
       password: ['', [Validators.required, Validators.pattern(this.regEx)]],
-      confirmPassword: ['', this.passwordValidator()]
+      confirmPassword: ['', [Validators.required, this.passwordValidator()]]
     });
   }
 

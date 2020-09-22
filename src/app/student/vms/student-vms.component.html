@@ -1,6 +1,6 @@
 <div class="container">
 
-  <!-- This section is used to show the information about the vm model if available -->
+  <!-- This section is used to show the information about the vm model, if available -->
   <h2>Virtual Machine Model</h2>
   <div *ngIf="showModelView">
     <p class="model-description">The Virtual Machine model "{{_modelVm.name}}" is available, the {{_modelVm.type}}
@@ -105,7 +105,7 @@
     </mat-horizontal-stepper>
   </div>
 
-  <!-- It is a shared component used to display a list of vms. -->
+  <!-- It is a shared component used to display the list of vms. -->
   <app-vms-table *ngIf="showAddButton && showModelView" 
     [vms]="_vms" 
     (onOff)="onOffVm($event)"

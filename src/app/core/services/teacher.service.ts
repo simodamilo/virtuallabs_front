@@ -34,6 +34,8 @@ export class TeacherService {
   uploadImage(file: File): Observable<Blob> {
     if (file.type != "image/jpeg" && file.type != "image/png") {
       return throwError({ error: { message: 'File type not supported' } });
+    } else if (file.size > 1048575) {
+      return throwError({ error: { message: 'File size not acceptable' } });
     } else {
       const formData = new FormData();
       formData.append("imageFile", file);

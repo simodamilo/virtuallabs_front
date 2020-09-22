@@ -16,7 +16,8 @@ export class TeacherVmsContComponent implements OnInit {
   modelVm$: Observable<ModelVM>;
   vms$: Observable<VM[]>
   courseName: string;
-  errorMsg: string;
+  modelVmErrorMsg: string = "";
+  teamsErrorMsg: string = "";
 
   constructor(private route: ActivatedRoute,
     private vmService: VmService,
@@ -47,7 +48,7 @@ export class TeacherVmsContComponent implements OnInit {
   /**
    * Used to add a modelVm.
    * 
-   * @param event is the modelVm that is added.
+   * @param event contains the modelVm that is added.
    */
   addModelVm(event) {
     this.modelVmService.addModelVm(event, this.courseName).subscribe(
@@ -56,7 +57,7 @@ export class TeacherVmsContComponent implements OnInit {
         this.modelVm$ = of(modelVm);
       },
       (err) => {
-        this.errorMsg = err.error.message;
+        this.modelVmErrorMsg = err.error.message;
       }
     );
   }
@@ -64,36 +65,37 @@ export class TeacherVmsContComponent implements OnInit {
   /**
    * Used to delete a modelVm.
    * 
-   * @param event is the modelVm that is deleted.
+   * @param event contains the modelVm that is deleted.
    */
   deleteModelVm(event) {
     this.modelVmService.deleteModelVm(event.id).subscribe(
       () => this.modelVm$ = this.modelVmService.getModelVm(this.courseName),
-      (err) => this.errorMsg = err.error.message
+      (err) => this.modelVmErrorMsg = err.error.message
     );
   }
 
   /**
    * Used to modify a modelVm.
    * 
-   * @param event is the modelVm that is modified.
+   * @param event contains the modelVm that is modified.
    */
   modifyTeam(team: Team) {
-    this.errorMsg = "";
+    this.teamsErrorMsg = "";
     this.teamService.setTeamParams(team).subscribe(
       () => this.teams$ = this.teamService.getCourseTeams(this.courseName),
-      (err) => this.errorMsg = err.error.message
+      (err) => this.teamsErrorMsg = err.error.message
     );
   }
 
   /**
+   * Used by the teacher to delete a team.
    * 
-   * @param teamId 
+   * @param teamId of the team that is deleted.
    */
-  deleteTeam(teamId: number){
+  deleteTeam(teamId: number) {
     this.teamService.deleteTeam(teamId).subscribe(
-      ()=> this.teams$ = this.teamService.getCourseTeams(this.courseName),
-      (err) => this.errorMsg = err.error.message
+      () => this.teams$ = this.teamService.getCourseTeams(this.courseName),
+      (err) => this.teamsErrorMsg = err.error.message
     )
   }
 
@@ -103,7 +105,7 @@ export class TeacherVmsContComponent implements OnInit {
    * @param event contains the vm that is turned on and the corresponding team.
    */
   onOffVm(event) {
-    this.errorMsg = "";
+    this.teamsErrorMsg = "";
     this.vmService.onOffVm(event.vm.id).subscribe(
       (vm) => {
         this.getVms(event.team);
@@ -120,7 +122,7 @@ export class TeacherVmsContComponent implements OnInit {
           );
         }
       },
-      (err) => this.errorMsg = err.error.message
+      (err) => this.teamsErrorMsg = err.error.message
     );
   }
 

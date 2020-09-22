@@ -1,6 +1,6 @@
 <div class="container">
 
-  <!-- It is used to show the modelVm and the buttons to show and delete it. -->
+  <!-- It is used to show the modelVm and the buttons to view and delete it. -->
   <div [ngClass]="{'modelVm-div': showModelDiv}">
     <h2>Model Virtual Machine</h2>
     <div *ngIf="showModelDiv" class="div-button">
@@ -13,6 +13,7 @@
         <mat-icon>delete</mat-icon>
       </button>
     </div><br />
+    <mat-error *ngIf="_modelVmErrorMsg">{{_modelVmErrorMsg}}</mat-error>
     <p *ngIf="showModelDiv">
       Model '{{_modelVm.name}}' is ready for the course, the type is {{_modelVm.type}}.
     </p>
@@ -43,9 +44,9 @@
 
   <!-- This is the section where all teams are shown and managed. -->
   <h2>Course Teams</h2>
-  <mat-error>{{_errorMsg}}</mat-error>
+  <mat-error *ngIf="_teamsErrorMsg">{{_teamsErrorMsg}}</mat-error>
 
-  <!-- It is used to add or modify a Team -->
+  <!-- It is used to add or modify a team -->
   <div class="mat-elevation-z2 modify-team" *ngIf="showModifyDiv">
     <mat-horizontal-stepper linear #stepper>
 
@@ -72,7 +73,7 @@
           </mat-form-field>
         </div>
         <div class="stepperButton">
-          <button mat-stroked-button (click)="this.showModifyDiv = false">Close</button>
+          <button mat-stroked-button (click)="this.showModifyDiv = false; _teamsErrorMsg = 'vvvf'">Close</button>
           <button mat-flat-button color="primary" matStepperNext>Next</button>
         </div>
       </mat-step>
@@ -108,7 +109,7 @@
         </div>
         <div class="stepperButton">
           <button mat-stroked-button matStepperPrevious>Previous</button>
-          <button mat-stroked-button (click)="this.showModifyDiv = false">Close</button>
+          <button mat-stroked-button (click)="this.showModifyDiv = false; _teamsErrorMsg = ''">Close</button>
           <button mat-flat-button color="primary" (click)="confirmTeam()">Confirm</button>
         </div>
       </mat-step>
@@ -116,7 +117,7 @@
     </mat-horizontal-stepper>
   </div>
 
-  <!-- It is used to display all teams for the specific course-->
+  <!-- It is used to display all teams for the specific course -->
   <div class="mat-elevation-z2 table-container">
     <table mat-table matSortActive="name" matSortDirection="asc" [dataSource]="dataSource" matSort>
 
@@ -145,8 +146,8 @@
           </button>
           <button mat-icon-button matTooltip="Delete team" color="primary" aria-label="Delete team"
             (click)="deleteTeam(team); $event.stopImmediatePropagation()">
-          <mat-icon>delete</mat-icon>
-        </button>
+            <mat-icon>delete</mat-icon>
+          </button>
         </td>
       </ng-container>
 
@@ -163,17 +164,15 @@
   <!-- It is used to display the virtual machine of the selected team -->
   <div *ngIf="showVms">
     <h2>Team Virtual Machines</h2>
-    
+
     <div class="resources-team">
       <p>Real time resources:
         Ram ({{resourcesTeam.ram}}), Disk ({{resourcesTeam.disk}}), VCpu ({{resourcesTeam.vcpu}}), ActiveInstance
         ({{resourcesTeam.activeInstance}})
       </p>
     </div>
-    <app-vms-table 
-      [vms]="_vms" 
-      (onOff)="onOffVm($event)">
+    <app-vms-table [vms]="_vms" (onOff)="onOffVm($event)">
     </app-vms-table>
-    
+
   </div>
 </div>

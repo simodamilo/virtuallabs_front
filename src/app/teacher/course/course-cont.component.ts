@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './course-cont.component.html',
 })
 export class CourseContComponent implements OnInit {
+
   allStudents$: Observable<Student[]>;
   allTeachers$: Observable<Teacher[]>;
   enrolledStudents$: Observable<Student[]>;
@@ -39,23 +40,23 @@ export class CourseContComponent implements OnInit {
   /**
    * Used to enroll a new student or a new teacher to the course.
    * 
-   * @param option student or teacher received.
+   * @param option contains the received student or teacher.
    */
   enroll(option: Student | Teacher) {
     this.resetErrors();
     option.serial.charAt(0) == "s"
-    ? this.studentService.addStudentToCourse(option, this.courseName).subscribe(
-      () => this.updateStudents(),
-      (err) => this.errorMsgStudent = err.error.message)
-    : this.teacherService.addTeacherToCourse(option, this.courseName).subscribe(
-      () => this.updateTeachers(),
-      (err) => this.errorMsgTeacher = err.error.message);
+      ? this.studentService.addStudentToCourse(option, this.courseName).subscribe(
+        () => this.updateStudents(),
+        (err) => this.errorMsgStudent = err.error.message)
+      : this.teacherService.addTeacherToCourse(option, this.courseName).subscribe(
+        () => this.updateTeachers(),
+        (err) => this.errorMsgTeacher = err.error.message);
   }
 
   /**
-   * Used to remove a student or more from the course.
+   * Used to remove one or more students from the course.
    * 
-   * @param students list of the students removed.
+   * @param students list of the removed students.
    */
   removeStudents(students: Student[]) {
     this.resetErrors();
@@ -65,23 +66,23 @@ export class CourseContComponent implements OnInit {
   }
 
   /**
-   * Used to remove a teacher or more from the course.
+   * Used to remove one or more teachers from the course.
    * 
-   * @param teachers list of the teachers removed.
+   * @param teachers list of the removed teachers.
    */
   removeTeachers(teachers: Teacher[]) {
     this.resetErrors();
     this.teacherService.deleteTeacherFromCourse(teachers, this.courseName).subscribe(
       () => {
         this.updateTeachers();
-        if(teachers.some(teacher => teacher.serial == localStorage.getItem('serial')))
+        if (teachers.some(teacher => teacher.serial == localStorage.getItem('serial')))
           this.courseService.changeCourse();
       },
       (err) => this.errorMsgTeacher = err.error.message);
   }
 
   /**
-   * Used to update the list of all and enrolled students.
+   * Used to update the list of all students and enrolled students.
    */
   updateStudents() {
     this.enrolledStudents$ = this.studentService.getEnrolledStudents(this.courseName);
@@ -89,7 +90,7 @@ export class CourseContComponent implements OnInit {
   }
 
   /**
-   * Used to update the list of all and enrolled teachers.
+   * Used to update the list of all teachers and enrolled teachers.
    */
   updateTeachers() {
     this.ownerTeachers$ = this.teacherService.getCourseOwners(this.courseName);

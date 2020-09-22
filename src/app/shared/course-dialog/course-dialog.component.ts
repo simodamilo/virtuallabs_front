@@ -53,19 +53,19 @@ export class CourseDialogComponent {
       };
 
       this.data == null
-      ? this.courseService.addCourse(course).subscribe(
-        (course) => {
-          this.dialogRef.close(course);
-          this.courseService.changeCourse();
-          this.router.navigate(["teacher", "courses", course.name, "course"]);
-        },
-        (err) => this.errorMsg = err.error.message)
-      : this.courseService.modifyCourse(course).subscribe(
-        (course) => {
-          this.dialogRef.close(course);
-          this.courseService.changeCourse();
-        },
-        (err) => this.errorMsg = err.error.message)
+        ? this.courseService.addCourse(course).subscribe(
+          (course) => {
+            this.dialogRef.close(course);
+            this.courseService.changeCourse();
+            this.router.navigate(["teacher", "courses", course.name, "course"]);
+          },
+          (err) => this.errorMsg = err.error.message)
+        : this.courseService.modifyCourse(course).subscribe(
+          (course) => {
+            this.dialogRef.close(course);
+            this.courseService.changeCourse();
+          },
+          (err) => this.errorMsg = err.error.message)
     }
   }
 

@@ -22,11 +22,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./teacher-assignment.component.css'],
 })
 export class TeacherAssignmentComponent implements AfterViewInit {
+
   solutionsDataSource = new MatTableDataSource<Solution>();
   solutionsCols = ['student', 'deliveryTs', 'state', 'grade', 'actions'];
   state = ['ALL', 'NULL', 'READ', 'DELIVERED', 'REVIEWED'];
-  _assignments: Assignment[];
-  _history: Solution[];
   showRevision: boolean = false;
   modifiable: boolean = false;
   isHistoryVisible: boolean = false;
@@ -38,8 +37,10 @@ export class TeacherAssignmentComponent implements AfterViewInit {
   assignmentFileName: string = "";
   solutionFileName: string = "";
   selectedValue: string = "ALL";
-  _solutionErrorMsg: string;
+  _assignments: Assignment[];
+  _history: Solution[];
   _assignmentErrorMsg: string;
+  _solutionErrorMsg: string;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) solutionPaginator: MatPaginator;
@@ -79,7 +80,7 @@ export class TeacherAssignmentComponent implements AfterViewInit {
   }
 
   /**
-   * Used to initialize sort paginator and filter once that the view is initilized
+   * Used to initialize sort paginator and filter once that the view is initilized.
    */
   ngAfterViewInit() {
     this.solutionsDataSource.sort = this.sort;
@@ -112,8 +113,9 @@ export class TeacherAssignmentComponent implements AfterViewInit {
   }
 
   /**
+   * Used to change the format of the selected date.
    * 
-   * @param date 
+   * @param date that is printed.
    */
   formatDate(date: Date) {
     return moment(date).format('DD-MM-YYYY, HH:mm:ss');
@@ -138,7 +140,7 @@ export class TeacherAssignmentComponent implements AfterViewInit {
   /**
    * Used to get the file of the assignment when the teacher upload it. 
    * 
-   * @param file that the student upload.
+   * @param file that the teacher upload.
    */
   addAssignmentContent(file: File) {
     this._assignmentErrorMsg = "";
@@ -147,9 +149,9 @@ export class TeacherAssignmentComponent implements AfterViewInit {
   }
 
   /**
-  * Used to get the file of the solution when the teacher upload it. 
+  * Used to get the file of the solution when it is uploaded. 
   * 
-  * @param file that the student upload.
+  * @param file that is uploaded.
   */
   addSolutionContent(file: File) {
     this._solutionErrorMsg = "";
@@ -160,6 +162,8 @@ export class TeacherAssignmentComponent implements AfterViewInit {
   /**
    * Used to properly update the solutions table when a new assignment is clicked
    * or when the teacher deselect the current one.
+   * 
+   * @param assignment that is selected.
    */
   assignmentSelected(assignment: Assignment) {
     if (this.showRevision) this.toggleReview(false, null)
@@ -214,8 +218,8 @@ export class TeacherAssignmentComponent implements AfterViewInit {
       this.assignmentFileName = ""
       this.assignmentForm.reset();
     }
-    else{
-        this._assignmentErrorMsg = "Select a content";
+    else {
+      this._assignmentErrorMsg = "Complete every field";
     }
   }
 
@@ -223,15 +227,15 @@ export class TeacherAssignmentComponent implements AfterViewInit {
    * Used to create a new solution with status REVIEWED and pass its value to the container.
    */
   addReview() {
-    if(this.newReview.content != null){
+    if (this.newReview.content != null) {
       this.newReview.student = this.currentSolutions.student;
       this.newReview.deliveryTs = new Date();
       this.newReview.state = 3;
       this.reviewEmitter.emit({ solution: this.newReview, assignment: this.currentAssignment });
       this.toggleReview(false, null);
     }
-    else{
-      this._solutionErrorMsg = "Select a content";
+    else {
+      this._solutionErrorMsg = "Select content";
     }
   }
 
@@ -242,6 +246,7 @@ export class TeacherAssignmentComponent implements AfterViewInit {
    * @param solution currently selected.
    */
   toggleReview(state: boolean, solution: Solution) {
+    this.solutionErrorMsg = "";
     this.isHistoryVisible = false;
     this.currentSolutions = solution;
     if (this.showRevision) {

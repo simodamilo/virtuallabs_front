@@ -29,9 +29,9 @@ export class StudentAssignmentContComponent implements OnInit {
   }
 
   /**
-   * Used to get the solutions of an assignment when it's received.
+   * Used to get the solutions of an assignment when a value is emitted by the dummy component.
    * 
-   * @param assignment of the solutions searched.
+   * @param assignment of the searched solutions.
    */
   selectedAssignment(assignment: Assignment) {
     this.errorMsg = ""
@@ -39,24 +39,24 @@ export class StudentAssignmentContComponent implements OnInit {
   }
 
   /**
-   * Used from the student to add a new solution .
+   * Used from the student to add a new solution.
    * 
    * @param event contains the new solution and the assignment. 
    */
   addSolution(event: { solution: Solution, assignment: Assignment }) {
     this.errorMsg = ""
     event.solution.state == 1
-    ? this.solutionService
-      .addReaded(event.solution, event.assignment, localStorage.getItem("serial"))
-      .subscribe(
-        () => this.solutions$ = this.solutionService.getStudentSolutions(localStorage.getItem("serial"), event.assignment),
-        (err) => this.errorMsg = err.error.message
-      )
-    : this.solutionService
-      .addDelivered(event.solution, event.assignment)
-      .subscribe(
-        () => this.solutions$ = this.solutionService.getStudentSolutions(localStorage.getItem("serial"), event.assignment),
-        (err) => this.errorMsg = err.error.message
-      )
+      ? this.solutionService
+        .addReaded(event.solution, event.assignment, localStorage.getItem("serial"))
+        .subscribe(
+          () => this.solutions$ = this.solutionService.getStudentSolutions(localStorage.getItem("serial"), event.assignment),
+          (err) => this.errorMsg = err.error.message
+        )
+      : this.solutionService
+        .addDelivered(event.solution, event.assignment)
+        .subscribe(
+          () => this.solutions$ = this.solutionService.getStudentSolutions(localStorage.getItem("serial"), event.assignment),
+          (err) => this.errorMsg = err.error.message
+        )
   }
 }

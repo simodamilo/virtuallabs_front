@@ -13,6 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
   styles: []
 })
 export class SolutionsTableComponent implements AfterViewInit {
+
   solutionsDataSource = new MatTableDataSource<Solution>();
   solutionsCols = ['deliveryTs', 'state', 'grade', 'actions'];
 
@@ -26,6 +27,9 @@ export class SolutionsTableComponent implements AfterViewInit {
 
   constructor(public dialog: MatDialog) { }
 
+  /**
+   * Used to initialize sort and paginator once that the view is initilized.
+   */
   ngAfterViewInit() {
     this.solutionsDataSource.sort = this.sort;
     this.solutionsDataSource.paginator = this.paginator;

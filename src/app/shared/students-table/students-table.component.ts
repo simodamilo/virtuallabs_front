@@ -4,7 +4,6 @@ import { Student, Course } from 'src/app/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-students-table',
@@ -27,8 +26,9 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
   set students(students: Student[]) {
     if (students != null) {
       this.dataSource.data = [...students];
-      this.selection.clear();
     }
+    this.showButton = false;
+    this.selection.clear();
   }
 
   @Input()
@@ -45,7 +45,7 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Used to initialize the table column depending on the role of the user.
+   * Used to initialize the table columns depending on the role of the user.
    */
   ngOnInit() {
     if (localStorage.getItem("role") === "student") {
@@ -58,7 +58,7 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Used to initialize sort and paginator once that the view is initilized
+   * Used to initialize sort and paginator once that the view is initilized.
    */
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -68,7 +68,7 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
   /**
    * Used to toggle the row of the table selected and pass its value to the container.
    * 
-   * @param row selected bu the user.
+   * @param row selected by the user.
    */
   toggleRowsTable(row: Student) {
     this.selection.toggle(row);
@@ -90,8 +90,8 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Used to toggle all the rows of the page and show the button to toggle all the table
-   * and pass its value to the container.
+   * Used to toggle all the rows of the page and show the button used to toggle all the 
+   * table. Then, it is also used to pass its value to the container.
    */
   masterToggle() {
     if (this.isEntirePageSelected()) {
@@ -106,7 +106,7 @@ export class StudentsTableComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Select all the table rows.
+   * Select all the table pages.
    */
   selectAll() {
     this.selection.select(...this.dataSource.data);

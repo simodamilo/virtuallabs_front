@@ -17,11 +17,11 @@ export class StudentTeamsComponent {
   proposeTeamForm: FormGroup;
   showTeamInfo: Boolean = false;
   showTeamProposals: Boolean = false;
+  proposedStudents: Student[] = [];
   _team: Team = {} as Team;
   _availableStudents: Student[];
   _errorMsg: string;
   _errorRequestMsg: string;
-  proposedStudents: Student[] = [];
 
   @Input('team')
   set team(team: Team) {
@@ -84,7 +84,7 @@ export class StudentTeamsComponent {
   /**
    * Used to get all selected students inside the shared component StudentsTable.
    * 
-   * @param event is the array of selected students.
+   * @param event contains the array of selected students.
    */
   changeSelection(event: Student[]) {
     this.proposedStudents = [...event];
@@ -94,7 +94,7 @@ export class StudentTeamsComponent {
    * Used to propose a team by getting values from the form and the selected students.
    */
   proposeTeam() {
-    if (this.proposeTeamForm.get('name').valid && this.proposeTeamForm.get('timeout').valid)
+    if (this.proposeTeamForm.valid)
       this.proposeTeamEmitter.emit({ name: this.proposeTeamForm.get('name').value, timeout: this.proposeTeamForm.get('timeout').value, students: this.proposedStudents });
   }
 

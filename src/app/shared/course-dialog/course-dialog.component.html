@@ -8,7 +8,7 @@
       <input matInput formControlName="name" placeholder="Name" type="text" required />
       <mat-error *ngIf="courseForm.get('name').invalid">{{getErrorNameMessage()}}</mat-error>
     </mat-form-field>
-    
+
     <mat-form-field class="start-field">
       <mat-label>Tag</mat-label>
       <input matInput formControlName="tag" placeholder="tag" type="text" required />

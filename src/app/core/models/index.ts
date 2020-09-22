@@ -1,4 +1,3 @@
-
 export * from './assignment.model';
 export * from './course.model';
 export * from './modelVm.model';

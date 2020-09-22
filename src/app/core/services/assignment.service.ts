@@ -22,6 +22,8 @@ export class AssignmentService {
   addAssignment(assignment: Assignment, courseName: string): Observable<Assignment> {
     if (assignment.content.type != "image/jpeg" && assignment.content.type != "image/png") {
       return throwError({ error: { message: 'File type not supported' } });
+    } else if (assignment.content.size > 1048575) {
+      return throwError({ error: { message: 'File size not acceptable' } });
     } else {
       const formData = new FormData()
       formData.append('imageFile', assignment.content);

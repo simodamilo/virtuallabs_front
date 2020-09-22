@@ -14,7 +14,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 
 
@@ -24,30 +23,30 @@ import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-di
   styleUrls: ['./course.component.css'],
 })
 export class CourseComponent implements AfterViewInit {
+
   dataSource: MatTableDataSource<Teacher> = new MatTableDataSource();
   colsToDisplay = ['select', 'serial', 'name', 'surname'];
   selection: SelectionModel<Teacher>;
   toRemove: Student[] = [];
   selectedAddStudent: Student;
   showButton: Boolean = false;
-  _allStudents: Student[];
-  _enrolledStudents: Student[];
-  _allTeachers: Teacher[];
-  _ownerTeachers: Teacher[];
   isActive: boolean;
+  _studentErrorMsg: string = "";
+  _teacherErrorMsg: string = "";
+  _allStudents: Student[];
+  _allTeachers: Teacher[];
   _course: Course = {} as Course;
-  _errorMsgStudent: string;
-  _errorMsgTeacher: string;
+  _enrolledStudents: Student[];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild("csvInput") csvInput: ElementRef;
 
   @Input('errorMsgStudent') set errorMsgStudent(err: string) {
-    this._errorMsgStudent = err;
+    this._studentErrorMsg = err;
   }
   @Input('errorMsgTeacher') set errorMsgTeacher(err: string) {
-    this._errorMsgTeacher = err;
+    this._teacherErrorMsg = err;
   }
   @Input('allStudents') set allStudents(students: Student[]) {
     this._allStudents = students;
@@ -65,6 +64,8 @@ export class CourseComponent implements AfterViewInit {
     if (students != null) {
       this._enrolledStudents = [...students];
       this.toRemove = [];
+    } else {
+      this._enrolledStudents = [];
     }
   }
   @Input('ownerTeachers') set ownerTeachers(teachers: Teacher[]) {
@@ -84,7 +85,7 @@ export class CourseComponent implements AfterViewInit {
   }
 
   /**
-   * Used to initialize sort and paginator once that the view is initilized
+   * Used to initialize sort and paginator once that the view is initilized.
    */
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -117,12 +118,23 @@ export class CourseComponent implements AfterViewInit {
   }
 
   /**
-   * Used to pass to the containet the student/teacher selected in the fields.
-   * @param option 
+   * Used to pass to the container the student/teacher selected in the fields.
+   * 
+   * @param option contains the selected student or teacher. 
    */
   selectedOption(option: Student | Teacher) {
-    this._errorMsgStudent="";
+    this._studentErrorMsg = "";
     this.addEmitter.emit(option)
+  }
+
+  /**
+   * Used to toggle the row of the table.
+   * 
+   * @param row selected.
+   */
+  toggleRowsTable(row: Student | Teacher) {
+    this._studentErrorMsg = "";
+    this.selection.toggle(row);
   }
 
   /**
@@ -133,18 +145,10 @@ export class CourseComponent implements AfterViewInit {
   }
 
   /**
-   * Used to pass to the container the list of students.
-   */
-  removeStudents() {
-    this._errorMsgStudent="";
-    this.removeStudentsEmitter.emit(this.toRemove);
-  }
-
-  /**
    * Used to open the confirm dialog when the teacher upload a csv file to enroll the students.
    */
   onChangeEvent(event) {
-    this._errorMsgStudent="";
+    this._studentErrorMsg = "";
     const dialogRef = this.confirmDialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: { csv: event.target.files[0], courseName: this._course.name },
@@ -152,7 +156,7 @@ export class CourseComponent implements AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(res => {
-      res ? this.updateEmitter.emit(true) : this._errorMsgStudent="There is a conflict in the csv"
+      res ? this.updateEmitter.emit(true) : this._studentErrorMsg = "There is a problem, please try again or check the course"
       this.csvInput.nativeElement.value = "";
     });
   }
@@ -165,13 +169,12 @@ export class CourseComponent implements AfterViewInit {
   }
 
   /**
-   * Used to toggle the row of the table.
-   * 
-   * @param row selected.
+   * Used to pass to the container the list of students.
    */
-  toggleRowsTable(row: Student | Teacher) {
-    this._errorMsgStudent="";
-    this.selection.toggle(row);
+  removeStudents() {
+    this._studentErrorMsg = "";
+    this.removeStudentsEmitter.emit(this.toRemove);
+    this.toRemove = [];
   }
 
   /**

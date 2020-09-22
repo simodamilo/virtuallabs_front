@@ -10,6 +10,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   styles: ['mat-dialog-content{height: 180px}']
 })
 export class LoginDialogComponent {
+  
   loginForm: FormGroup;
   regEx = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9].{7,}');
   errorMsg = '';

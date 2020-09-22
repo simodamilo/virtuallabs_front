@@ -46,6 +46,8 @@ export class SolutionService {
   addDelivered(solution: Solution, assignment: Assignment): Observable<Solution> {
     if (solution.content.type != "image/jpeg" && solution.content.type != "image/png") {
       return throwError({ error: { message: 'File type not supported' } });
+    } else if (solution.content.size > 1048575) {
+      return throwError({ error: { message: 'File size not acceptable' } });
     } else {
       const formData = new FormData()
       formData.append('imageFile', solution.content);
@@ -59,6 +61,8 @@ export class SolutionService {
   addSolutionReview(solution: Solution, assignment: Assignment): Observable<Solution> {
     if (solution.content.type != "image/jpeg" && solution.content.type != "image/png") {
       return throwError({ error: { message: 'File type not supported' } });
+    } else if (solution.content.size > 1048575) {
+      return throwError({ error: { message: 'File size not acceptable' } });
     } else {
       const formData = new FormData()
       formData.append('imageFile', solution.content);

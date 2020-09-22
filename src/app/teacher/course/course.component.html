@@ -1,7 +1,7 @@
 <div class="container">
 
   <!-- Icons to edit or delete the course -->
-  <div>  
+  <div>
     <h2>{{_course.name}} ({{_course.tag}})</h2>
     <div [matTooltip]="_course.enabled ? 'Course is currently enabled' : 'Course is currently disabled'"
       class="div-active">
@@ -15,8 +15,8 @@
     </button>
   </div>
 
-  <!-- Div with the autocomplete field to enrolla student to the course or upload a csv -->
-  <mat-error *ngIf="_errorMsgStudent">{{_errorMsgTeacher}}</mat-error>
+  <!-- Div with the autocomplete field to assign a teacher to the course -->
+  <mat-error *ngIf="_teacherErrorMsg">{{_teacherErrorMsg}}</mat-error>
   <div>
     <app-autocomplete [options]="_allTeachers" type="teacher" (selectedOption)="selectedOption($event)">
     </app-autocomplete><br />
@@ -68,7 +68,7 @@
 
   <!-- Div with the autocomplete field to enroll student to the course or upload a csv -->
   <h2>Students</h2>
-  <mat-error *ngIf="_errorMsgStudent">{{_errorMsgStudent}}</mat-error>
+  <mat-error *ngIf="_studentErrorMsg">{{_studentErrorMsg}}</mat-error>
   <div>
     <app-autocomplete [options]="_allStudents" type="student" (selectedOption)="selectedOption($event)">
     </app-autocomplete>
@@ -78,10 +78,7 @@
   <button mat-stroked-button (click)="removeStudents()" *ngIf="!(toRemove.length == 0)">Delete students</button>
 
   <!-- Table with the students enrolled in the course-->
-  <app-students-table 
-    [students]="_enrolledStudents" 
-    [course]="_course" 
-    (selectedStudents)="changeSelection($event)">
+  <app-students-table [students]="_enrolledStudents" [course]="_course" (selectedStudents)="changeSelection($event)">
   </app-students-table>
 
 </div>

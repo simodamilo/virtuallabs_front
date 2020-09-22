@@ -11,19 +11,19 @@ import { MatStepper } from '@angular/material/stepper';
 })
 export class StudentVmsComponent {
 
-  vm: VM;
   showAddDiv: Boolean = false;
   showAddButton: Boolean = true;
   showModelView: Boolean = false;
-  _errorMsg: string = "";
-  _modelVm: ModelVM = {} as ModelVM;
-  _team: Team;
-  _teamStudents: Student[];
-  _vms: VM[];
   newOwners: Student[] = [];
   ram: number;
   vcpu: number;
   disk: number;
+  vm: VM;
+  _modelVm: ModelVM = {} as ModelVM;
+  _vms: VM[];
+  _errorMsg: string = "";
+  _team: Team;
+  _teamStudents: Student[];
 
   @ViewChild('matSelect') select: MatSelect;
   @ViewChild('stepper') stepper: MatStepper;
@@ -77,10 +77,20 @@ export class StudentVmsComponent {
   constructor() { }
 
   /**
-   * Used to open the stepper when a new vm should be added.
+   * Used to open the stepper when the student want to create a new vm.
    */
   addOpenStepper() {
     this.vm = { id: null, name: "", vcpu: 0, disk: 0, ram: 0, active: false, owners: [] };
+    this.open();
+  }
+
+  /**
+   * Used to open the stepper when the want to modify a wm.
+   * 
+   * @param vm that is modified.
+   */
+  modifyOpenStepper(vm: VM) {
+    this.vm = { id: vm.id, name: vm.name, vcpu: vm.vcpu, disk: vm.disk, ram: vm.ram, owners: vm.owners };
     this.open();
   }
 
@@ -90,14 +100,6 @@ export class StudentVmsComponent {
   closeStepper() {
     this.showAddDiv = false;
     this.newOwners = [];
-  }
-
-  /**
-   * Used to open the stepper when a vm should be modified.
-   */
-  modifyOpenStepper(vm: VM) {
-    this.vm = { id: vm.id, name: vm.name, vcpu: vm.vcpu, disk: vm.disk, ram: vm.ram, owners: vm.owners };
-    this.open();
   }
 
   /**
@@ -121,13 +123,34 @@ export class StudentVmsComponent {
   }
 
   /**
+   * Used to add a student in the list of a vm owners. 
+   * 
+   * @param event is the student that is added.
+   */
+  addStudent(event: MatSelectChange) {
+    if (!this.newOwners.includes(event.value))
+      this.newOwners.push(event.value);
+    this.select.value = "";
+  }
+
+  /**
+   * Used to remove a student from the list of a vm owners. 
+   * 
+   * @param event is the student that is removed.
+   */
+  removeStudent(removedStudent: Student) {
+    if (this.newOwners.includes(removedStudent))
+      this.newOwners.splice(this.vm.owners.indexOf(removedStudent), 1);
+  }
+
+  /**
    * Used to add or modify the vm after resources are setted inside the stepper.
    */
   confirmVm() {
     this.vm.owners = this.newOwners;
     this.vm.id === null
-    ? this.add.emit(this.vm)
-    : this.modify.emit(this.vm);
+      ? this.add.emit(this.vm)
+      : this.modify.emit(this.vm);
     this.showAddDiv = false;
     this.newOwners = [];
   }
@@ -150,26 +173,5 @@ export class StudentVmsComponent {
   deleteVm(vmId: number) {
     this.showAddDiv = false;
     this.delete.emit(vmId);
-  }
-
-  /**
-   * Used to add a student in the list of a vm owners. 
-   * 
-   * @param event is the student that is added.
-   */
-  addStudent(event: MatSelectChange) {
-    if (!this.newOwners.includes(event.value))
-      this.newOwners.push(event.value);
-    this.select.value = "";
-  }
-
-  /**
-   * Used to remove a student from the list of a vm owners. 
-   * 
-   * @param event is the student that is removed.
-   */
-  removeStudent(removedStudent: Student) {
-    if (this.newOwners.includes(removedStudent))
-      this.newOwners.splice(this.vm.owners.indexOf(removedStudent), 1);
   }
 }

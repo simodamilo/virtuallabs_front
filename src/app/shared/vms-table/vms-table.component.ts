@@ -30,11 +30,14 @@ export class VmsTableComponent implements AfterViewInit {
   @Output() onOff = new EventEmitter<VM>();
 
   constructor() {
-    localStorage.getItem("role") === "student" 
-    ? this.isStudent = true
-    : this.isStudent = false;
+    localStorage.getItem("role") === "student"
+      ? this.isStudent = true
+      : this.isStudent = false;
   }
 
+  /**
+   * Used to initialize sort and paginator once that the view is initilized.
+   */
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -68,7 +71,7 @@ export class VmsTableComponent implements AfterViewInit {
   }
 
   /**
-   * USed to check if the current user is owner of the vm.
+   * Used to check if the current user is owner of the vm.
    * 
    * @param vm of which the check is performed.
    */

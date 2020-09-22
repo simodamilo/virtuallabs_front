@@ -47,14 +47,17 @@ export class StudentTeamsContComponent implements OnInit {
         this.availableStudents$ = this.studentService.getAvailableStudents(this.courseName);
         this.pendingTeams$ = this.teamService.getPendingTeams(this.courseName);
       },
-      (err) => this.errorMsg = err.error.message
+      (err) => {
+        this.availableStudents$ = this.studentService.getAvailableStudents(this.courseName);
+        this.errorMsg = err.error.message;
+      }
     );
   }
 
   /**
    * Used to accept the request of a team.
    * 
-   * @param event is the token for the specific team.
+   * @param event contains the token for the specific team.
    */
   acceptTeam(event: Token) {
     this.errorRequestMsg = "";
@@ -70,7 +73,7 @@ export class StudentTeamsContComponent implements OnInit {
   /**
    * Used to reject the request of a team.
    * 
-   * @param event is the token for the specific team.
+   * @param event contains the token for the specific team.
    */
   rejectTeam(event: Token) {
     this.errorRequestMsg = "";

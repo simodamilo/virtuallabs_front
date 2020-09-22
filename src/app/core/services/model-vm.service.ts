@@ -22,6 +22,8 @@ export class ModelVmService {
   addModelVm(modelVm: ModelVM, courseName: string): Observable<ModelVM> {
     if (modelVm.content.type != "image/jpeg" && modelVm.content.type != "image/png") {
       return throwError({ error: { message: 'File type not supported' } });
+    } else if (modelVm.content.size > 1048575) {
+      return throwError({ error: { message: 'File size not acceptable' } });
     } else {
       const formData = new FormData();
       formData.append('imageFile', modelVm.content);

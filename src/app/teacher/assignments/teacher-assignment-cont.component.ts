@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
   styles: [],
 })
 export class TeacherAssignmentContComponent implements OnInit {
+
   assignments$: Observable<Assignment[]>;
   solutions$: Observable<Solution[]>;
   history$: Observable<Solution[]>;
@@ -55,7 +56,7 @@ export class TeacherAssignmentContComponent implements OnInit {
   /**
    * Used from the teacher to add a review to the solution of a student.
    * 
-   * @param event 
+   * @param event contains the solution and the assignment.
    */
   addReview(event: { solution: Solution; assignment: Assignment; }) {
     this.resetErrors();

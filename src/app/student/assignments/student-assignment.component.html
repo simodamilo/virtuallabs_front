@@ -3,9 +3,7 @@
   <!-- Show the table with the assignments of the selected course -->
   <div class="side">
     <h2>Assignment</h2>
-    <app-assignments-table 
-      [assignments]="_assignments" 
-      (assignmentSelected)="assignmentSelected($event)"
+    <app-assignments-table [assignments]="_assignments" (assignmentSelected)="assignmentSelected($event)"
       (assignmentReaded)="assignmentReaded($event)">
     </app-assignments-table>
   </div>
@@ -24,8 +22,7 @@
     </div>
 
     <!-- Show the table with the solutions of the student for a specific assignment -->
-    <app-solutions-table 
-      [solutions]="_history">
+    <app-solutions-table [solutions]="_history">
     </app-solutions-table>
   </div>
 </div>

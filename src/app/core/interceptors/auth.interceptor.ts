@@ -13,6 +13,12 @@ export class AuthInterceptor implements HttpInterceptor {
 
   constructor(private authService: AuthService) { }
 
+  /**
+   * Used to insert in the header the authorization field in the format "Bearer " plus the jwt token.
+   * 
+   * @param request in which the header is inserted.
+   * @param next the handler of the http requests.
+   */
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (this.authService.isLoggedIn()) {
       const cloned = request.clone({

@@ -9,6 +9,12 @@ export class AuthGuard implements CanActivate {
 
   constructor(public auth: AuthService, public router: Router) { }
 
+  /**
+   * Used to check if the user if correclty authenticated, otherwise redirect to the home.
+   * 
+   * @param next  contains information about the url.
+   * @param state contains information about the url. 
+   */
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (!this.auth.isLoggedIn()) {
       this.router.navigate(['home']);
